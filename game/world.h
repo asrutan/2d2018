@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include "tile.h"
+#include "brush.h"
 
 class World
 {
@@ -22,22 +23,28 @@ class World
         ~World();
 	//void loadWorld(std::string, Display*);
 
-	struct horizontal {
-		int y;
-		int x1;
-		int x2;
-	};
+		void CreateBrush(int t_x, int t_y);
+		void EditBrush(int t_x, int t_y);
 
-	struct vertical {
-		int x;
-		int y1;
-		int y2;
-	};
+		struct horizontal {
+			int y;
+			int x1;
+			int x2;
+		};
 
-	vertical * verts[255];
-	horizontal * horizonts[255];
+		struct vertical {
+			int x;
+			int y1;
+			int y2;
+		};
 
-	void define();
+		vertical *verts[255];
+		horizontal *horizonts[255];
+
+		int brushCount = 0;
+		Brush *brushes[255];
+
+		void define();
 }; //end World(lol)
 
 #endif //WORLD_EXISTS

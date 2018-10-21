@@ -28,6 +28,18 @@ World::~World()
 {
 } //end destructor
 
+void World::CreateBrush(int t_x, int t_y) {
+	brushes[brushCount] = new Brush(t_x, t_y, 0, 0, SOLID);
+	brushCount++;
+}
+
+void World::EditBrush(int t_x, int t_y)
+{
+	//cout << t_x << endl;
+	brushes[brushCount - 1]->w = t_x - brushes[brushCount - 1]->x;
+	brushes[brushCount - 1]->h = t_y - brushes[brushCount - 1]->y;
+}
+
 void World::define()
 {
 	horizonts[0] = new horizontal;
@@ -46,5 +58,6 @@ void World::define()
 	verts[1]->y2 = 500;
 
 	//Test brush
-	Brush *testBrush = new Brush(SOLID,0,0,50,50);
+	brushes[0] = new Brush(200,400,75,75,SOLID);
+	brushCount++;
 }

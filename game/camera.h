@@ -2,33 +2,34 @@
 // Alex Rutan
 // 12/1/15
 
+// Edited: 10/20/18
+
 #ifndef CAMERA_EXIST
 #define CAMERA_EXIST
 
-#include "player.h"
+#include "entity.h"
 #include "enemy.h"
 #include "world.h"
 
 class Camera
 {
     private:
-        Player* player;
-	Enemy* enemy;
-        World* world;
+        Entity *parent = nullptr;
         int xTarget;
-	int yTarget;
-	int xVelocity;
-	int yVelocity;
-	bool campan;
+		int yTarget;
+		int xVelocity;
+		int yVelocity;
+		bool campan = true;
 
     public:
         Camera();
-	Camera(Player*, Enemy*, World*);
-	~Camera();
-	void update();
-	void move();
+		Camera(Entity*);
+		~Camera();
+		void Init(Entity*);
+		void update();
+		void move();
         int x;
-	int y;
+		int y;
 	//bool init();
 	//	bool loadTextures();
 };

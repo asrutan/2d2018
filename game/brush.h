@@ -15,30 +15,17 @@ class Brush
     private:
 	//std::vector<Tile> tiles;
 	//int stringToInt(std::string);
-		int x1;
-		int x2;
-		int y1;
-		int y2;
-		int type;
 
     public:
-        Brush(int, int, int, int, int);
+        Brush(int t_x, int t_y, int t_w, int t_h, int t_type);
         ~Brush();
 
-	struct horizontal {
-		int y;
-		int x1;
-		int x2;
-	};
-
-	struct vertical {
-		int x;
-		int y1;
-		int y2;
-	};
-
-	vertical * verts[255];
-	horizontal * horizonts[255];
+		int x = 0;
+		int y = 0;
+		int w = 0;
+		int h = 0;
+		int type = 0;
+		int color[4];
 
 	void Define();
 }; //end brush

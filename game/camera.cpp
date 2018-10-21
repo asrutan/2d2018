@@ -2,18 +2,13 @@
 // Alex Rutan
 // 12/1/15
 
+// Edited: 10/20/18
+
 #include "camera.h"
-#include "player.h"
-#include "enemy.h"
-#include "world.h"
 
 using namespace std;
 
-Camera::Camera()
-{
-    *player = Player();
-    *enemy = Enemy();
-    *world = World();
+Camera::Camera(){
     xTarget = 0; //make target an array (not xtarg ytarg i'm just leaving this here for future reference)
     yTarget = 0;
     xVelocity = 0;
@@ -22,7 +17,7 @@ Camera::Camera()
     y = 0;
 } // end constructor
 
-Camera::Camera(Player* p, Enemy* e, World* w)
+Camera::Camera(Entity *p)
 {
     xTarget = 0; //make target an array (not xtarg ytarg i'm just leaving this here for future reference)
     yTarget = 0;
@@ -30,15 +25,19 @@ Camera::Camera(Player* p, Enemy* e, World* w)
     yVelocity = 0;
     x = 0;
     y = 0;
-    player = p;
-    enemy = e;
-    world = w;
+    //parent = p;
     campan = true;
 } //end camFocus args
 
 Camera::~Camera()
 {    
 } //end destructor
+
+void Camera::Init(Entity *p) {
+	printf("%d",p->x);
+	parent = p;
+	campan = true;
+}
 
 void Camera::move()
 {
@@ -64,8 +63,11 @@ void Camera::move()
 } //end move
 void Camera::update()
 {
-    x = player->x - 350;
-    y = player->y - 400;
+    x = parent->x - 350;
+	y = parent->y - 400;
+
+	//x = parent->x;
+	//y = parent->y;
 } //end update
 
 /*camFocus::switch(target)

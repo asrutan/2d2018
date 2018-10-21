@@ -6,14 +6,17 @@
 
 using namespace std;
 
-Brush::Brush(int Type, int X1, int Y1, int X2, int Y2){
-	x1 = X1;
-	x2 = X2;
-	y1 = Y1;
-	y2 = Y2;
-	type = Type;
+Brush::Brush(int t_x, int t_y, int t_w, int t_h, int t_type){
+	x = t_x;
+	y = t_y;
+	w = t_w;
+	h = t_h;
 
-	printf("New Brush Spawned At: (%d,%d) (%d,%d)\n", x1, y1, x2, y2);
+	type = t_type;
+
+	color[0] = 0x00; color[1] = 0xFF; color[2] = 0x00; color[3] = 0x00;
+
+	printf("New Brush Spawned At: (%d,%d) height: %d, width: %d)\n", x, y, h, w);
 }
 
 Brush::~Brush(){

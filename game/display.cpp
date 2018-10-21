@@ -22,6 +22,12 @@ Display::Display()
 	{
 		entityTexture[i] = NULL;
 	}
+
+	rects[0].x = testBox.x;
+	rects[0].y = testBox.y;
+	rects[0].w = testBox.w;
+	rects[0].h = testBox.h;
+
 }//end constructor
 
 Display::~Display()
@@ -184,8 +190,8 @@ void Display::update()
 
 void Display::draw(Entity *entity)
 {
-	dstrect[entity->getEntityID()].x = entity->x;
-	dstrect[entity->getEntityID()].y = entity->y;
+	dstrect[entity->getEntityID()].x = entity->x - camera->x;
+	dstrect[entity->getEntityID()].y = entity->y - camera->y;
 	dstrect[entity->getEntityID()].w = entity->width;
 	dstrect[entity->getEntityID()].h = entity->height;
 
@@ -205,14 +211,73 @@ void Display::draw(Entity *entity)
 
 void Display::draw(World *world)
 {
+	int camX = camera->x;
+	int camY = camera->y;
+
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 
-	SDL_RenderDrawLine(renderer, world->horizonts[0]->x1, world->horizonts[0]->y, world->horizonts[0]->x2, world->horizonts[0]->y);
-	SDL_RenderDrawLine(renderer, world->verts[0]->x, world->verts[0]->y1, world->verts[0]->x, world->verts[0]->y2);
-	SDL_RenderDrawLine(renderer, world->verts[1]->x, world->verts[1]->y1, world->verts[1]->x, world->verts[1]->y2);
+	SDL_RenderDrawLine(
+		renderer,
+		world->horizonts[0]->x1 - camX, 
+		world->horizonts[0]->y - camY,
+		world->horizonts[0]->x2 - camX, 
+		world->horizonts[0]->y - camY
+	);
+
+	SDL_RenderDrawLine(
+		renderer, 
+		world->verts[0]->x - camX, 
+		world->verts[0]->y1 - camY, 
+		world->verts[0]->x - camX, 
+		world->verts[0]->y2 - camY
+	);
+
+	SDL_RenderDrawLine(
+		renderer,
+		world->verts[1]->x - camX,
+		world->verts[1]->y1 - camY,
+		world->verts[1]->x - camX,
+		world->verts[1]->y2 - camY
+	);
+
+	for (int i = 0; i < world->brushCount; i++) {
+		rects[i].x = world->brushes[i]->x - camX;
+		rects[i].y = world->brushes[i]->y - camY;
+		rects[i].w = world->brushes[i]->w;
+		rects[i].h = world->brushes[i]->h;
+
+		//rects[i].x = testBox.x - camX;
+		//rects[i].y = testBox.y - camY;
+
+		//wont work here
+		SDL_SetRenderDrawColor(
+			renderer,
+			world->brushes[i]->color[0],
+			world->brushes[i]->color[1],
+			world->brushes[i]->color[2],
+			world->brushes[i]->color[3]
+		);
+	}
+
+	SDL_RenderDrawRects(
+		renderer,
+		rects,
+		world->brushCount
+	);
+	/*
+	SDL_RenderFillRect(
+		renderer,
+		rects
+	);
+	*/
 }
 
 void Display::render()
 {
 	SDL_RenderPresent(renderer);	//This updates the screen with what has been drawn on the renderer
+}
+
+void Display::SetCamPtr(Camera *Camera)
+{
+	camera = Camera;
 }

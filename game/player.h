@@ -7,7 +7,6 @@
 
 #include "collideBox.h"
 #include "entity.h"
-#include "game.h"
 
 class Player : public Entity
 {

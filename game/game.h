@@ -10,6 +10,7 @@
 #include <SDL_image.h>
 #include <string>
 #include "display.h"
+#include "camera.h"
 #include "texture.h"
 #include "player.h"
 #include "enemy.h"
@@ -25,8 +26,13 @@ class Game
 		Movement movement;
 		Collision collision;
 		Input input;
-		bool * quit;
+		Camera camera;
+		World *world;
+		bool *quit;
+		bool *editMode;
+		bool *mouseDown;
 		unsigned int currentTime;
+		bool create = true;
 
     public:
         Game();
@@ -41,6 +47,9 @@ class Game
 		int mousey;
 		int playercount;
 		int enemycount;
+
+		void GameLoop();
+		void EditLoop();
 
 		bool TimeUp();
 		unsigned int GetTime();

@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include "entity.h"
 #include "world.h"
+#include "camera.h"
 #include <iostream>
 
 class Display
@@ -15,8 +16,19 @@ class Display
     private:
         int resX;
         int resY;
+		Camera *camera;
         SDL_Window* window;
 		SDL_Surface* surface;
+
+		SDL_Rect rects[1];
+
+		struct Box {
+			int x = 200;
+			int y = 200;
+			int w = 50;
+			int h = 50;
+		};
+		Box testBox;
 
     public:
 		Display();
@@ -35,6 +47,7 @@ class Display
 		int getResX();
 		int getResY();
 		void render();
+		void SetCamPtr(Camera*);
 		SDL_Rect srcrect[255];
 		SDL_Rect dstrect[255];
 		SDL_Renderer* renderer;

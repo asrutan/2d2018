@@ -11,8 +11,10 @@ class Input
 {
 private:
 	SDL_Event event;
-	bool quit;
+	bool quit = false;
 	bool click;
+	bool editToggle = false;
+	bool mouseDown = false;
 
 public:
 	Input();
@@ -24,6 +26,8 @@ public:
 	void keyEvents();
 	int getMouse();
 	bool *GetQuitPtr();
+	bool *GetEditTogglePtr();
+	bool *GetMouseDownPtr();
 
 }; //end Input
 

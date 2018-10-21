@@ -21,6 +21,8 @@ Game::Game()
 	//quit = false;
 
 	quit = input.GetQuitPtr();
+	editMode = input.GetEditTogglePtr();
+	mouseDown = input.GetMouseDownPtr();
 
 } //end constructor
 
@@ -103,6 +105,47 @@ unsigned int Game::GetTime()
 	return SDL_GetTicks();
 }
 
+void Game::GameLoop() {
+	input.keyEvents();
+	if (input.getMouse() != 0)
+	{
+		entlist[0]->TestQueue();
+		//cout << "click" << endl;
+		mousex = input.mousex + camera.x;
+		mousey = input.mousey + camera.y;
+		if (input.mousex > 700 && input.mousex < 750 && input.mousey > 500 && input.mousey < 550)
+		{
+			if (create)
+			{
+				create = false;
+			}
+			else create = true;
+			//entlist[0]->kill();
+		}
+		else
+		{
+			if (create)
+			{
+				if (mousex > 400)spawn(1);
+				else(spawn(2));
+			}
+		}
+	} //end if
+}
+
+void Game::EditLoop() {
+	input.keyEvents();
+	mousex = input.mousex + camera.x;
+	mousey = input.mousey + camera.y;
+	if (input.getMouse() != 0){
+		world->CreateBrush(mousex, mousey);
+	} //end if
+
+	if (*mouseDown) {
+		world->EditBrush(mousex, mousey);
+	}
+}
+
 /*
 First, take each of the textures and assign them to their own specific rectangles to be drawn later
 Create and instance of map, map is loaded when it is constructed
@@ -118,44 +161,30 @@ int Game::run()
     } //end if
     else
     {
-		bool create = true;
 
-		World *world = new World;
+		world = new World;
 		world->define();
 
 		display.loadTextures("player.bmp", 0);
 		display.loadTextures("blocks.bmp", 1);
+
+		
+		display.SetCamPtr(&camera);
+
 		spawn(0);
+		cout << entlist[0]->x << endl;
+		camera.Init(entlist[0]);
         bool keepGoing = true;
         while(keepGoing)
 		{
 			currentTime = SDL_GetTicks();
-			input.keyEvents();
-			if (input.getMouse() != 0)
-			{
-				entlist[0]->TestQueue();
-				cout << "click" << endl;
-				if (input.mousex > 700 && input.mousex < 750 && input.mousey > 500 && input.mousey < 550)
-				{
-					if(create)
-					{
-						create = false;
-					}
-					else create = true;
-					//entlist[0]->kill();
-				}
-				else 
-				{
-					mousex = input.mousex;
-					mousey = input.mousey;
-					if (create)
-					{
-						if (mousex > 400)spawn(1);
-						else(spawn(2));
-					}
-				}
-			} //end if
-
+			
+			if (!*editMode) {
+				GameLoop();
+			}
+			else {
+				EditLoop();
+			}
 
 			if (*quit)
 			{
@@ -173,6 +202,8 @@ int Game::run()
 			//collision.checkBounds(entlist[0], world->verts[1]);
 
 			//skeleton
+
+			camera.update();
 
 			display.draw(world);
 
