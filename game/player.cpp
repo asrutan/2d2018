@@ -51,9 +51,9 @@ void Player::update()//changed from entity
 
 	if (!onGround)
 	{	
-		if (yVelocity < 50) {
+		if (yVelocity < 10) {
 			//cout << yVelocity << endl;
-			yVelocity += 2;
+			yVelocity += 1;
 		}
 	}
 	Move();

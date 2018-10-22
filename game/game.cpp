@@ -203,7 +203,8 @@ int Game::run()
 				keepGoing = false;
 			} //end if
 
-			
+			entlist[0]->update();
+			camera.update();
 			/**************/
 			//movement.move(entlist[0]); //move, checkbounds, update
 
@@ -227,20 +228,18 @@ int Game::run()
 
 			//camera.update();
 			display.update(); // background and clear
-			display.draw(world);
-			for (int i = 0; i < entcount; i++)
-			{
-				movement.move(entlist[i]);
+			for (int i = 0; i < entcount; i++){
+				if(i != 0)movement.move(entlist[i]);
 				collision.checkBounds(entlist[i], world->verts[0]);
 				collision.checkBounds(entlist[i], world->verts[1]);
 				if(i != 0)collision.checkBounds(entlist[0], entlist[i]);
 				if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
-				entlist[i]->update(); //if collide, do not update to newX/newY
+				if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
 				display.draw(entlist[i]);
 				if (entlist[i]->getIsDead())despawn(entlist[i]);
 			} //update entities
 			  /**************/
-			camera.update();
+			display.draw(world);
 			display.render(); //draw to screen
 
 	    // end updates

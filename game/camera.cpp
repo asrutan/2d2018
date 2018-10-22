@@ -64,7 +64,7 @@ void Camera::move()
 void Camera::update()
 {
     x = parent->x - 350;
-	y = parent->y - 100;
+	y = parent->y - 200;
 
 	//printf("Camera x: %d\n", parent->x);
 
