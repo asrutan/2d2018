@@ -64,7 +64,7 @@ void Camera::move()
 void Camera::update()
 {
     x = parent->x - 350;
-	y = parent->y - 400;
+	y = parent->y - 100;
 
 	//x = parent->x;
 	//y = parent->y;

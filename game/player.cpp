@@ -53,6 +53,9 @@ void Player::update()//changed from entity
 		//cout << floorHit << endl;
 		y++;
 	}
+	else {
+		x++;
+	}
 
 	//TestQueue();
 	DoMethod(queue.Execute());

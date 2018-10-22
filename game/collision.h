@@ -22,6 +22,7 @@ class Collision
 	void checkBounds(Entity * entity1, World*);
 	void checkBounds(Entity* entity1, World::horizontal*);
 	void checkBounds(Entity* entity1, World::vertical*);
+	void checkBounds(Entity* entity1, Brush*);
 	void checkBounds(Entity* entity1, int x, int y);
 };
 

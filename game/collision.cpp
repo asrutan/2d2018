@@ -153,6 +153,50 @@ void Collision::checkBounds(Entity * entity1, World::vertical* vert)
 	}
 }
 
+void Collision::checkBounds(Entity *entity1, Brush *brush)
+{
+	if (entity1->x + entity1->width > brush->x && entity1->x < brush->x) // right side collide
+	{
+		if (entity1->y < brush->y + brush->h && entity1->y + entity1->height > brush->y)
+		{
+			//entity1->collided[brush->type] = true; //behavior upon collision is determined by the type of entity it hits.
+			//brush->collided[entity1->getEntityID()] = true;
+			//cout << "right" << endl;
+		}
+	}
+
+	if (entity1->x < brush->x + brush->w && entity1->x + entity1->width > brush->x + brush->w) // left side collide
+	{
+		if (entity1->y < brush->y + brush->h && entity1->y + entity1->height > brush->y)
+		{
+			//entity1->collided[brush->type] = true; //behavior upon collision is determined by the type of entity it hits.
+			//brush->collided[entity1->getEntityID()] = true;
+			//cout << "left" << endl;
+		}
+	}
+
+	if (entity1->y < brush->y + brush->h && entity1->y + entity1->height > brush->y + brush->h) // top collide
+	{
+		if (entity1->x + entity1->width > brush->x && entity1->x < brush->x + brush->w)
+		{
+			//entity1->collided[brush->type] = true; //behavior upon collision is determined by the type of entity it hits.
+			//brush->collided[entity1->getEntityID()] = true;
+			//cout << "top" << endl;
+		}
+	}
+
+	//start false every frame.
+	entity1->floorHit = false;
+	if (entity1->y + entity1->height > brush->y && entity1->y < brush->y) // bottom collide
+	{
+		if (entity1->x + entity1->width > brush->x && entity1->x < brush->x + brush->w)
+		{
+			entity1->floorHit = true; //behavior upon collision is determined by the type of entity it hits.
+			//brush->collided[entity1->getEntityID()] = true;
+			//cout << "bottom" << endl;
+		}
+	}
+}
 
 void Collision::checkBounds(Entity * entity1, int x, int y)
 {

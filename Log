@@ -1,0 +1,12 @@
+10/21/18
+Added brush loading on world, added collision with brushes to the collision class.
+
+Areas for improvement:
+  Player currently does not always collide. This is probably due to the player missing a collision check on the exact frame where they are colliding.
+    Solution:
+      Have collision with brushes factor in the width and height. If the player is inside of the brush, bring them to the top of the brush.
+  Currently check for collision for every single brush on every single frame.
+    Solution:
+      Divide world into squares, assign square numbers when brush is created. Only check squares within the square that the player is currently in each frame.
+       This could be achieved by having an array of brush arrays, each square correlates to an index in the array of arrays. This way we can call that individual index
+       and not waste cycles on if statements.

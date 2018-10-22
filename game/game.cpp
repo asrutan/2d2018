@@ -164,6 +164,7 @@ int Game::run()
 
 		world = new World;
 		world->define();
+		world->Load();
 
 		display.loadTextures("player.bmp", 0);
 		display.loadTextures("blocks.bmp", 1);
@@ -197,7 +198,16 @@ int Game::run()
 			movement.move(entlist[0]); //move, checkbounds, update
 
 			 //skeleton
-			collision.checkBounds(entlist[0], world->horizonts[0]);
+			//collision.checkBounds(entlist[0], world->horizonts[0]);
+
+			//Iterate through all the brushes but stop as soon as we hit one of them and start over.
+			for (int i = 0; i < world->brushCount; i++) {
+				collision.checkBounds(entlist[0], world->brushes[i]);
+				if (entlist[0]->floorHit) {
+					i = world->brushCount;
+				}
+			}
+
 			//collision.checkBounds(entlist[0], world->verts[0]);
 			//collision.checkBounds(entlist[0], world->verts[1]);
 

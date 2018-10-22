@@ -23,7 +23,9 @@ class World
         ~World();
 	//void loadWorld(std::string, Display*);
 
+		void Load();
 		void CreateBrush(int t_x, int t_y);
+		void CreateBrush(int t_x, int t_y, int t_w, int t_h, int t_type);
 		void EditBrush(int t_x, int t_y);
 
 		struct horizontal {
