@@ -32,17 +32,35 @@ void Input::keyEvents()
 				quit = true;
 				cout << "QUIT HIT" << endl;
 			}
+			if (event.key.keysym.sym == SDLK_SPACE) {
+				flags &= ~(IF_SPACE);
+			}
+			if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a){
+				flags &= ~(IF_LEFT);
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
+				flags &= ~(IF_RIGHT);
+			}
 		}
 		if (event.type == SDL_KEYDOWN) {
-			if (event.key.keysym.sym == SDLK_SPACE) {
-				if (editToggle) {
-					editToggle = false;
-					cout << "EDIT MODE DE-ACTIVATED" << endl;
+			if (event.key.keysym.sym == SDLK_TAB) {
+				if (flags & IF_TAB) {
+					cout << "EDIT MODE ACTIVATED" << endl;
+					flags &= ~(IF_TAB);
 				}
 				else {
-					editToggle = true;
-					cout << "EDIT MODE ACTIVATED" << endl;
+					cout << "EDIT MODE DE-ACTIVATED" << endl;
+					flags |= IF_TAB;
 				}
+			}
+			if (event.key.keysym.sym == SDLK_SPACE) {
+				flags |= IF_SPACE;
+			}
+			if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a){
+				flags |= IF_LEFT;
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
+				flags |= IF_RIGHT;
 			}
 		}
 	} //end if

@@ -144,6 +144,9 @@ void Game::EditLoop() {
 	if (*mouseDown) {
 		world->EditBrush(mousex, mousey);
 	}
+	else {
+		world->NormalizeBrush();
+	} 
 }
 
 /*
@@ -173,14 +176,22 @@ int Game::run()
 		display.SetCamPtr(&camera);
 
 		spawn(0);
-		cout << entlist[0]->x << endl;
 		camera.Init(entlist[0]);
         bool keepGoing = true;
         while(keepGoing)
 		{
 			currentTime = SDL_GetTicks();
-			
-			if (!*editMode) {
+			if (input.flags & IF_LEFT) {
+				entlist[0]->Input(IF_LEFT);
+			}
+			if (input.flags & IF_RIGHT) {
+				entlist[0]->Input(IF_RIGHT);
+			}
+			if (input.flags & IF_SPACE) {
+				entlist[0]->Input(IF_SPACE);
+			}
+
+			if (input.flags & IF_TAB) {
 				GameLoop();
 			}
 			else {
@@ -193,9 +204,8 @@ int Game::run()
 			} //end if
 
 			
-			display.update(); // background and clear
 			/**************/
-			movement.move(entlist[0]); //move, checkbounds, update
+			//movement.move(entlist[0]); //move, checkbounds, update
 
 			 //skeleton
 			//collision.checkBounds(entlist[0], world->horizonts[0]);
@@ -203,7 +213,9 @@ int Game::run()
 			//Iterate through all the brushes but stop as soon as we hit one of them and start over.
 			for (int i = 0; i < world->brushCount; i++) {
 				collision.checkBounds(entlist[0], world->brushes[i]);
-				if (entlist[0]->floorHit) {
+				if (entlist[0]->onGround) {
+					//cout << i << endl;
+					//printf("Brush hit: %d\n", i);
 					i = world->brushCount;
 				}
 			}
@@ -213,10 +225,9 @@ int Game::run()
 
 			//skeleton
 
-			camera.update();
-
+			//camera.update();
+			display.update(); // background and clear
 			display.draw(world);
-
 			for (int i = 0; i < entcount; i++)
 			{
 				movement.move(entlist[i]);
@@ -229,6 +240,7 @@ int Game::run()
 				if (entlist[i]->getIsDead())despawn(entlist[i]);
 			} //update entities
 			  /**************/
+			camera.update();
 			display.render(); //draw to screen
 
 	    // end updates

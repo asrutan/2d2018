@@ -6,12 +6,17 @@
 #define ENTITY_EXIST
 
 #include "queue.h"
-
+const int MF_JUMP = 1;
+const int MF_FIRE = 2;
+const int MF_LEFT = 4;
+const int MF_RIGHT = 8;
 class Entity{
 
     protected:
 		int PRINTTEST = 1;
 		int TIMETEST = 2;
+
+		int mFlags = 0;
 
 		int speed = 1;
 		int spriteX;
@@ -52,7 +57,7 @@ class Entity{
 		void kill();
 		void TestQueue();
 		bool collided[2];
-		bool floorHit = false;
+		bool onGround = false;
 		bool wallHit = false;
 		bool collideSide[4]; //1=right 2=left 3=top 4=bottom
 		void setXY(int, int);
@@ -68,6 +73,8 @@ class Entity{
 		int getSpeed();
 		int getAcceleration();
 		void DoMethod(int);
+		void Move();
+		void Input(int t_flags);
 
 }; //end Entity
 

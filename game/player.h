@@ -14,13 +14,19 @@ class Player : public Entity
 		collideBox aBox;
 		char lastMove;
 
+		const int IF_SPACE = 1;
+		const int IF_LEFTMOUSE = 2;
+		const int IF_LEFT = 4;
+		const int IF_RIGHT = 8;
+
     public:
         Player();
 		Player(unsigned int *time);
 		~Player();
         void update();
 		bool quit;
-		void move();
+		void Move();
+		void Input(int);
 
 }; //end Player
 

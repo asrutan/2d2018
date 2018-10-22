@@ -66,6 +66,8 @@ void Camera::update()
     x = parent->x - 350;
 	y = parent->y - 100;
 
+	//printf("Camera x: %d\n", parent->x);
+
 	//x = parent->x;
 	//y = parent->y;
 } //end update

@@ -25,8 +25,9 @@ Player::Player(unsigned int *Time)
 
 	entityID = 0;
 	//sprite = "player.bmp";
-	floorHit = false;
+	onGround = false;
 	this->xVelocity = 4;
+	//this->yVelocity = 2;
     //make this an array or list or some shit
     //end new vars
 
@@ -48,24 +49,46 @@ void Player::update()//changed from entity
 {
 	if (dying)dead = true;
 
-	if (floorHit == false)
-	{
-		//cout << floorHit << endl;
-		y++;
+	if (!onGround)
+	{	
+		if (yVelocity < 50) {
+			//cout << yVelocity << endl;
+			yVelocity += 2;
+		}
 	}
-	else {
-		x++;
-	}
-
+	Move();
+	//printf("Player x: %d ", x);
 	//TestQueue();
 	DoMethod(queue.Execute());
 } //end update
 
-void Player::move()
+void Player::Move()
 {
-	x = x + xVelocity;//update x by xVelocity
+	//cout << "move" << endl;
+	y += yVelocity;
+	//x += xVelocity;
+	if (mFlags & MF_LEFT) {
+		x -= 5;
+		mFlags &= ~(MF_LEFT);
+	}
+	if (mFlags & MF_RIGHT) {
+		x += 5;
+		mFlags &= ~(MF_RIGHT);
+	}
+	if (mFlags & MF_JUMP) {
+		if (onGround) {
+			cout << "JUMP HIT" << endl;
+			y--;
+			yVelocity = -30;
+			onGround = false;		
+		}
+		mFlags &= ~(MF_JUMP);
+	}
 }
 
+void Player::Input(int t_flags) {
+	//mFlags |= t_flags;
+}
 
 //void Entity::move()
 //{

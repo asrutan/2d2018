@@ -15,6 +15,7 @@ class World
     private:
 	//std::vector<Tile> tiles;
 	//int stringToInt(std::string);
+		bool m_allNormal = true;
 
     public:
         World();
@@ -27,6 +28,8 @@ class World
 		void CreateBrush(int t_x, int t_y);
 		void CreateBrush(int t_x, int t_y, int t_w, int t_h, int t_type);
 		void EditBrush(int t_x, int t_y);
+		void NormalizeBrush();
+
 
 		struct horizontal {
 			int y;

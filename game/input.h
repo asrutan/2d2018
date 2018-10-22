@@ -7,6 +7,12 @@
 
 #include <SDL.h>
 
+const int IF_SPACE = 1;
+const int IF_LEFTMOUSE = 2;
+const int IF_LEFT = 4;
+const int IF_RIGHT = 8;
+const int IF_TAB = 16;
+//Input flags
 class Input
 {
 private:
@@ -19,6 +25,8 @@ private:
 public:
 	Input();
 	~Input();
+
+	int flags = 0;
 
 	int mousex;
 	int mousey;

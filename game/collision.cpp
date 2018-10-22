@@ -119,9 +119,9 @@ void Collision::checkBounds(Entity * entity1, World::horizontal* horizont)
 	{
 		if (entity1->x + entity1->width > horizont->x1 && entity1->x < horizont->x2)
 		{
-			entity1->floorHit = true;
+			entity1->onGround = true;
 		}
-		else(entity1->floorHit = false);
+		else(entity1->onGround = false);
 	}
 }
 
@@ -186,13 +186,14 @@ void Collision::checkBounds(Entity *entity1, Brush *brush)
 	}
 
 	//start false every frame.
-	entity1->floorHit = false;
-	if (entity1->y + entity1->height > brush->y && entity1->y < brush->y) // bottom collide
+	entity1->onGround = false;
+	if (entity1->y + entity1->height >= brush->y && entity1->y <= brush->y) // bottom collide
 	{
-		if (entity1->x + entity1->width > brush->x && entity1->x < brush->x + brush->w)
+		if (entity1->x + entity1->width >= brush->x && entity1->x <= brush->x + brush->w)
 		{
-			entity1->floorHit = true; //behavior upon collision is determined by the type of entity it hits.
-			//brush->collided[entity1->getEntityID()] = true;
+			entity1->setYVelocity(0);
+			entity1->y = brush->y - entity1->height;
+			entity1->onGround = true; //behavior upon collision is determined by the type of entity it hits.
 			//cout << "bottom" << endl;
 		}
 	}

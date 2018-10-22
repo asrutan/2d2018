@@ -43,6 +43,23 @@ void World::EditBrush(int t_x, int t_y)
 	//cout << t_x << endl;
 	brushes[brushCount - 1]->w = t_x - brushes[brushCount - 1]->x;
 	brushes[brushCount - 1]->h = t_y - brushes[brushCount - 1]->y;
+	m_allNormal = false;
+}
+
+void World::NormalizeBrush() {
+	if (!m_allNormal)
+	{
+		//cout << "NORMALIZE" << endl;
+		if (brushes[brushCount - 1]->w < 0) {
+			brushes[brushCount - 1]->x += brushes[brushCount - 1]->w;
+			brushes[brushCount - 1]->w *= -1;
+		}
+		if (brushes[brushCount - 1]->h < 0) {
+			brushes[brushCount - 1]->y += brushes[brushCount - 1]->h;
+			brushes[brushCount - 1]->h *= -1;
+		}
+	}
+	m_allNormal = true;
 }
 
 //Hard coded world for now. 

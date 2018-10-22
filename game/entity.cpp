@@ -144,6 +144,13 @@ void Entity::DoMethod(int methodId)
 		printf("Current time: %d\n", *time);
 	}
 }
+void Entity::Move()
+{
+}
+void Entity::Input(int t_flags)
+{
+	mFlags |= t_flags;
+}
 //end setXY
 
 
