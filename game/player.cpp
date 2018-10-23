@@ -45,6 +45,10 @@ Player::~Player()
 {
 } //end deconstructor
 
+//void Player::Init(Game game)
+//{
+//}
+
 void Player::update()//changed from entity
 {
 	if (dying)dead = true;
@@ -69,9 +73,11 @@ void Player::Move()
 	//x += xVelocity;
 	if (mFlags & MF_LEFT) {
 		x -= 5;
+		direction = 0;
 		mFlags &= ~(MF_LEFT);
 	}
 	if (mFlags & MF_RIGHT) {
+		direction = 1;
 		x += 5;
 		mFlags &= ~(MF_RIGHT);
 	}
@@ -97,6 +103,8 @@ void Player::Input(int t_flags) {
 
 void Player::Fire() {
 	if (!fireCooldown) {
+		cout << "BANG" << endl;
+		fired = true;
 		fireCooldown = true;
 		queue.Push(4, coolDownTime, false, 0);
 	}
@@ -104,6 +112,14 @@ void Player::Fire() {
 
 void Player::CooldownOff() {
 	fireCooldown = false;
+}
+
+int Player::GameRequest() {
+	if (fired) {
+		fired = false;
+		return 1;
+	}
+	return 0;
 }
 
 //void Entity::move()

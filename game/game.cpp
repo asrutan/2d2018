@@ -62,6 +62,19 @@ int Game::spawn(int entid)
 		entcount++;
 		return 0;
 	}
+	else if (entid == 3) {
+		if (entlist[0]->direction == 0) {
+			entlist[entcount] = new Enemy(2);
+			entlist[entcount]->setXY(entlist[0]->x - 60, entlist[0]->y);
+		}
+		else {
+			entlist[entcount] = new Enemy(1);
+			entlist[entcount]->setXY(entlist[0]->x + 100, entlist[0]->y);
+		}
+		entlist[entcount]->setListID(entcount);
+		entcount++;
+		return 0;
+	}
 	else { cout << "can't spawn entity" << endl; return 0; }
 } //end spawn
 
@@ -103,6 +116,13 @@ bool Game::TimeUp()
 unsigned int Game::GetTime()
 {
 	return SDL_GetTicks();
+}
+
+void Game::Act(int request)
+{
+	if (request == 1) {
+		spawn(3);
+	}
 }
 
 void Game::GameLoop() {
@@ -228,8 +248,7 @@ int Game::run()
 			//collision.checkBounds(entlist[0], world->verts[1]);
 
 			//skeleton
-
-			//camera.update();
+			Act(entlist[0]->GameRequest());
 			display.update(); // background and clear
 			for (int i = 0; i < entcount; i++){
 				if(i != 0)movement.move(entlist[i]);

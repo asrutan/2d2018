@@ -37,6 +37,10 @@ class Entity{
 		int acceleration = 1;
 		unsigned int *time;
 
+		struct GameAction{
+			int action;
+		};
+
 		Queue queue;
 
     public:
@@ -49,6 +53,7 @@ class Entity{
 		int y; // THIS IS JUST TO TEST MOVING THE SPRITE IN Game!!!
 		int height;
 		int width;
+		int direction = 0;
 		//void mover(int);
 		//void move();
 		//string sprite;
@@ -79,6 +84,7 @@ class Entity{
 		void DoMethod(int);
 		void Move();
 		void Input(int t_flags);
+		virtual int GameRequest();
 
 }; //end Entity
 

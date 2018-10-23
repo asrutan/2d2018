@@ -22,16 +22,20 @@ class Player : public Entity
 		bool fireCooldown = false;
 		int coolDownTime = 1000;
 
+		//test firing in game
+		bool fired = false;
+
     public:
         Player();
 		Player(unsigned int *time);
 		~Player();
+		//void Init();
         void update();
 		bool quit;
 		void Move();
 		void Input(int);
 		void Fire();
-
+		int GameRequest();
 		void CooldownOff();
 
 }; //end Player

@@ -19,6 +19,9 @@
 #include "collision.h"
 #include "input.h"
 
+const int SPAWN = 0;
+const int BULLET = 0;
+
 class Game
 {
     private:
@@ -47,6 +50,8 @@ class Game
 		int mousey;
 		int playercount;
 		int enemycount;
+
+		void Act(int request);
 
 		void GameLoop();
 		void EditLoop();

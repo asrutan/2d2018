@@ -163,6 +163,10 @@ void Entity::Input(int t_flags)
 {
 	mFlags |= t_flags;
 }
+int Entity::GameRequest()
+{
+	return 0;
+}
 //end setXY
 
 
