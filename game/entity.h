@@ -7,7 +7,7 @@
 
 #include "queue.h"
 const int MF_JUMP = 1;
-const int MF_FIRE = 2;
+const int MF_FIRE = 32;
 const int MF_LEFT = 4;
 const int MF_RIGHT = 8;
 class Entity{
@@ -15,6 +15,8 @@ class Entity{
     protected:
 		int PRINTTEST = 1;
 		int TIMETEST = 2;
+		int FIRE = 3;
+		int COOLDOWN = 4;
 
 		int mFlags = 0;
 
@@ -72,6 +74,8 @@ class Entity{
 		int getFriction();
 		int getSpeed();
 		int getAcceleration();
+		virtual void Fire();
+		virtual void CooldownOff();
 		void DoMethod(int);
 		void Move();
 		void Input(int t_flags);

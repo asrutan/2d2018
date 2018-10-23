@@ -12,6 +12,7 @@ const int IF_LEFTMOUSE = 2;
 const int IF_LEFT = 4;
 const int IF_RIGHT = 8;
 const int IF_TAB = 16;
+const int IF_CTRL = 32;
 //Input flags
 class Input
 {

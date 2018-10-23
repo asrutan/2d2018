@@ -19,6 +19,9 @@ class Player : public Entity
 		const int IF_LEFT = 4;
 		const int IF_RIGHT = 8;
 
+		bool fireCooldown = false;
+		int coolDownTime = 1000;
+
     public:
         Player();
 		Player(unsigned int *time);
@@ -27,6 +30,9 @@ class Player : public Entity
 		bool quit;
 		void Move();
 		void Input(int);
+		void Fire();
+
+		void CooldownOff();
 
 }; //end Player
 

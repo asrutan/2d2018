@@ -131,6 +131,12 @@ int Entity::getAcceleration()
 {
 	return acceleration;
 }
+void Entity::Fire()
+{
+}
+void Entity::CooldownOff()
+{
+}
 void Entity::DoMethod(int methodId)
 {
 	if (methodId == PRINTTEST) {
@@ -142,6 +148,12 @@ void Entity::DoMethod(int methodId)
 	}
 	if (methodId == TIMETEST) {
 		printf("Current time: %d\n", *time);
+	}
+	if (methodId == FIRE) {
+		this->Fire();
+	}
+	if (methodId == COOLDOWN) {
+		this->CooldownOff();
 	}
 }
 void Entity::Move()

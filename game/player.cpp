@@ -77,17 +77,33 @@ void Player::Move()
 	}
 	if (mFlags & MF_JUMP) {
 		if (onGround) {
-			cout << "JUMP HIT" << endl;
 			y--;
 			yVelocity = -30;
 			onGround = false;		
 		}
 		mFlags &= ~(MF_JUMP);
 	}
+
+	if (mFlags & MF_FIRE) {
+		queue.Push(FIRE, 0, false, 0);
+		mFlags &= ~(MF_FIRE);
+
+	}
 }
 
 void Player::Input(int t_flags) {
 	//mFlags |= t_flags;
+}
+
+void Player::Fire() {
+	if (!fireCooldown) {
+		fireCooldown = true;
+		queue.Push(4, coolDownTime, false, 0);
+	}
+}
+
+void Player::CooldownOff() {
+	fireCooldown = false;
 }
 
 //void Entity::move()

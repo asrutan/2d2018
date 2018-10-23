@@ -30,7 +30,7 @@ public:
 	//Queue(unsigned int *);
 	~Queue();
 	void SetTimePtr(unsigned int *);
-	void Push(int, unsigned int, bool, int);
+	void Push(int method, unsigned int delay, bool repeat, int times);
 	int Execute();
 
 }; //end Queue

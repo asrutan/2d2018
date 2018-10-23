@@ -190,6 +190,9 @@ int Game::run()
 			if (input.flags & IF_SPACE) {
 				entlist[0]->Input(IF_SPACE);
 			}
+			if (input.flags & IF_CTRL) {
+				entlist[0]->Input(IF_CTRL);
+			}
 
 			if (input.flags & IF_TAB) {
 				GameLoop();

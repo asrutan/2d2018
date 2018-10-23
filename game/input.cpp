@@ -41,6 +41,9 @@ void Input::keyEvents()
 			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 				flags &= ~(IF_RIGHT);
 			}
+			if (event.key.keysym.sym == SDLK_LCTRL) {
+				flags &= ~(IF_CTRL);
+			}
 		}
 		if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_TAB) {
@@ -61,6 +64,9 @@ void Input::keyEvents()
 			}
 			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 				flags |= IF_RIGHT;
+			}
+			if (event.key.keysym.sym == SDLK_LCTRL) {
+				flags |= IF_CTRL;
 			}
 		}
 	} //end if
