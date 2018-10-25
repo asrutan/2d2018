@@ -4,11 +4,16 @@
 #include <iostream>
 #include <cmath>
 #include "player.h"
+#include "game.h"
 
 using namespace std;
 
+Game *game = nullptr;
+
 Player::Player(unsigned int *Time)
 {
+	//game = 
+
     spriteX = 50;//wraps collision box closer to sprite
     spriteY = 0;
     speed = 10;//movement speed
@@ -34,6 +39,8 @@ Player::Player(unsigned int *Time)
 	time = Time;
 	queue.SetTimePtr(time);
 	//Queue testing
+
+	//Game *game;
 } //end constructor
 
 Player::Player()
@@ -104,6 +111,7 @@ void Player::Input(int t_flags) {
 void Player::Fire() {
 	if (!fireCooldown) {
 		cout << "BANG" << endl;
+		game->spawn(3);
 		fired = true;
 		fireCooldown = true;
 		queue.Push(4, coolDownTime, false, 0);
@@ -112,6 +120,12 @@ void Player::Fire() {
 
 void Player::CooldownOff() {
 	fireCooldown = false;
+}
+
+void Player::SetGame(Game *t_game)
+{
+	game = t_game;
+	cout << "SETGAME" << endl;
 }
 
 int Player::GameRequest() {

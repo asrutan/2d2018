@@ -196,6 +196,9 @@ int Game::run()
 		display.SetCamPtr(&camera);
 
 		spawn(0);
+
+		entlist[0]->SetGame(this);
+
 		camera.Init(entlist[0]);
         bool keepGoing = true;
         while(keepGoing)
@@ -248,7 +251,7 @@ int Game::run()
 			//collision.checkBounds(entlist[0], world->verts[1]);
 
 			//skeleton
-			Act(entlist[0]->GameRequest());
+			//Act(entlist[0]->GameRequest());
 			display.update(); // background and clear
 			for (int i = 0; i < entcount; i++){
 				if(i != 0)movement.move(entlist[i]);

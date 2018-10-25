@@ -10,6 +10,9 @@ const int MF_JUMP = 1;
 const int MF_FIRE = 32;
 const int MF_LEFT = 4;
 const int MF_RIGHT = 8;
+
+class Game;
+
 class Entity{
 
     protected:
@@ -85,6 +88,8 @@ class Entity{
 		void Move();
 		void Input(int t_flags);
 		virtual int GameRequest();
+
+		virtual void SetGame(Game *t_game);
 
 }; //end Entity
 

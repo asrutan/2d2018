@@ -4,9 +4,10 @@
 #include <iostream>
 #include <cmath>
 #include "entity.h"
+#include "game.h"
 
 using namespace std;
-
+//Game *game = nullptr;
 //Queue testing
 int repeatedTimes = 0;
 Entity::Entity()
@@ -169,6 +170,10 @@ int Entity::GameRequest()
 }
 //end setXY
 
+void Entity::SetGame(Game * t_game)
+{
+	//game = t_game;
+}
 
 void Entity::kill()
 {
