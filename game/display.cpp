@@ -8,6 +8,7 @@
 #include <SDL_ttf.h>
 #include <cmath>
 #include "display.h"
+#include "hud.h"
 
 using namespace std;
 
@@ -270,6 +271,11 @@ void Display::draw(World *world)
 		rects
 	);
 	*/
+}
+
+void Display::draw(Hud *hud)
+{
+	cout << hud->GetElementString(0) << endl;
 }
 
 void Display::render()

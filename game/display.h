@@ -11,6 +11,8 @@
 #include "camera.h"
 #include <iostream>
 
+class Hud;
+
 class Display
 {
     private:
@@ -44,6 +46,7 @@ class Display
 		//draw individuals
 		//void draw(World::horizontal*);
 		void draw(World*);
+		void draw(Hud*);
 		int getResX();
 		int getResY();
 		void render();

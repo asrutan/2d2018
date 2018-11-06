@@ -18,6 +18,7 @@
 #include "movement.h"
 #include "collision.h"
 #include "input.h"
+#include "hud.h"
 
 const int SPAWN = 0;
 const int BULLET = 0;
@@ -31,6 +32,7 @@ class Game
 		Input input;
 		Camera camera;
 		World *world;
+		Hud *hud;
 		bool *quit;
 		bool *editMode;
 		bool *mouseDown;

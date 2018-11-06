@@ -20,7 +20,7 @@ class Player : public Entity
 		const int IF_RIGHT = 8;
 
 		bool fireCooldown = false;
-		int coolDownTime = 1000;
+		const int coolDownTime = 200;
 
 		//test firing in game
 		bool fired = false;

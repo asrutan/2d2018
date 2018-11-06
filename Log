@@ -10,3 +10,5 @@ Areas for improvement:
       Divide world into squares, assign square numbers when brush is created. Only check squares within the square that the player is currently in each frame.
        This could be achieved by having an array of brush arrays, each square correlates to an index in the array of arrays. This way we can call that individual index
        and not waste cycles on if statements.
+       
+       3174285344

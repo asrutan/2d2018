@@ -192,6 +192,11 @@ int Game::run()
 		display.loadTextures("player.bmp", 0);
 		display.loadTextures("blocks.bmp", 1);
 
+		//Hud test
+		hud = new Hud;
+		hud->CreateElement("hud text test", 0, 0);
+		display.draw(hud);
+		//end hud
 		
 		display.SetCamPtr(&camera);
 
