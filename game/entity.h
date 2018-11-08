@@ -89,6 +89,10 @@ class Entity{
 		void Input(int t_flags);
 		virtual int GameRequest();
 
+		//for rotating demo
+		bool rotating = false;
+		double angle = 0;
+
 		virtual void SetGame(Game *t_game);
 
 }; //end Entity

@@ -12,11 +12,17 @@ class Enemy : public Entity
 {
     private:
 		int jumpStrength;
+		const int RIGHT = 1;
+		const int LEFT = 2;
+		const int SCALE = 3;
+		const int ROTATE = 4;
+		int mode = 0;
 		//int dir;
 
     public:
         Enemy();
-		Enemy(int direction);
+		//Enemy(int direction);
+		Enemy(int t_mode);
         ~Enemy();
         virtual void tryMove();
 		virtual void move();

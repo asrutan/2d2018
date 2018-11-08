@@ -24,6 +24,8 @@ class Display
 
 		SDL_Rect rects[1];
 
+		TTF_Font *font = NULL;
+
 		struct Box {
 			int x = 200;
 			int y = 200;
@@ -40,6 +42,7 @@ class Display
 		SDL_Renderer* getRenderer();
 		SDL_Window* getWindow();
 		bool loadTextures(const char* spriteName, int entityID);
+		void loadFont();
 		void update();
 		//void setSprite(*Entity);
 		void draw(Entity*);

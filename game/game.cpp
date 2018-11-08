@@ -75,6 +75,22 @@ int Game::spawn(int entid)
 		entcount++;
 		return 0;
 	}
+	//Scale Demo
+	else if (entid == 4) {
+		entlist[entcount] = new Enemy(3);
+		entlist[entcount]->setListID(entcount);
+		entlist[entcount]->setXY(700, 250);
+		entcount++;
+		return 0;
+	}
+	//Rotate Demo
+	else if (entid == 5) {
+		entlist[entcount] = new Enemy(4);
+		entlist[entcount]->setListID(entcount);
+		entlist[entcount]->setXY(100, 250);
+		entcount++;
+		return 0;
+	}
 	else { cout << "can't spawn entity" << endl; return 0; }
 } //end spawn
 
@@ -203,6 +219,10 @@ int Game::run()
 		spawn(0);
 
 		entlist[0]->SetGame(this);
+
+		//Create scale enemy demo and rotate enemy demo
+		spawn(4);
+		spawn(5);
 
 		camera.Init(entlist[0]);
         bool keepGoing = true;

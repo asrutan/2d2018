@@ -168,6 +168,26 @@ bool Display::loadTextures(const char *spriteName, int entityID)
     return success;
 } //end loadTextures 
 
+void Display::loadFont()
+{
+	/*
+	//Loading success flag 
+	bool success = true; 
+	//Open the font 
+	font = TTF_OpenFont( "16_true_type_fonts/lazy.ttf", 28 ); 
+	if( font == NULL ) {
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false; 
+	} else { //Render text 
+		SDL_Color textColor = { 0, 0, 0 }; 
+		if( !gTextTexture.loadFromRenderedText( "The quick brown fox jumps over the lazy dog", textColor ) ) { 
+			printf( "Failed to render text texture!\n" ); 
+			success = false; 
+		} 
+	}
+	*/
+}
+
 int Display::getResX()
 {
     return resX;
@@ -196,6 +216,7 @@ void Display::draw(Entity *entity)
 	dstrect[entity->getEntityID()].w = entity->width;
 	dstrect[entity->getEntityID()].h = entity->height;
 
+
 	//SDL_Rect fillRect = {50, 50, 50, 50 };
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 	//SDL_RenderFillRect(renderer, &fillRect);
@@ -207,7 +228,12 @@ void Display::draw(Entity *entity)
 
 	//SDL_RenderCopy(renderer, entityTexture[entity->entityID], &srcrect[entity->entityID], &dstrect[entity->entityID]);
 
-	SDL_RenderCopy(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()]); //draw entity
+	if (entity->rotating) {
+		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], entity->angle, NULL, SDL_FLIP_NONE);
+	}
+	else {
+		SDL_RenderCopy(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()]); //draw entity
+	}
 }
 
 void Display::draw(World *world)

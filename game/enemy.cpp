@@ -36,8 +36,9 @@ Enemy::Enemy()
 	entityID = 1;
 } //end constructor
 
-Enemy::Enemy(int direction)
+Enemy::Enemy(int t_mode)
 {
+	mode = t_mode;
 	//speed = 10;
 	xVelocity = 0;
 
@@ -50,7 +51,14 @@ Enemy::Enemy(int direction)
 	dir[3] = false;
 	dir[4] = false;
 
-	dir[direction] = true;
+	// if it's 1 or 2, change the direction.
+	if (t_mode < 3) {
+		dir[t_mode] = true;
+	}
+
+	if (t_mode == ROTATE) {
+		rotating = true;
+	}
 
 	speed = 10;
 	acceleration = 1;
@@ -78,34 +86,59 @@ Enemy::~Enemy()
 {
 } //end deconstructor
 
+bool shrinking = false;
 void Enemy::update()
 {
 	if (!dying)
 	{
-		if (collided[0])kill(); //if collided with player (entID = 0)
-
-		if (!collided[1])
-		{
-			x = newX;
-			y = newY;
-
-			if (x < 0)
-			{
-				x = 800;
+		if (mode == SCALE) {
+			if (shrinking) {
+				width--;
+				height--;
+				if (width < 5) {
+					shrinking = false;
+				}
 			}
-
-			if (x > 800)
-			{
-				x = 0;
+			else {
+				width++;
+				height++;
+				if (width > 100) {
+					shrinking = true;
+				}
 			}
 		}
-		else 
-		{
-			dir[0] = true;
-			dir[1] = false;
-			dir[2] = false;
-			xVelocity = 0;
-			yVelocity = 0;
+		else if (mode == ROTATE) {
+			angle++;
+			if (angle > 359) {
+				angle = 0;
+			}
+		}
+		else {
+			if (collided[0])kill(); //if collided with player (entID = 0)
+
+			if (!collided[1])
+			{
+				x = newX;
+				y = newY;
+
+				if (x < 0)
+				{
+					x = 800;
+				}
+
+				if (x > 800)
+				{
+					x = 0;
+				}
+			}
+			else
+			{
+				dir[0] = true;
+				dir[1] = false;
+				dir[2] = false;
+				xVelocity = 0;
+				yVelocity = 0;
+			}
 		}
 	}
 	else
