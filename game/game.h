@@ -5,61 +5,32 @@
 #ifndef GAME_EXIST
 #define GAME_EXIST
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_image.h>
-#include <string>
+#include "scene.h"
 #include "display.h"
-#include "camera.h"
-#include "texture.h"
-#include "player.h"
-#include "enemy.h"
-#include "entity.h"
-#include "movement.h"
-#include "collision.h"
 #include "input.h"
-#include "hud.h"
-
-const int SPAWN = 0;
-const int BULLET = 0;
 
 class Game
 {
     private:
-		Display display;
-		Movement movement;
-		Collision collision;
-		Input input;
-		Camera camera;
-		World *world;
-		Hud *hud;
-		bool *quit;
-		bool *editMode;
-		bool *mouseDown;
-		unsigned int currentTime;
-		bool create = true;
+		Scene *scene;
+		Display m_display;
+		Input m_input;
+
+		Display *display = nullptr;
+		Input *input = nullptr;
 
     public:
         Game();
         ~Game();
-		Entity* entlist[255];
-		bool loadTextures();
-        int run();
-		int spawn(int);
-		int despawn(Entity*);
-		int entcount;
-		int mousex;
-		int mousey;
-		int playercount;
-		int enemycount;
 
-		void Act(int request);
+		Input* GetInput();
+		Display* GetDisplay();
 
-		void GameLoop();
-		void EditLoop();
+		int Init();
+		void RunScene();
+		void LoadScene();
 
-		bool TimeUp();
-		unsigned int GetTime();
+		int sceneruntimes;
         
 }; //end Game
 

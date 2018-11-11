@@ -4,7 +4,8 @@
 #include <iostream>
 #include <cmath>
 #include "entity.h"
-#include "game.h"
+#include "scene.h"
+#include "player.h"
 
 using namespace std;
 //Game *game = nullptr;
@@ -29,8 +30,7 @@ Entity::Entity()
 
 } //end constructor
 
-/*
-Entity::Entity(Game *game)
+Entity::Entity(unsigned int * t_time, const int t_type)
 {
 	spriteX = 0;
 	spriteY = 0;
@@ -47,11 +47,8 @@ Entity::Entity(Game *game)
 	//end public var
 	//queue.SetEntity(*this);
 
-	cout << "GAME" << endl;
-	cout << game->GetTime() << endl;
-
-} //end constructor
-*/
+	time = t_time;
+}
 
 Entity::~Entity()
 {
@@ -73,6 +70,7 @@ int Entity::getEntityID()
 
 void Entity::update()
 {
+
 	//TestQueue();
 } //end update
 
@@ -170,9 +168,14 @@ int Entity::GameRequest()
 }
 //end setXY
 
-void Entity::SetGame(Game * t_game)
+void Entity::SetScene(Scene * t_game)
 {
 	//game = t_game;
+}
+
+Player& Entity::NewPlayer()
+{
+	return Player(time);
 }
 
 void Entity::kill()

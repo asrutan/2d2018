@@ -11,7 +11,8 @@ const int MF_FIRE = 32;
 const int MF_LEFT = 4;
 const int MF_RIGHT = 8;
 
-class Game;
+class Scene;
+class Player;
 
 class Entity{
 
@@ -50,6 +51,7 @@ class Entity{
         Entity();
 		//Entity(Game*);
         //~Entity();
+		Entity(unsigned int *time, const int type);
 		virtual ~Entity();
         virtual void update();
 		int x; // CHANGE THESE VALUES BACK TO PRIVATE
@@ -93,7 +95,9 @@ class Entity{
 		bool rotating = false;
 		double angle = 0;
 
-		virtual void SetGame(Game *t_game);
+		virtual void SetScene(Scene *t_game);
+
+		Player& NewPlayer();
 
 }; //end Entity
 

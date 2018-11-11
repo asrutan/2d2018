@@ -6,6 +6,8 @@
 #define DISPLAY_EXIST
 
 #include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_image.h>
 #include "entity.h"
 #include "world.h"
 #include "camera.h"
@@ -50,6 +52,7 @@ class Display
 		//void draw(World::horizontal*);
 		void draw(World*);
 		void draw(Hud*);
+		void GameOver();
 		int getResX();
 		int getResY();
 		void render();

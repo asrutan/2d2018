@@ -13,9 +13,17 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     //cout << "Main started" << endl;
-    Game game = Game();
+	Game game;
     //cout << "Game Made" << endl;
-    game.run();
+	if (game.Init() == 1) {
+		printf("Couldn't initialize display.");
+		system("pause");
+		return 0;
+	}
+	else {
+		game.LoadScene();
+		game.RunScene();
+	}
     //game.close();
     
     return 0;

@@ -304,6 +304,14 @@ void Display::draw(Hud *hud)
 	cout << hud->GetElementString(0) << endl;
 }
 
+void Display::GameOver()
+{
+	SDL_UpdateWindowSurface(window);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //background fill 
+	SDL_RenderClear(renderer);
+	render();
+}
+
 void Display::render()
 {
 	SDL_RenderPresent(renderer);	//This updates the screen with what has been drawn on the renderer

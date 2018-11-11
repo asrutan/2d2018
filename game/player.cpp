@@ -8,12 +8,11 @@
 
 using namespace std;
 
-Game *game = nullptr;
+Scene *scene = 0;
+//Or set to nullptr idr.
 
 Player::Player(unsigned int *Time)
 {
-	//game = 
-
     spriteX = 50;//wraps collision box closer to sprite
     spriteY = 0;
     speed = 10;//movement speed
@@ -111,7 +110,7 @@ void Player::Input(int t_flags) {
 void Player::Fire() {
 	if (!fireCooldown) {
 		cout << "BANG" << endl;
-		game->spawn(3);
+		scene->spawn(3);
 		fired = true;
 		fireCooldown = true;
 		queue.Push(4, coolDownTime, false, 0);
@@ -122,10 +121,10 @@ void Player::CooldownOff() {
 	fireCooldown = false;
 }
 
-void Player::SetGame(Game *t_game)
+void Player::SetScene(Scene *t_scene)
 {
-	game = t_game;
-	cout << "SETGAME" << endl;
+	scene = t_scene;
+	cout << "SETSCENE" << endl;
 }
 
 int Player::GameRequest() {
