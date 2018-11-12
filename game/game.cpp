@@ -3,7 +3,7 @@
 // 4/1/15
 #include <iostream>
 #include "game.h"
-
+#include "console.h"
 using namespace std;
 
 /*
@@ -37,6 +37,8 @@ int Game::Init() {
 		//("Couldn't initialize display.");
 		return(1);
 	} //end if
+
+	console.SetDisplay(display);
 	return(0);
 }
 
@@ -62,4 +64,8 @@ void Game::RunScene()
 void Game::LoadScene()
 {
 	scene = new Scene(this);
+	//testExt = 69;
+	//int sixtynine = testExt;
+	//cout << sixtynine << endl;
+	Alert("No game no life");
 }

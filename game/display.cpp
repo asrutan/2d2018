@@ -9,6 +9,7 @@
 #include <cmath>
 #include "display.h"
 #include "hud.h"
+#include "console.h"
 
 using namespace std;
 
@@ -85,6 +86,11 @@ bool Display::init()
 					cout << "SDL_ttf could not initialize! SDL_ttf Error: %s\n" << TTF_GetError() << endl;
 					success = false;
 				}
+				else {
+					if (!LoadFont()) {
+						success = false;
+					}
+				}
 				return success;
 			}
 		}
@@ -98,6 +104,14 @@ void Display::close()
 
 	SDL_DestroyTexture(*entityTexture);
 	*entityTexture = NULL;
+
+	SDL_DestroyTexture(fontTexture);
+	fontTexture = NULL;
+
+	if (!font) {
+		TTF_CloseFont(font);
+		font = NULL;
+	}
 
     SDL_FreeSurface(surface);
     surface = NULL;
@@ -168,24 +182,31 @@ bool Display::loadTextures(const char *spriteName, int entityID)
     return success;
 } //end loadTextures 
 
-void Display::loadFont()
+bool Display::LoadFont()
 {
-	/*
+
 	//Loading success flag 
 	bool success = true; 
 	//Open the font 
-	font = TTF_OpenFont( "16_true_type_fonts/lazy.ttf", 28 ); 
+	font = TTF_OpenFont( "Basic-Regular.ttf", 28 ); 
 	if( font == NULL ) {
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false; 
-	} else { //Render text 
-		SDL_Color textColor = { 0, 0, 0 }; 
-		if( !gTextTexture.loadFromRenderedText( "The quick brown fox jumps over the lazy dog", textColor ) ) { 
-			printf( "Failed to render text texture!\n" ); 
-			success = false; 
-		} 
 	}
-	*/
+	else 
+	{ //Render text 
+		SDL_Color textColor = { 0, 0, 0 }; 
+		surface = TTF_RenderText_Solid(font,
+			"Hello ttf!", textColor);
+
+		fontTexture = SDL_CreateTextureFromSurface(renderer, surface);
+		int textW = 0;
+		int textH = 0;
+		SDL_QueryTexture(fontTexture, NULL, NULL, &textW, &textH);
+		textRect[0] = { 0, 0, textW, textH };
+		cout << textH << endl;
+	}
+	return success;
 }
 
 int Display::getResX()
@@ -314,10 +335,21 @@ void Display::GameOver()
 
 void Display::render()
 {
+	//Test render text
+	SDL_RenderCopy(renderer, fontTexture, NULL, &textRect[0]);
+
 	SDL_RenderPresent(renderer);	//This updates the screen with what has been drawn on the renderer
+
 }
 
 void Display::SetCamPtr(Camera *Camera)
 {
 	camera = Camera;
 }
+
+void Display::DrawConsole()
+{
+	printf("Console message: %s \n", console.GetMessage());
+}
+
+

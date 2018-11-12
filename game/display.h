@@ -14,6 +14,7 @@
 #include <iostream>
 
 class Hud;
+class Console;
 
 class Display
 {
@@ -24,7 +25,10 @@ class Display
         SDL_Window* window;
 		SDL_Surface* surface;
 
-		SDL_Rect rects[1];
+		//BUG
+		//For some reason, these arrays "share" elements.
+		SDL_Rect rects[255];
+		SDL_Rect textRect[255];
 
 		TTF_Font *font = NULL;
 
@@ -44,7 +48,7 @@ class Display
 		SDL_Renderer* getRenderer();
 		SDL_Window* getWindow();
 		bool loadTextures(const char* spriteName, int entityID);
-		void loadFont();
+		bool LoadFont();
 		void update();
 		//void setSprite(*Entity);
 		void draw(Entity*);
@@ -61,6 +65,9 @@ class Display
 		SDL_Rect dstrect[255];
 		SDL_Renderer* renderer;
 		SDL_Texture* entityTexture[255];
+		SDL_Texture* fontTexture;
+
+		void DrawConsole();
 };
 
 #endif

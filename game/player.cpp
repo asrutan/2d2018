@@ -5,6 +5,7 @@
 #include <cmath>
 #include "player.h"
 #include "game.h"
+#include "console.h"
 
 using namespace std;
 
@@ -125,6 +126,9 @@ void Player::SetScene(Scene *t_scene)
 {
 	scene = t_scene;
 	cout << "SETSCENE" << endl;
+	int sixtynine = testExt;
+	cout << sixtynine << endl;
+	Alert("Player says hi");
 }
 
 int Player::GameRequest() {

@@ -15,9 +15,11 @@ class Game
 		Scene *scene;
 		Display m_display;
 		Input m_input;
+		//Console m_console;
 
 		Display *display = nullptr;
 		Input *input = nullptr;
+		//Console *console = nullptr;
 
     public:
         Game();
