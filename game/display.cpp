@@ -220,6 +220,17 @@ void Display::PrintText()
 	}
 }
 
+/*
+void Display::CreateButton(const int x, const int y, const int w, const int h)
+{
+	rects[rectAmount].x = x;
+	rects[rectAmount].y = y;
+	rects[rectAmount].w = w;
+	rects[rectAmount].h = h;
+	rectAmount++;
+}
+*/
+
 int Display::getResX()
 {
     return resX;
@@ -336,6 +347,17 @@ void Display::draw(Hud *hud)
 	cout << hud->GetElementString(0) << endl;
 }
 
+void Display::draw(const int t_x, const int t_y, const int t_w, const int t_h) {
+	
+	buttonRect.x = t_x;
+	buttonRect.y = t_y;
+	buttonRect.w = t_w;
+	buttonRect.h = t_h;
+
+	SDL_SetRenderDrawColor(renderer, 0x89, 0x37, 0xA4, 0xFF); 
+	SDL_RenderDrawRect(renderer, &buttonRect);
+}
+
 void Display::GameOver()
 {
 	SDL_UpdateWindowSurface(window);
@@ -348,6 +370,7 @@ void Display::render()
 {
 	//Test render text
 	//SDL_RenderCopy(renderer, fontTexture, NULL, &textRect[0]);
+
 	PrintText();
 
 	//SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[2]], NULL, messageLog[0].rects);

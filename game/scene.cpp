@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "player.h"
 #include "game.h"
+#include "console.h"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ Scene::Scene(Game *t_game)
 	game = t_game;
 	input = game->GetInput();
 	display = game->GetDisplay();
+	gui = game->GetGui();
 	Entity *entlist = new Entity[255];
 	//entlist = new Entity[255];
 	entcount = 0;
@@ -167,10 +169,14 @@ void Scene::SceneLoop() {
 	input->keyEvents();
 	if (input->getMouse() != 0)
 	{
+		//Send to gui before we do camera offset calculations
+		gui->CheckMouse(input->mousex, input->mousey);
+
 		entlist[0]->TestQueue();
 		//cout << "click" << endl;
 		mousex = input->mousex + camera.x;
 		mousey = input->mousey + camera.y;
+
 		if (input->mousex > 700 && input->mousex < 750 && input->mousey > 500 && input->mousey < 550)
 		{
 			if (create)
@@ -312,6 +318,9 @@ int Scene::Run()
 		} //update entities
 		  /**************/
 		display->draw(world);
+
+		gui->Update();
+
 		display->render(); //draw to screen
 
 	// end updates

@@ -15,6 +15,7 @@ Game::Game()
 {
 	display = &m_display;
 	input = &m_input;
+	gui = &m_gui;
 } //end constructor
 
 Game::~Game()
@@ -31,12 +32,22 @@ Display * Game::GetDisplay()
 	return display;
 }
 
+Gui * Game::GetGui()
+{
+	return gui;
+}
+
 int Game::Init() {
 	if (!display->init())
 	{
 		//("Couldn't initialize display.");
 		return(1);
 	} //end if
+
+	//GUI
+	m_gui.SetDisplay(display);
+	m_gui.CreateButton("button", 500, 10, 60, 60);
+	//GUI
 
 	console.SetDisplay(display);
 	return(0);

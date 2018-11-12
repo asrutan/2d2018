@@ -101,6 +101,6 @@ void World::define()
 	verts[1]->y2 = 500;
 
 	//Test brush
-	brushes[0] = new Brush(200,400,75,75,SOLID);
-	brushCount++;
+	//brushes[0] = new Brush(200,400,75,75,SOLID);
+	//brushCount++;
 }

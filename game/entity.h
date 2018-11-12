@@ -53,7 +53,7 @@ class Entity{
         //~Entity();
 		Entity(unsigned int *time, const int type);
 		virtual ~Entity();
-        virtual void update();
+		virtual void update();
 		int x; // CHANGE THESE VALUES BACK TO PRIVATE
 		int y; // THIS IS JUST TO TEST MOVING THE SPRITE IN Game!!!
 		int height;

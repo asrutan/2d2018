@@ -25,11 +25,14 @@ class Display
         SDL_Window* window;
 		SDL_Surface* surface;
 
+		int rectAmount = 0;
+
 		//BUG
 		//For some reason, these arrays "share" elements.
 		SDL_Rect rects[255];
 		SDL_Rect textRect[255];
 		SDL_Rect letterRect[26];
+		SDL_Rect buttonRect = { 0,0,0,0 };
 		const char* letters = " abcdefghijklmnopqrstuvwxyz";
 		//const char letters[26] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		TTF_Font *font = NULL;
@@ -60,6 +63,7 @@ class Display
 		bool loadTextures(const char* spriteName, int entityID);
 		bool LoadFont();
 		void PrintText();
+		void CreateButton(const int x, const int y, const int w, const int h);
 		void update();
 		//void setSprite(*Entity);
 		void draw(Entity*);
@@ -67,6 +71,7 @@ class Display
 		//void draw(World::horizontal*);
 		void draw(World*);
 		void draw(Hud*);
+		void draw(const int x, const int y, const int w, const int h);
 		void GameOver();
 		int getResX();
 		int getResY();

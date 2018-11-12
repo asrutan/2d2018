@@ -7,6 +7,7 @@
 
 #include "scene.h"
 #include "display.h"
+#include "gui.h"
 #include "input.h"
 
 class Game
@@ -15,10 +16,12 @@ class Game
 		Scene *scene;
 		Display m_display;
 		Input m_input;
+		Gui m_gui;
 		//Console m_console;
-
+		
 		Display *display = nullptr;
 		Input *input = nullptr;
+		Gui *gui = nullptr;
 		//Console *console = nullptr;
 
     public:
@@ -27,6 +30,7 @@ class Game
 
 		Input* GetInput();
 		Display* GetDisplay();
+		Gui* GetGui();
 
 		int Init();
 		void RunScene();

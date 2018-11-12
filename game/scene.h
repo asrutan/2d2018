@@ -16,6 +16,7 @@
 #include "collision.h"
 #include "input.h"
 #include "hud.h"
+#include "gui.h"
 
 const int SPAWN = 0;
 const int BULLET = 0;
@@ -32,11 +33,12 @@ class Scene
 		Camera camera;
 		World *world;
 		Hud *hud;
+		Gui *gui = nullptr;
 		bool *quit;
 		bool *editMode;
 		bool *mouseDown;
 		unsigned int currentTime;
-		bool create = true;
+		bool create = false;
 
 		Game *game;
 

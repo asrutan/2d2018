@@ -54,6 +54,9 @@ Entity::~Entity()
 {
 } //end deconstructor
 
+void Entity::update() {
+}
+
 void Entity::setListID(int id)
 {
 	listID = id;
@@ -67,12 +70,6 @@ int Entity::getEntityID()
 	return entityID;
 }
 //end setListID
-
-void Entity::update()
-{
-
-	//TestQueue();
-} //end update
 
 bool Entity::getIsDead()
 {
@@ -140,7 +137,7 @@ void Entity::DoMethod(int methodId)
 {
 	if (methodId == PRINTTEST) {
 		repeatedTimes++;
-		printf("Queue Test %d\n", repeatedTimes);
+		//printf("Queue Test %d\n", repeatedTimes);
 		if (repeatedTimes == 5) {
 			queue.Push(TIMETEST, 0, false, 0);
 		}
