@@ -188,7 +188,7 @@ bool Display::LoadFont()
 	//Loading success flag 
 	bool success = true; 
 	//Open the font 
-	font = TTF_OpenFont( "Basic-Regular.ttf", 28 ); 
+	font = TTF_OpenFont( "Basic-Regular.ttf", 18 ); 
 	if( font == NULL ) {
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false; 
@@ -213,7 +213,6 @@ bool Display::LoadFont()
 	return success;
 }
 
-//Don't do this every frame.
 void Display::PrintText()
 {
 	for (int i = 0; i < messageLog[0].messageLength; i++) {
@@ -371,8 +370,8 @@ void Display::DrawConsole()
 
 	//Clear message.
 	for (int i = 0; i++; i < 20) {
-		messageLog[i].letterIndex[i] = 0;
-		messageLog[i].messageLength = 0;
+		//messageLog[i].letterIndex[i] = 0;
+		//messageLog[i].messageLength = 0;
 	}
 
 	int i = 0;
@@ -384,7 +383,7 @@ void Display::DrawConsole()
 			if (text[i] == letters[j]) {
 				messageLog[0].rects[i] = letterRect[j];
 				messageLog[0].rects[i].x = pointer;
-				messageLog[0].rects[i].y = 0;
+				//messageLog[0].rects[i].y = 0;
 				messageLog[0].letterIndex[i] = j;
 				pointer += letterRect[j].w;
 				j = 27; //exit for

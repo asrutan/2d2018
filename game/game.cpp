@@ -46,6 +46,7 @@ void Game::RunScene()
 {
 	sceneruntimes++;
 	if (scene->Run() == 0) {
+		Alert("game over");
 		display->GameOver();
 		printf("Game over. Thanks for playing!\n");
 		system("pause");

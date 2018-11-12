@@ -29,7 +29,7 @@ class Display
 		//For some reason, these arrays "share" elements.
 		SDL_Rect rects[255];
 		SDL_Rect textRect[255];
-		SDL_Rect letterRect[255];
+		SDL_Rect letterRect[26];
 		const char* letters = " abcdefghijklmnopqrstuvwxyz";
 		//const char letters[26] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		TTF_Font *font = NULL;
