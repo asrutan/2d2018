@@ -32,19 +32,19 @@ void Console::Draw() {
 	display->DrawConsole();
 }
 
-void Console::SetMessage(char* t_message)
+void Console::SetMessage(const char* t_message)
 {
 	m_message = t_message;
 }
 
-char* Console::GetMessage()
+const char* Console::GetMessage()
 {
 	return m_message;
 }
 
 Console console;
 
-void Alert(char* t_string)
+void Alert(const char* t_string)
 {
 	console.SetMessage(t_string);
 	console.Draw();

@@ -195,18 +195,30 @@ bool Display::LoadFont()
 	}
 	else 
 	{ //Render text 
-		SDL_Color textColor = { 0, 0, 0 }; 
-		surface = TTF_RenderText_Solid(font,
-			"Hello ttf!", textColor);
+		//{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+		SDL_Color textColor = { 0, 0, 0 };
+		for (int i = 0; i < 26; i++) {
+			string sym(1, letters[i]);
+			const char *theval = sym.c_str();
+			surface = TTF_RenderText_Solid(font,
+				theval, textColor);
 
-		fontTexture = SDL_CreateTextureFromSurface(renderer, surface);
-		int textW = 0;
-		int textH = 0;
-		SDL_QueryTexture(fontTexture, NULL, NULL, &textW, &textH);
-		textRect[0] = { 0, 0, textW, textH };
-		cout << textH << endl;
+			letterTextures[i] = SDL_CreateTextureFromSurface(renderer, surface);
+			int textW = 0;
+			int textH = 0;
+			SDL_QueryTexture(letterTextures[i], NULL, NULL, &textW, &textH);
+			letterRect[i] = { 0, 0, textW, textH };
+		}
 	}
 	return success;
+}
+
+//Don't do this every frame.
+void Display::PrintText()
+{
+	for (int i = 0; i < messageLog[0].messageLength; i++) {
+		SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[i]], NULL, &messageLog[0].rects[i]);
+	}
 }
 
 int Display::getResX()
@@ -336,7 +348,10 @@ void Display::GameOver()
 void Display::render()
 {
 	//Test render text
-	SDL_RenderCopy(renderer, fontTexture, NULL, &textRect[0]);
+	//SDL_RenderCopy(renderer, fontTexture, NULL, &textRect[0]);
+	PrintText();
+
+	//SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[2]], NULL, messageLog[0].rects);
 
 	SDL_RenderPresent(renderer);	//This updates the screen with what has been drawn on the renderer
 
@@ -349,7 +364,39 @@ void Display::SetCamPtr(Camera *Camera)
 
 void Display::DrawConsole()
 {
-	printf("Console message: %s \n", console.GetMessage());
+	//printf("Console message: %s \n", console.GetMessage());
+	//PrintText(console.GetMessage());
+
+	const char* text = console.GetMessage();
+
+	//Clear message.
+	for (int i = 0; i++; i < 20) {
+		messageLog[i].letterIndex[i] = 0;
+		messageLog[i].messageLength = 0;
+	}
+
+	int i = 0;
+	int pointer = 0;
+	const int spacing = 20;
+	int messageLength = 0;
+	while (text[i] != 0) {
+		for (int j = 0; j < 26; j++) {
+			if (text[i] == letters[j]) {
+				messageLog[0].rects[i] = letterRect[j];
+				messageLog[0].rects[i].x = pointer;
+				messageLog[0].rects[i].y = 0;
+				messageLog[0].letterIndex[i] = j;
+				pointer += letterRect[j].w;
+				j = 27; //exit for
+			}
+		}
+		i++;
+	}
+
+	messageLog[0].messageLength = i;
+
+	//cout << letters[2] << endl;
+	//cout << text[4] << endl;
 }
 
 

@@ -29,8 +29,18 @@ class Display
 		//For some reason, these arrays "share" elements.
 		SDL_Rect rects[255];
 		SDL_Rect textRect[255];
-
+		SDL_Rect letterRect[255];
+		const char* letters = " abcdefghijklmnopqrstuvwxyz";
+		//const char letters[26] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		TTF_Font *font = NULL;
+
+		struct Message {
+			SDL_Rect rects[255];
+			int letterIndex[255];
+			int messageLength = 0;
+		};
+
+		Message messageLog[20];
 
 		struct Box {
 			int x = 200;
@@ -49,6 +59,7 @@ class Display
 		SDL_Window* getWindow();
 		bool loadTextures(const char* spriteName, int entityID);
 		bool LoadFont();
+		void PrintText();
 		void update();
 		//void setSprite(*Entity);
 		void draw(Entity*);
@@ -66,6 +77,7 @@ class Display
 		SDL_Renderer* renderer;
 		SDL_Texture* entityTexture[255];
 		SDL_Texture* fontTexture;
+		SDL_Texture* letterTextures[26];
 
 		void DrawConsole();
 };

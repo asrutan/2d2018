@@ -8,14 +8,14 @@
 #include <iostream>
 #define testExt 69;
 
-extern void Alert(char* message);
+extern void Alert(const char* message);
 
 class Display;
 class Console
 {
 	private:
 		Display *display = nullptr;
-		char* m_message = 0;
+		const char* m_message;
 
 	public:
 		Console();
@@ -24,8 +24,8 @@ class Console
 		//Display* GetConsole();
 		void SetDisplay(Display* display);
 		void Draw();
-		void SetMessage(char* message);
-		char* GetMessage();
+		void SetMessage(const char* message);
+		const char* GetMessage();
 
 }; //end Console
 

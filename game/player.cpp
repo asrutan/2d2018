@@ -81,10 +81,13 @@ void Player::Move()
 	if (mFlags & MF_LEFT) {
 		x -= 5;
 		direction = 0;
+		Alert("Player facing left.");
 		mFlags &= ~(MF_LEFT);
 	}
 	if (mFlags & MF_RIGHT) {
 		direction = 1;
+		//Alert("Player facing right.");
+		Alert("0");
 		x += 5;
 		mFlags &= ~(MF_RIGHT);
 	}
@@ -128,7 +131,7 @@ void Player::SetScene(Scene *t_scene)
 	cout << "SETSCENE" << endl;
 	int sixtynine = testExt;
 	cout << sixtynine << endl;
-	Alert("Player says hi");
+	Alert("player says hi");
 }
 
 int Player::GameRequest() {
