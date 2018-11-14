@@ -53,6 +53,11 @@ Scene::~Scene()
 	delete[] *entlist;
 } //end destructor
 
+Entity & Scene::GetPlayer()
+{
+	return *entlist[0];
+}
+
 bool Scene::loadTextures()
 {  
     return true;
@@ -156,6 +161,11 @@ bool Scene::TimeUp()
 unsigned int Scene::GetTime()
 {
 	return SDL_GetTicks();
+}
+
+void Scene::HandleCommand(Command* command)
+{
+	cbus.PostCommand(command);
 }
 
 void Scene::Act(int request)
@@ -320,6 +330,8 @@ int Scene::Run()
 		display->draw(world);
 
 		gui->Update();
+
+		cbus.Tick();
 
 		display->render(); //draw to screen
 

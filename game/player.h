@@ -38,6 +38,8 @@ class Player : public Entity
 		int GameRequest();
 		void CooldownOff();
 
+		void Jump();
+
 		void SetScene(Scene * t_scene);
 
 }; //end Player

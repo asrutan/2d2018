@@ -76,6 +76,7 @@ void Game::RunScene()
 void Game::LoadScene()
 {
 	scene = new Scene(this);
+	m_gui.SetScene(scene);
 	//testExt = 69;
 	//int sixtynine = testExt;
 	//cout << sixtynine << endl;

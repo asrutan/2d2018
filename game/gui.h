@@ -9,6 +9,8 @@
 
 class Display;
 class Button;
+class Scene;
+class Command;
 class Gui
 {
 	private:
@@ -21,14 +23,17 @@ class Gui
 		Gui();
 		Gui(Display* display);
 		~Gui();
+		Scene *scene = nullptr;
 		//Display* GetGui();
 		void Update();
 		void SetDisplay(Display* display);
+		void SetScene(Scene* scene);
 		void CheckMouse(const int x, const int y);
 		void SetMessage(const char* message);
 		const char* GetMessage();
 		void CreateButton(const char* name, const int x, const int y, const int w, const int h);
 		void DrawButton(Button* button);
+		void SendCommand(Command *command);
 
 }; //end Gui
 

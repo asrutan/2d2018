@@ -17,12 +17,13 @@
 #include "input.h"
 #include "hud.h"
 #include "gui.h"
+#include "command.h"
+#include "command_bus.h"
 
 const int SPAWN = 0;
 const int BULLET = 0;
 
 class Game;
-
 class Scene
 {
     private:
@@ -47,6 +48,7 @@ class Scene
 		Scene(Game*);
         ~Scene();
 		Entity* entlist[255];
+		Entity& GetPlayer();
 		bool loadTextures();
         int Run();
 		int spawn(int);
@@ -56,6 +58,10 @@ class Scene
 		int mousey;
 		int playercount;
 		int enemycount;
+
+		CommandBus cbus;
+
+		void HandleCommand(Command* command);
 
 		void Act(int request);
 

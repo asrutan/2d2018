@@ -60,6 +60,17 @@ void Player::update()//changed from entity
 {
 	if (dying)dead = true;
 
+	/*
+	if (console.GetMessage() == "jump") {
+		Jump();
+	}
+	*/
+
+	Command *command = scene->cbus.DoCommand();
+	if (command != NULL) {
+		command->Execute(this);
+	}
+
 	if (!onGround)
 	{	
 		if (yVelocity < 10) {
@@ -81,23 +92,18 @@ void Player::Move()
 	if (mFlags & MF_LEFT) {
 		x -= 5;
 		direction = 0;
-		//Alert("player facing left");
+		Alert("player facing left");
 		mFlags &= ~(MF_LEFT);
 	}
 	if (mFlags & MF_RIGHT) {
 		direction = 1;
-		//Alert("Player facing right.");
+		Alert("player facing right");
 		//Alert("the player is facing right");
 		x += 5;
 		mFlags &= ~(MF_RIGHT);
 	}
 	if (mFlags & MF_JUMP) {
-		if (onGround) {
-			y--;
-			yVelocity = -30;
-			onGround = false;		
-		}
-		mFlags &= ~(MF_JUMP);
+		Jump();
 	}
 
 	if (mFlags & MF_FIRE) {
@@ -123,6 +129,17 @@ void Player::Fire() {
 
 void Player::CooldownOff() {
 	fireCooldown = false;
+}
+
+void Player::Jump()
+{
+	if (onGround) {
+		y--;
+		yVelocity = -30;
+		onGround = false;
+	}
+	mFlags &= ~(MF_JUMP);
+	Alert("player jumped");
 }
 
 void Player::SetScene(Scene *t_scene)

@@ -88,6 +88,7 @@ class Entity{
 		virtual void CooldownOff();
 		void DoMethod(int);
 		void Move();
+		void Jump() {}
 		void Input(int t_flags);
 		virtual int GameRequest();
 

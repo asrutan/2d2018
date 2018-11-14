@@ -5,7 +5,9 @@
 #include "gui.h"
 #include "display.h"
 #include "entity.h"
+#include "command.h"
 #include "console.h"
+#include "scene.h"
 
 using namespace std;
 
@@ -16,19 +18,19 @@ class Button : public Entity{
 	private:
 		bool active = true;
 		const char* name;
+		Gui *gui = nullptr;
 
 	public:
 		Button();
 		Button(const char* name, const int x, const int y, const int w, const int h);
 		~Button();
+		void SetGui(Gui * gui);
 		void update();
 		void Hovered(bool hover);
 		void Press();
 		void Release();
 
 		int state = 0;
-
-
 };
 /*
 /*
@@ -58,6 +60,11 @@ void Gui::Update()
 void Gui::SetDisplay(Display * t_display)
 {
 	display = t_display;
+}
+
+void Gui::SetScene(Scene * t_scene)
+{
+	scene = t_scene;
 }
 
 void Gui::CheckMouse(const int x, const int y)
@@ -114,6 +121,7 @@ const char* Gui::GetMessage()
 void Gui::CreateButton(const char * name, const int x, const int y, const int w, const int h)
 {
 	buttons[buttonAmount] = new Button(name, x, y, w, h);
+	buttons[buttonAmount]->SetGui(this);
 	buttonAmount++;
 }
 
@@ -125,6 +133,11 @@ void Gui::DrawButton(Button * button)
 		button->height,
 		button->width
 	);
+}
+
+void Gui::SendCommand(Command * command)
+{
+	scene->HandleCommand(command);
 }
 
 Button::Button()
@@ -142,6 +155,11 @@ Button::Button(const char * t_name, const int t_x, const int t_y, const int t_w,
 
 Button::~Button()
 {
+}
+
+void Button::SetGui(Gui *t_gui)
+{
+	gui = t_gui;
 }
 
 void Button::update() {
@@ -162,6 +180,9 @@ void Button::Press()
 	cout << "button pressed" << endl;
 	Alert("button pressed");
 	state &= ~(DOWN);
+	//jump.Execute();
+	//HandleCommand(jump);
+	gui->SendCommand(&jump);
 }
 
 void Button::Release()
