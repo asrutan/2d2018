@@ -54,6 +54,7 @@ class Scene
         int Run();
 		int End();
 		void Update();
+		void SetDone(bool done);
 		int nextScene = 0;
 		int spawn(int);
 		int despawn(Entity*);

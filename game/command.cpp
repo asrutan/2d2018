@@ -52,7 +52,11 @@ bool UnpauseCommand::BExecute(Game * target)
 	return target->Pause();
 }
 
+void QuitCommand::Execute(Game * target)
+{
+	target->Quit();
+}
+
 JumpCommand jump;
 UnpauseCommand unpause;
-
-
+QuitCommand quit;

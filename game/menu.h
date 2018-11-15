@@ -22,7 +22,7 @@ class Menu
 		World *world;
 		Hud *hud;
 		Gui gui;
-		bool *quit;
+		//bool *quit;
 		bool *editMode;
 		bool *mouseDown;
 		unsigned int currentTime;

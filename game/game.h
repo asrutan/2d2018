@@ -37,6 +37,7 @@ class Game
 		Gui* GetGui();
 
 		bool Pause();
+		void Quit();
 		int Init();
 		void RunScene();
 		void LoadScene();

@@ -69,6 +69,11 @@ bool Game::Pause() {
 	return m_paused;
 }
 
+void Game::Quit() {
+	scene->SetDone(true);
+	cout << "Quit" << endl;
+}
+
 void Game::RunScene()
 {
 	sceneruntimes++;
@@ -93,8 +98,8 @@ void Game::RunScene()
 	while (!scene->done) {
 		display->update();
 		input->keyEvents();
-		if (input->flags & IF_SPACE) {
-			input->flags &= ~(IF_SPACE);
+		if (input->flags & IF_ESC) {
+			input->flags &= ~(IF_ESC);
 			scene->paused = Pause();
 		}
 		if (!scene->paused) {
@@ -104,7 +109,9 @@ void Game::RunScene()
 			m_menu.Update();
 			Command *command = m_menu.mcbus.DoCommand();
 			if (command != NULL) {
-				scene->paused = command->BExecute(this);		
+				command->Execute(this);
+				scene->paused = m_paused;
+				//command->Execute(this);
 			}
 		}
 		display->render();
@@ -113,7 +120,7 @@ void Game::RunScene()
 		Alert("game over");
 		display->GameOver();
 		printf("Game over. Thanks for playing!\n");
-		system("pause");
+		//system("pause");
 
 		display->close();
 	}

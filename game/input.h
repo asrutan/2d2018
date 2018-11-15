@@ -13,12 +13,13 @@ const int IF_LEFT = 4;
 const int IF_RIGHT = 8;
 const int IF_TAB = 16;
 const int IF_CTRL = 32;
+const int IF_ESC = 64;
 //Input flags
 class Input
 {
 private:
 	SDL_Event event;
-	bool quit = false;
+	//bool escape = false;
 	bool click;
 	bool editToggle = false;
 	bool mouseDown = false;

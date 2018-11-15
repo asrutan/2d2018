@@ -29,8 +29,8 @@ void Input::keyEvents()
 		}
 		if (event.type == SDL_KEYUP) {
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				quit = true;
-				cout << "QUIT HIT" << endl;
+				flags |= IF_ESC;
+				cout << "ESC HIT" << endl;
 			}
 			if (event.key.keysym.sym == SDLK_SPACE) {
 				flags &= ~(IF_SPACE);
@@ -85,7 +85,8 @@ int Input::getMouse()
 
 bool * Input::GetQuitPtr()
 {
-	return &quit;
+	//return &quit;
+	return false;
 }
 
 bool * Input::GetEditTogglePtr()

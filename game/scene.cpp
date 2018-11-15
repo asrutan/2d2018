@@ -42,7 +42,7 @@ Scene::Scene(Game *t_game)
 
 	//quit = false;
 
-	quit = input->GetQuitPtr();
+	//quit = input->GetQuitPtr();
 	editMode = input->GetEditTogglePtr();
 	mouseDown = input->GetMouseDownPtr();
 
@@ -385,6 +385,7 @@ int Scene::End()
 void Scene::Update()
 {
 	currentTime = SDL_GetTicks();
+
 	if (input->flags & IF_LEFT) {
 		entlist[0]->Input(IF_LEFT);
 	}
@@ -404,15 +405,6 @@ void Scene::Update()
 	else {
 		EditLoop();
 	}
-
-	if (*quit)
-	{
-		done = true;
-		if (entlist[0]->direction == 1) {
-			nextScene = 1;
-		}
-		*quit = false;
-	} //end if
 
 	entlist[0]->update();
 	camera.update();
@@ -458,4 +450,9 @@ void Scene::Update()
 	//display->render(); //draw to screen
 
 					   // end updates
-}//end run
+}
+void Scene::SetDone(bool t_done)
+{
+	done = t_done;
+}
+//end run

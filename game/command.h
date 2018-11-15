@@ -19,6 +19,9 @@ public:
 
 	bool sent = false;
 	int lifetime = 0;
+	int type = 0;
+
+	const int BOOL = 1;
 
 	Entity* target;
 
@@ -45,8 +48,15 @@ public:
 	bool BExecute(Game *target);
 };
 
+class QuitCommand : public Command {
+public:
+	QuitCommand() {}
+	void Execute(Game * target);
+};
+
 extern JumpCommand jump;
 extern UnpauseCommand unpause;
+extern QuitCommand quit;
 
 #endif //COMMAND_EXISTS
 

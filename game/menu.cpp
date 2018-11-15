@@ -38,6 +38,7 @@ bool Menu::Init(Game *t_game)
 
 	gui.SetDisplay(display);
 	gui.CreateButton("resume", 400, 300, 50, 50, &unpause );
+	gui.CreateButton("quit", 400, 400, 50, 50, &quit);
 
 	//Make scene scenebase abstract.
 	gui.SetScene(this);
