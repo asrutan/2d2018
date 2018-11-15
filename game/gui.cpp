@@ -8,6 +8,7 @@
 #include "command.h"
 #include "console.h"
 #include "scene.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -19,10 +20,11 @@ class Button : public Entity{
 		bool active = true;
 		const char* name;
 		Gui *gui = nullptr;
+		Command *command;
 
 	public:
 		Button();
-		Button(const char* name, const int x, const int y, const int w, const int h);
+		Button(const char* name, const int x, const int y, const int w, const int h, Command *command);
 		~Button();
 		void SetGui(Gui * gui);
 		void update();
@@ -67,6 +69,10 @@ void Gui::SetScene(Scene * t_scene)
 	scene = t_scene;
 }
 
+void Gui::SetScene(Menu * t_scene) {
+	mscene = t_scene;
+}
+
 void Gui::CheckMouse(const int x, const int y)
 {
 	int leftb = 0;
@@ -101,6 +107,7 @@ void Gui::CheckMouse(const int x, const int y)
 		*/
 		if (x > leftb && x < rightb && y > topb && y < bottomb) {
 			buttons[i]->state |= HOVER | DOWN;
+			cout << "HOVER AND DOWN" << endl;
 		}
 		else {
 			buttons[i]->state &= ~(HOVER);
@@ -118,9 +125,9 @@ const char* Gui::GetMessage()
 	return m_message;
 }
 
-void Gui::CreateButton(const char * name, const int x, const int y, const int w, const int h)
+void Gui::CreateButton(const char * name, const int x, const int y, const int w, const int h, Command* command)
 {
-	buttons[buttonAmount] = new Button(name, x, y, w, h);
+	buttons[buttonAmount] = new Button(name, x, y, w, h, command);
 	buttons[buttonAmount]->SetGui(this);
 	buttonAmount++;
 }
@@ -137,20 +144,27 @@ void Gui::DrawButton(Button * button)
 
 void Gui::SendCommand(Command * command)
 {
-	scene->HandleCommand(command);
+	//Temporary until menu is of type scene.
+	if (scene != nullptr) {
+		scene->HandleCommand(command);
+	}
+	else {
+		mscene->HandleCommand(command);
+	}
 }
 
 Button::Button()
 {
 }
 
-Button::Button(const char * t_name, const int t_x, const int t_y, const int t_w, const int t_h)
+Button::Button(const char * t_name, const int t_x, const int t_y, const int t_w, const int t_h, Command *t_command)
 {
 	name = t_name;
 	x = t_x;
 	y = t_y;
 	width = t_w;
 	height = t_h;
+	command = t_command;
 }
 
 Button::~Button()
@@ -177,12 +191,11 @@ void Button::Hovered(bool t_hovered)
 
 void Button::Press()
 {
-	cout << "button pressed" << endl;
 	Alert("button pressed");
 	state &= ~(DOWN);
 	//jump.Execute();
 	//HandleCommand(jump);
-	gui->SendCommand(&jump);
+	gui->SendCommand(command);
 }
 
 void Button::Release()

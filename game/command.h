@@ -10,6 +10,7 @@
 #include <iostream>
 #include "player.h"
 class Entity;
+class Game;
 class Command{
 public:
 	Command() {}
@@ -21,8 +22,10 @@ public:
 
 	Entity* target;
 
-	virtual void Execute(Entity *target) = 0;
-	virtual void Execute(Player *target) = 0;
+	virtual void Execute(Entity *target) {}
+	virtual void Execute(Player *target) {}
+	virtual void Execute(Game *target) {}
+	virtual bool BExecute(Game *target) { return false; }
 }; //end command
 
 
@@ -34,7 +37,16 @@ class JumpCommand : public Command {
 		void Execute(Entity* target);
 		void Execute(Player* const target);
 };
+
+class UnpauseCommand : public Command {
+public:
+	UnpauseCommand() {}
+	void Execute(Game * target);
+	bool BExecute(Game *target);
+};
+
 extern JumpCommand jump;
+extern UnpauseCommand unpause;
 
 #endif //COMMAND_EXISTS
 

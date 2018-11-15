@@ -11,11 +11,13 @@
 
 class CommandBus{
 	private:
-		int commandAmount = 0;
+		//int commandAmount = 0;
 
 	public:
 		CommandBus();
 		~CommandBus() {}
+
+		int commandAmount = 0;
 
 		void Tick();
 		void PostCommand(Command *command);

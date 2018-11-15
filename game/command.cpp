@@ -7,6 +7,7 @@
 #include "entity.h"
 #include "console.h"
 #include "player.h"
+#include "game.h"
 
 using namespace std;
 
@@ -42,4 +43,16 @@ void JumpCommand::Execute(Player* const t_target)
 	cout << t_target->x << endl;
 }
 
+void UnpauseCommand::Execute(Game * target)
+{
+	target->Pause();
+}
+bool UnpauseCommand::BExecute(Game * target)
+{
+	return target->Pause();
+}
+
 JumpCommand jump;
+UnpauseCommand unpause;
+
+

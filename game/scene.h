@@ -50,7 +50,11 @@ class Scene
 		Entity* entlist[255];
 		Entity& GetPlayer();
 		bool loadTextures();
+		bool Init();
         int Run();
+		int End();
+		void Update();
+		int nextScene = 0;
 		int spawn(int);
 		int despawn(Entity*);
 		int entcount;
@@ -58,6 +62,8 @@ class Scene
 		int mousey;
 		int playercount;
 		int enemycount;
+		bool done = false;
+		bool paused = false;
 
 		CommandBus cbus;
 

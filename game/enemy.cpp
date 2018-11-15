@@ -4,6 +4,7 @@
 #include <iostream>
 #include "enemy.h"
 #include "entity.h"
+#include "scene.h"
 
 using namespace std;
 
@@ -36,8 +37,9 @@ Enemy::Enemy()
 	entityID = 1;
 } //end constructor
 
-Enemy::Enemy(int t_mode)
+Enemy::Enemy(int t_mode, Scene *t_scene)
 {
+	scene = t_scene;
 	mode = t_mode;
 	//speed = 10;
 	xVelocity = 0;
@@ -138,6 +140,7 @@ void Enemy::update()
 				dir[2] = false;
 				xVelocity = 0;
 				yVelocity = 0;
+				scene->HandleCommand(&jump);
 			}
 		}
 	}

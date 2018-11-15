@@ -41,6 +41,8 @@ class Entity{
 		int acceleration = 1;
 		unsigned int *time;
 
+		Scene *scene;
+
 		struct GameAction{
 			int action;
 		};

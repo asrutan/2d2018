@@ -9,6 +9,7 @@
 #include "display.h"
 #include "gui.h"
 #include "input.h"
+#include "menu.h"
 
 class Game
 {
@@ -17,12 +18,15 @@ class Game
 		Display m_display;
 		Input m_input;
 		Gui m_gui;
+		Menu m_menu;
 		//Console m_console;
 		
 		Display *display = nullptr;
 		Input *input = nullptr;
 		Gui *gui = nullptr;
 		//Console *console = nullptr;
+
+		bool m_paused = false;
 
     public:
         Game();
@@ -32,6 +36,7 @@ class Game
 		Display* GetDisplay();
 		Gui* GetGui();
 
+		bool Pause();
 		int Init();
 		void RunScene();
 		void LoadScene();

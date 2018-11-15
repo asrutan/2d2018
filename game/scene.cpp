@@ -63,6 +63,40 @@ bool Scene::loadTextures()
     return true;
 } //end loadTextures
 
+bool Scene::Init()
+{
+	bool success = true;
+	printf("Run number: %d \n", game->sceneruntimes);
+
+	world = new World;
+	world->define();
+	world->Load();
+
+	display->loadTextures("player.bmp", 0);
+	display->loadTextures("blocks.bmp", 1);
+
+	//Hud test
+	hud = new Hud;
+	hud->CreateElement("hud text test", 0, 0);
+	display->draw(hud);
+	//end hud
+
+	display->SetCamPtr(&camera);
+
+	spawn(0);
+
+	entlist[0]->SetScene(this);
+
+	//Create scale enemy demo and rotate enemy demo
+	spawn(4);
+	spawn(5);
+
+	camera.Init(entlist[0]);
+	int nextScene = 0;
+
+	return success;
+}
+
 int Scene::spawn(int entid)
 {
 	if (entid == 0)
@@ -77,7 +111,7 @@ int Scene::spawn(int entid)
 		}
 	else if (entid == 1)
 	{
-		entlist[entcount] = new Enemy(1);
+		entlist[entcount] = new Enemy(1, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(mousex, mousey);
 		entcount++;
@@ -85,7 +119,7 @@ int Scene::spawn(int entid)
 	}
 	else if (entid == 2)
 	{
-		entlist[entcount] = new Enemy(2);
+		entlist[entcount] = new Enemy(2, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(mousex, mousey);
 		entcount++;
@@ -93,11 +127,11 @@ int Scene::spawn(int entid)
 	}
 	else if (entid == 3) {
 		if (entlist[0]->direction == 0) {
-			entlist[entcount] = new Enemy(2);
+			entlist[entcount] = new Enemy(2, this);
 			entlist[entcount]->setXY(entlist[0]->x - 60, entlist[0]->y);
 		}
 		else {
-			entlist[entcount] = new Enemy(1);
+			entlist[entcount] = new Enemy(1, this);
 			entlist[entcount]->setXY(entlist[0]->x + 100, entlist[0]->y);
 		}
 		entlist[entcount]->setListID(entcount);
@@ -106,7 +140,7 @@ int Scene::spawn(int entid)
 	}
 	//Scale Demo
 	else if (entid == 4) {
-		entlist[entcount] = new Enemy(3);
+		entlist[entcount] = new Enemy(3, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(700, 250);
 		entcount++;
@@ -114,7 +148,7 @@ int Scene::spawn(int entid)
 	}
 	//Rotate Demo
 	else if (entid == 5) {
-		entlist[entcount] = new Enemy(4);
+		entlist[entcount] = new Enemy(4, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(100, 250);
 		entcount++;
@@ -176,7 +210,7 @@ void Scene::Act(int request)
 }
 
 void Scene::SceneLoop() {
-	input->keyEvents();
+	//input->keyEvents();
 	if (input->getMouse() != 0)
 	{
 		//Send to gui before we do camera offset calculations
@@ -208,7 +242,7 @@ void Scene::SceneLoop() {
 }
 
 void Scene::EditLoop() {
-	input->keyEvents();
+	//input->keyEvents();
 	mousex = input->mousex + camera.x;
 	mousey = input->mousey + camera.y;
 	if (input->getMouse() != 0){
@@ -339,4 +373,89 @@ int Scene::Run()
 	} //end while 
 	printf("\nNEXTSCENE: %d \n", nextScene);
 	return (nextScene);
+}
+int Scene::End()
+{
+	printf("\nNEXTSCENE: %d \n", nextScene);
+	return (nextScene);
+}
+//end run
+
+
+void Scene::Update()
+{
+	currentTime = SDL_GetTicks();
+	if (input->flags & IF_LEFT) {
+		entlist[0]->Input(IF_LEFT);
+	}
+	if (input->flags & IF_RIGHT) {
+		entlist[0]->Input(IF_RIGHT);
+	}
+	if (input->flags & IF_SPACE) {
+		entlist[0]->Input(IF_SPACE);
+	}
+	if (input->flags & IF_CTRL) {
+		entlist[0]->Input(IF_CTRL);
+	}
+
+	if (input->flags & IF_TAB) {
+		SceneLoop();
+	}
+	else {
+		EditLoop();
+	}
+
+	if (*quit)
+	{
+		done = true;
+		if (entlist[0]->direction == 1) {
+			nextScene = 1;
+		}
+		*quit = false;
+	} //end if
+
+	entlist[0]->update();
+	camera.update();
+	/**************/
+	//movement.move(entlist[0]); //move, checkbounds, update
+
+	//skeleton
+	//collision.checkBounds(entlist[0], world->horizonts[0]);
+
+	//Iterate through all the brushes but stop as soon as we hit one of them and start over.
+	for (int i = 0; i < world->brushCount; i++) {
+		collision.checkBounds(entlist[0], world->brushes[i]);
+		if (entlist[0]->onGround) {
+			//cout << i << endl;
+			//printf("Brush hit: %d\n", i);
+			i = world->brushCount;
+		}
+	}
+
+	//collision.checkBounds(entlist[0], world->verts[0]);
+	//collision.checkBounds(entlist[0], world->verts[1]);
+
+	//skeleton
+	//Act(entlist[0]->SceneRequest());
+	//display->update(); // background and clear
+	for (int i = 0; i < entcount; i++) {
+		if (i != 0)movement.move(entlist[i]);
+		collision.checkBounds(entlist[i], world->verts[0]);
+		collision.checkBounds(entlist[i], world->verts[1]);
+		if (i != 0)collision.checkBounds(entlist[0], entlist[i]);
+		if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
+		if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
+		display->draw(entlist[i]);
+		if (entlist[i]->getIsDead())despawn(entlist[i]);
+	} //update entities
+	  /**************/
+	display->draw(world);
+
+	gui->Update();
+
+	cbus.Tick();
+
+	//display->render(); //draw to screen
+
+					   // end updates
 }//end run
