@@ -30,6 +30,8 @@ class World
 		void EditBrush(int t_x, int t_y);
 		void NormalizeBrush();
 
+		bool LoadFromFile();
+		void SaveToFile();
 
 		struct horizontal {
 			int y;

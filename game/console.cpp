@@ -34,17 +34,33 @@ void Console::Draw() {
 
 void Console::SetMessage(const char* t_message)
 {
-	m_message = t_message;
+	m_cmessage = t_message;
 }
 
-const char* Console::GetMessage()
+void Console::SetMessage(std::string t_message)
 {
-	return m_message;
+	m_smessage = t_message;
+}
+
+const char* Console::CGetMessage()
+{
+	return m_cmessage;
+}
+
+std::string Console::SGetMessage()
+{
+	return m_smessage;
 }
 
 Console console;
 
 void Alert(const char* t_string)
+{
+	console.SetMessage(t_string);
+	console.Draw();
+}
+
+void Alert(std::string t_string)
 {
 	console.SetMessage(t_string);
 	console.Draw();

@@ -9,13 +9,15 @@
 #define testExt 69;
 
 extern void Alert(const char* message);
+extern void Alert(std::string message);
 
 class Display;
 class Console
 {
 	private:
 		Display *display = nullptr;
-		const char* m_message;
+		const char* m_cmessage;
+		std::string m_smessage;
 
 	public:
 		Console();
@@ -25,7 +27,9 @@ class Console
 		void SetDisplay(Display* display);
 		void Draw();
 		void SetMessage(const char* message);
-		const char* GetMessage();
+		void SetMessage(std::string message);
+		const char* CGetMessage();
+		std::string SGetMessage();
 
 }; //end Console
 

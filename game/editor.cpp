@@ -1,72 +1,57 @@
-// scene.cpp
+// editor.cpp
 // Alex Rutan
-// 11/10/18
+// 11/18/18
 #include <iostream>
-#include "scene.h"
 #include "player.h"
 #include "game.h"
 #include "console.h"
+#include "editor.h"
 
 using namespace std;
 
 /*
-Scene constructor 
+Editor constructor 
 defines the values used for the resolution of the screen
 initializes values used by SDL for renderer, window, and textures
  */
-Scene::Scene()
+Editor::Editor()
 {
 	Entity *entlist = new Entity[255];
-	//entlist = new Entity[255];
 	entcount = 0;
-    //cout << "Scene constructed" << endl;
-
-	//quit = false;
-
-	//quit = input->GetQuitPtr();
-	//editMode = input->GetEditTogglePtr();
-	//mouseDown = input->GetMouseDownPtr();
 
 } //end constructor
 
-Scene::Scene(Game *t_game)
+Editor::Editor(Game *t_game)
 {
 	game = t_game;
 	input = game->GetInput();
 	display = game->GetDisplay();
 	gui = game->GetGui();
 	Entity *entlist = new Entity[255];
-	//entlist = new Entity[255];
 	entcount = 0;
-	//cout << "Scene constructed" << endl;
-
-	//quit = false;
-
-	//quit = input->GetQuitPtr();
 	editMode = input->GetEditTogglePtr();
 	mouseDown = input->GetMouseDownPtr();
 
 } //end constructor
 
-Scene::~Scene()
+Editor::~Editor()
 {
 	delete[] *entlist;
 } //end destructor
 
-Entity & Scene::GetPlayer()
+Entity & Editor::GetPlayer()
 {
 	return *entlist[0];
 }
 
-bool Scene::loadTextures()
+bool Editor::loadTextures()
 {  
     return true;
 } //end loadTextures
 
-bool Scene::Init()
+bool Editor::Init()
 {
 	bool success = true;
-	printf("Run number: %d \n", game->sceneruntimes);
 
 	world = new World;
 	world->define();
@@ -85,25 +70,23 @@ bool Scene::Init()
 
 	spawn(0);
 
-	entlist[0]->SetScene(this);
+	//entlist[0]->SetEditor(this);
 
 	//Create scale enemy demo and rotate enemy demo
 	spawn(4);
 	spawn(5);
 
 	camera.Init(entlist[0]);
-	int nextScene = 0;
+	int nextEditor = 0;
 
 	return success;
 }
 
-int Scene::spawn(int entid)
+int Editor::spawn(int entid)
 {
 	if (entid == 0)
 		{ 
-			//entlist[entcount] = new Entity(&currentTime, 0);
-			//*entlist[entcount] = entlist[entcount]->NewPlayer();
-			entlist[entcount] = new Player(&currentTime);
+			//entlist[entcount] = new Player(&currentTime);
 			entlist[entcount]->setListID(entcount);
 			entcount++;
 
@@ -111,7 +94,7 @@ int Scene::spawn(int entid)
 		}
 	else if (entid == 1)
 	{
-		entlist[entcount] = new Enemy(1, this);
+		//entlist[entcount] = new Enemy(1, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(mousex, mousey);
 		entcount++;
@@ -119,7 +102,7 @@ int Scene::spawn(int entid)
 	}
 	else if (entid == 2)
 	{
-		entlist[entcount] = new Enemy(2, this);
+		//entlist[entcount] = new Enemy(2, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(mousex, mousey);
 		entcount++;
@@ -127,11 +110,11 @@ int Scene::spawn(int entid)
 	}
 	else if (entid == 3) {
 		if (entlist[0]->direction == 0) {
-			entlist[entcount] = new Enemy(2, this);
+			//entlist[entcount] = new Enemy(2, this);
 			entlist[entcount]->setXY(entlist[0]->x - 60, entlist[0]->y);
 		}
 		else {
-			entlist[entcount] = new Enemy(1, this);
+			//entlist[entcount] = new Enemy(1, this);
 			entlist[entcount]->setXY(entlist[0]->x + 100, entlist[0]->y);
 		}
 		entlist[entcount]->setListID(entcount);
@@ -140,7 +123,7 @@ int Scene::spawn(int entid)
 	}
 	//Scale Demo
 	else if (entid == 4) {
-		entlist[entcount] = new Enemy(3, this);
+		//entlist[entcount] = new Enemy(3, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(700, 250);
 		entcount++;
@@ -148,7 +131,7 @@ int Scene::spawn(int entid)
 	}
 	//Rotate Demo
 	else if (entid == 5) {
-		entlist[entcount] = new Enemy(4, this);
+		//entlist[entcount] = new Enemy(4, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(100, 250);
 		entcount++;
@@ -157,7 +140,7 @@ int Scene::spawn(int entid)
 	else { cout << "can't spawn entity" << endl; return 0; }
 } //end spawn
 
-int Scene::despawn(Entity* entity)
+int Editor::despawn(Entity* entity)
 {
 	if (entcount < 1) { cout << "nothing to despawn" << endl;  return 0; }
 
@@ -186,30 +169,17 @@ int Scene::despawn(Entity* entity)
 	else { cout << "can't despawn entity" << endl; return 0; }
 } //end spawn
 
-bool Scene::TimeUp()
-{
-	//if()
-	return false;
-}
-
-unsigned int Scene::GetTime()
+unsigned int Editor::GetTime()
 {
 	return SDL_GetTicks();
 }
 
-void Scene::HandleCommand(Command* command)
+void Editor::HandleCommand(Command* command)
 {
 	cbus.PostCommand(command);
 }
 
-void Scene::Act(int request)
-{
-	if (request == 1) {
-		spawn(3);
-	}
-}
-
-void Scene::SceneLoop() {
+void Editor::EditorLoop() {
 	//input->keyEvents();
 	if (input->getMouse() != 0)
 	{
@@ -241,7 +211,7 @@ void Scene::SceneLoop() {
 	} //end if
 }
 
-void Scene::EditLoop() {
+void Editor::EditLoop() {
 	//input->keyEvents();
 	mousex = input->mousex + camera.x;
 	mousey = input->mousey + camera.y;
@@ -264,10 +234,8 @@ Pass the map information on to player and the setEnemyMap via pointer
 Create an instance of camera and send it values for number of rays and player's initial position
 Create an instance of SDL_Event for player input, events change bools to "true"
  */
-int Scene::Run()
+int Editor::Run()
 {
-	printf("Run number: %d \n", game->sceneruntimes);
-
 	world = new World;
 	world->define();
 	world->Load();
@@ -285,7 +253,7 @@ int Scene::Run()
 
 	spawn(0);
 
-	entlist[0]->SetScene(this);
+	//entlist[0]->SetScene(this);
 
 	//Create scale enemy demo and rotate enemy demo
 	spawn(4);
@@ -293,7 +261,7 @@ int Scene::Run()
 
 	camera.Init(entlist[0]);
 	bool keepGoing = true;
-	int nextScene = 0;
+	int nextEditor = 0;
 	while (keepGoing)
 	{
 		currentTime = SDL_GetTicks();
@@ -311,7 +279,7 @@ int Scene::Run()
 		}
 
 		if (input->flags & IF_TAB) {
-			SceneLoop();
+			EditorLoop();
 		}
 		else {
 			EditLoop();
@@ -321,7 +289,7 @@ int Scene::Run()
 		{
 			keepGoing = false;
 			if (entlist[0]->direction == 1) {
-				nextScene = 1;
+				nextEditor = 1;
 			}
 			*quit = false;
 		} //end if
@@ -334,28 +302,14 @@ int Scene::Run()
 		 //skeleton
 		//collision.checkBounds(entlist[0], world->horizonts[0]);
 
-		//Iterate through all the brushes but stop as soon as we hit one of them and start over.
-		for (int i = 0; i < world->brushCount; i++) {
-			collision.checkBounds(entlist[0], world->brushes[i]);
-			if (entlist[0]->onGround) {
-				//cout << i << endl;
-				//printf("Brush hit: %d\n", i);
-				i = world->brushCount;
-			}
-		}
-
 		//collision.checkBounds(entlist[0], world->verts[0]);
 		//collision.checkBounds(entlist[0], world->verts[1]);
 
 		//skeleton
-		//Act(entlist[0]->SceneRequest());
+		//Act(entlist[0]->EditorRequest());
 		display->update(); // background and clear
 		for (int i = 0; i < entcount; i++) {
-			if (i != 0)movement.move(entlist[i]);
-			collision.checkBounds(entlist[i], world->verts[0]);
-			collision.checkBounds(entlist[i], world->verts[1]);
-			if (i != 0)collision.checkBounds(entlist[0], entlist[i]);
-			if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
+			if (i != 0)movement.move(entlist[i]);;
 			if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
 			display->draw(entlist[i]);
 			if (entlist[i]->getIsDead())despawn(entlist[i]);
@@ -371,19 +325,18 @@ int Scene::Run()
 
 	// end updates
 	} //end while 
-	printf("\nNEXTSCENE: %d \n", nextScene);
-	return (nextScene);
+	printf("\nNEXTEditor: %d \n", nextEditor);
+	return (nextEditor);
 }
-int Scene::End()
+int Editor::End()
 {
-	printf("\nNEXTSCENE: %d \n", nextScene);
-	world->SaveToFile();
-	return (nextScene);
+	printf("\nNEXTEditor: %d \n", nextEditor);
+	return (nextEditor);
 }
 //end run
 
 
-void Scene::Update()
+void Editor::Update()
 {
 	currentTime = SDL_GetTicks();
 
@@ -401,7 +354,7 @@ void Scene::Update()
 	}
 
 	if (input->flags & IF_TAB) {
-		SceneLoop();
+		EditorLoop();
 	}
 	else {
 		EditLoop();
@@ -415,28 +368,14 @@ void Scene::Update()
 	//skeleton
 	//collision.checkBounds(entlist[0], world->horizonts[0]);
 
-	//Iterate through all the brushes but stop as soon as we hit one of them and start over.
-	for (int i = 0; i < world->brushCount; i++) {
-		collision.checkBounds(entlist[0], world->brushes[i]);
-		if (entlist[0]->onGround) {
-			//cout << i << endl;
-			//printf("Brush hit: %d\n", i);
-			i = world->brushCount;
-		}
-	}
-
 	//collision.checkBounds(entlist[0], world->verts[0]);
 	//collision.checkBounds(entlist[0], world->verts[1]);
 
 	//skeleton
-	//Act(entlist[0]->SceneRequest());
+	//Act(entlist[0]->EditorRequest());
 	//display->update(); // background and clear
 	for (int i = 0; i < entcount; i++) {
 		if (i != 0)movement.move(entlist[i]);
-		collision.checkBounds(entlist[i], world->verts[0]);
-		collision.checkBounds(entlist[i], world->verts[1]);
-		if (i != 0)collision.checkBounds(entlist[0], entlist[i]);
-		if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
 		if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
 		display->draw(entlist[i]);
 		if (entlist[i]->getIsDead())despawn(entlist[i]);
@@ -452,7 +391,7 @@ void Scene::Update()
 
 					   // end updates
 }
-void Scene::SetDone(bool t_done)
+void Editor::SetDone(bool t_done)
 {
 	done = t_done;
 }

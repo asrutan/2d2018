@@ -389,7 +389,8 @@ void Display::DrawConsole()
 	//printf("Console message: %s \n", console.GetMessage());
 	//PrintText(console.GetMessage());
 
-	const char* text = console.GetMessage();
+	//const char* text = console.GetMessage();
+	std::string text = console.SGetMessage();
 
 	//Clear message.
 	for (int i = 0; i++; i < 20) {
