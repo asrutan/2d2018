@@ -16,7 +16,7 @@ Player::Player(unsigned int *Time)
 {
     spriteX = 50;//wraps collision box closer to sprite
     spriteY = 0;
-    speed = 10;//movement speed
+    speed = 15;//movement speed
     //end protected inherited vars
 
 	collided[0] = false;
