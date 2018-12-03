@@ -15,7 +15,7 @@
 
 class Hud;
 class Console;
-
+class Background;
 class Display
 {
     private:
@@ -71,6 +71,7 @@ class Display
 		//void draw(World::horizontal*);
 		void draw(World*);
 		void draw(Hud*);
+		void draw(Background* background);
 		void draw(const int x, const int y, const int w, const int h);
 		void GameOver();
 		int getResX();

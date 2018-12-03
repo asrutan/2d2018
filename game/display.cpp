@@ -10,6 +10,7 @@
 #include "display.h"
 #include "hud.h"
 #include "console.h"
+#include "background.h"
 
 using namespace std;
 
@@ -176,6 +177,15 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 			srcrect[entityID].h = 0;
 			dstrect[entityID].w = 50;
 			dstrect[entityID].h = 50;
+		}
+		else if (entityID == 2)
+		{
+			srcrect[entityID].x = 0;
+			srcrect[entityID].y = 0;
+			srcrect[entityID].w = 990;
+			srcrect[entityID].h = 780;
+			dstrect[entityID].w = 990;
+			dstrect[entityID].h = 780;
 		}
 	} //end else
 	surface = NULL;
@@ -345,6 +355,19 @@ void Display::draw(World *world)
 void Display::draw(Hud *hud)
 {
 	cout << hud->GetElementString(0) << endl;
+}
+
+void Display::draw(Background *background)
+{
+	dstrect[2].x = background->xl - camera->x;
+	dstrect[2].y = background->yl - camera->y;
+	SDL_RenderCopy(renderer, entityTexture[2], NULL, &dstrect[2]); //draw entity
+	dstrect[2].x = background->xm - camera->x;
+	dstrect[2].y = background->ym - camera->y;
+	SDL_RenderCopy(renderer, entityTexture[2], NULL, &dstrect[2]); //draw entity
+	dstrect[2].x = background->xr - camera->x;
+	dstrect[2].y = background->yr - camera->y;
+	SDL_RenderCopy(renderer, entityTexture[2], NULL, &dstrect[2]); //draw entity
 }
 
 void Display::draw(const int t_x, const int t_y, const int t_w, const int t_h) {

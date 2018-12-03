@@ -19,6 +19,7 @@
 #include "gui.h"
 #include "command.h"
 #include "command_bus.h"
+#include "background.h"
 
 const int SPAWN = 0;
 const int BULLET = 0;
@@ -35,6 +36,7 @@ class Scene
 		World *world;
 		Hud *hud;
 		Gui *gui = nullptr;
+		Background background;
 		bool *quit;
 		bool *editMode;
 		bool *mouseDown;
@@ -49,6 +51,10 @@ class Scene
         ~Scene();
 		Entity* entlist[255];
 		Entity& GetPlayer();
+		int screenWidth = 800;
+		int screenHeight = 600;
+		int GetCamX();
+		int GetCamY();
 		bool loadTextures();
 		bool Init();
         int Run();

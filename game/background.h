@@ -5,13 +5,27 @@
 #ifndef BACKGROUND_EXIST
 #define BACKGROUND_EXIST
 
+class Scene;
 class Background
 {
+	private:
+		Scene *scene = nullptr;
+		int sWidth = 0;
     public:
         Background();
         ~Background();
-        int x;
-	int y;
+		void SetScene(Scene* scene);
+		void Update();
+        int xm = 0;
+		int ym = 0;
+		int xr = 0;
+		int yr = 0;
+		int xl = 0;
+		int yl = 0;
+		int w;
+		int h;
+		int temp = 0;
+		const char* textureFile;
         
 }; //end Background
 
