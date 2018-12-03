@@ -61,6 +61,7 @@ void Camera::move()
         y++;
     }
 } //end move
+
 void Camera::update()
 {
     x = parent->x - 350;

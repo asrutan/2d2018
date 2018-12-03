@@ -58,6 +58,16 @@ Entity & Scene::GetPlayer()
 	return *entlist[0];
 }
 
+int Scene::GetCamX()
+{
+	return camera.x;
+}
+
+int Scene::GetCamY()
+{
+	return camera.y;
+}
+
 bool Scene::loadTextures()
 {  
     return true;
@@ -71,9 +81,13 @@ bool Scene::Init()
 	world = new World;
 	world->define();
 	world->Load();
+	
+	//Load background based on world info
+	background.SetScene(this);
 
 	display->loadTextures("player.bmp", 0);
 	display->loadTextures("blocks.bmp", 1);
+	display->loadTextures("greenBackground.bmp", 2);
 
 	//Hud test
 	hud = new Hud;
@@ -438,10 +452,15 @@ void Scene::Update()
 		if (i != 0)collision.checkBounds(entlist[0], entlist[i]);
 		if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
 		if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
-		display->draw(entlist[i]);
 		if (entlist[i]->getIsDead())despawn(entlist[i]);
 	} //update entities
 	  /**************/
+	background.Update();
+	display->draw(&background);
+	for (int i = 0; i < entcount; i++) {
+		display->draw(entlist[i]);
+	}
+
 	display->draw(world);
 
 	gui->Update();
