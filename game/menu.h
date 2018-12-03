@@ -11,7 +11,7 @@
 #include "scene.h"
 
 class Game;
-class Menu
+class Menu : public Scene
 {
     private:
 		Display *display;
@@ -22,7 +22,6 @@ class Menu
 		World *world;
 		Hud *hud;
 		Gui gui;
-		//bool *quit;
 		bool *editMode;
 		bool *mouseDown;
 		unsigned int currentTime;
@@ -38,6 +37,23 @@ class Menu
 		bool Init(Game *game);
 		void HandleCommand(Command *command);
 		CommandBus mcbus;
+
+		//
+
+		/**
+		int nextScene = 0;
+		int screenWidth = 800;
+		int screenHeight = 600;
+		int entcount = 0;
+		int mousex = 0;
+		int mousey = 0;
+		int playercount = 0;
+		int enemycount = 0;
+		bool done = false;
+		bool paused = false;
+
+		CommandBus cbus;
+		*/
        
 }; //end Scene
 
