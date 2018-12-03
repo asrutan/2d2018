@@ -81,7 +81,7 @@ class Display
 		int getResX();
 		int getResY();
 		void render();
-		void SetCamPtr(Camera*);
+		void SetCamera(Camera* camera);
 		SDL_Rect srcrect[255];
 		SDL_Rect dstrect[255];
 		SDL_Renderer* renderer;

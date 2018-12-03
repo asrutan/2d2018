@@ -173,7 +173,7 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 			success = false;
 			return success;
 		}
-		if (entityID == 0) 
+		if (entityID == 0) //Player
 		{
 			srcrect[entityID].x = 0;
 			srcrect[entityID].y = 0;
@@ -182,7 +182,7 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 			dstrect[entityID].w = 114;
 			dstrect[entityID].h = 159;
 		}
-		else if (entityID == 1)
+		else if (entityID == 1) //Enemy
 		{
 			srcrect[entityID].x = 0;
 			srcrect[entityID].y = 0;
@@ -191,8 +191,16 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 			dstrect[entityID].w = 50;
 			dstrect[entityID].h = 50;
 		}
-		else if (entityID == 2)
+		else if (entityID == 2) //Background
 		{
+			srcrect[entityID].x = 0;
+			srcrect[entityID].y = 0;
+			srcrect[entityID].w = 990;
+			srcrect[entityID].h = 780;
+			dstrect[entityID].w = 990;
+			dstrect[entityID].h = 780;
+		}
+		else if (entityID == 3) { //Menu background
 			srcrect[entityID].x = 0;
 			srcrect[entityID].y = 0;
 			srcrect[entityID].w = 990;
@@ -418,9 +426,9 @@ void Display::render()
 
 }
 
-void Display::SetCamPtr(Camera *Camera)
+void Display::SetCamera(Camera *t_camera)
 {
-	camera = Camera;
+	camera = t_camera;
 }
 
 void Display::DrawConsole()

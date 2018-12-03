@@ -66,7 +66,7 @@ bool Editor::Init()
 	display->draw(hud);
 	//end hud
 
-	display->SetCamPtr(&camera);
+	display->SetCamera(&camera);
 
 	spawn(0);
 
@@ -249,7 +249,7 @@ int Editor::Run()
 	display->draw(hud);
 	//end hud
 
-	display->SetCamPtr(&camera);
+	//display->SetCamera(&camera);
 
 	spawn(0);
 

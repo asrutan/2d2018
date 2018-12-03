@@ -26,6 +26,14 @@ Menu::Menu(Game *t_game)
 
 } //end constructor
 
+Menu::~Menu()
+{
+	delete background;
+	delete camera;
+	background = nullptr;
+	camera = nullptr;
+}
+
 //Initialize the GUI and buttons.
 bool Menu::Init(Game *t_game)
 {
@@ -34,6 +42,11 @@ bool Menu::Init(Game *t_game)
 	game = t_game;
 	input = game->GetInput();
 	display = game->GetDisplay();
+	camera = new Camera();
+
+	//not setting scene of background because we do not need to update it.
+	background = new Background();
+	display->loadTextures("greenBackground.bmp", 3);
 
 	gui.SetDisplay(display);
 	gui.CreateButton("resume", 400, 300, 50, 50, &unpause );
@@ -51,6 +64,11 @@ void Menu::HandleCommand(Command* command)
 }
 
 /*
+void Menu::SetDisplayCamera() {
+	display->SetCamera(camera);
+}
+*/
+/*
 First, take each of the textures and assign them to their own specific rectangles to be drawn later
 Create and instance of map, map is loaded when it is constructed
 Pass the map information on to player and the setEnemyMap via pointer
@@ -63,6 +81,7 @@ void Menu::Update()
 	{
 		gui.CheckMouse(input->mousex, input->mousey);
 	}
+	display->draw(background);
 	gui.Update();
 	mcbus.Tick();
 	// end updates

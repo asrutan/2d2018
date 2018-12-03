@@ -36,6 +36,7 @@ Scene::Scene(Game *t_game)
 	input = game->GetInput();
 	display = game->GetDisplay();
 	gui = game->GetGui();
+	background = new Background();
 	Entity *entlist = new Entity[255];
 	//entlist = new Entity[255];
 	entcount = 0;
@@ -51,6 +52,8 @@ Scene::Scene(Game *t_game)
 
 Scene::~Scene()
 {
+	delete camera;
+	camera = nullptr;
 	delete[] *entlist;
 } //end destructor
 
@@ -61,12 +64,12 @@ Entity & Scene::GetPlayer()
 
 int Scene::GetCamX()
 {
-	return camera.x;
+	return camera->x;
 }
 
 int Scene::GetCamY()
 {
-	return camera.y;
+	return camera->y;
 }
 
 bool Scene::loadTextures()
@@ -84,7 +87,7 @@ bool Scene::Init()
 	world->Load();
 	
 	//Load background based on world info
-	background.SetScene(this);
+	background->SetScene(this);
 
 	display->loadTextures("redDude.png", 0);
 	display->loadTextures("blocks.bmp", 1);
@@ -96,7 +99,9 @@ bool Scene::Init()
 	display->draw(hud);
 	//end hud
 
-	display->SetCamPtr(&camera);
+	camera = new Camera();
+	//display->SetCamera(camera);
+	SetDisplayCamera();
 
 	spawn(0);
 
@@ -106,7 +111,7 @@ bool Scene::Init()
 	spawn(4);
 	spawn(5);
 
-	camera.Init(entlist[0]);
+	camera->Init(entlist[0]);
 	int nextScene = 0;
 
 	return success;
@@ -212,6 +217,13 @@ unsigned int Scene::GetTime()
 	return SDL_GetTicks();
 }
 
+/*
+void Scene::SetDisplayCamera()
+{
+	display->SetCamera(&camera);
+}
+*/
+
 void Scene::HandleCommand(Command* command)
 {
 	cbus.PostCommand(command);
@@ -233,8 +245,8 @@ void Scene::SceneLoop() {
 
 		entlist[0]->TestQueue();
 		//cout << "click" << endl;
-		mousex = input->mousex + camera.x;
-		mousey = input->mousey + camera.y;
+		mousex = input->mousex + camera->x;
+		mousey = input->mousey + camera->y;
 
 		if (input->mousex > 700 && input->mousex < 750 && input->mousey > 500 && input->mousey < 550)
 		{
@@ -258,8 +270,8 @@ void Scene::SceneLoop() {
 
 void Scene::EditLoop() {
 	//input->keyEvents();
-	mousex = input->mousex + camera.x;
-	mousey = input->mousey + camera.y;
+	mousex = input->mousex + camera->x;
+	mousey = input->mousey + camera->y;
 	if (input->getMouse() != 0){
 		world->CreateBrush(mousex, mousey);
 	} //end if
@@ -314,7 +326,7 @@ void Scene::Update()
 	}
 
 	entlist[0]->update();
-	camera.update();
+	camera->update();
 	/**************/
 	//movement.move(entlist[0]); //move, checkbounds, update
 
@@ -347,8 +359,8 @@ void Scene::Update()
 		if (entlist[i]->getIsDead())despawn(entlist[i]);
 	} //update entities
 	  /**************/
-	background.Update();
-	display->draw(&background);
+	background->Update();
+	display->draw(background);
 	for (int i = 0; i < entcount; i++) {
 		display->draw(entlist[i]);
 	}
@@ -368,3 +380,9 @@ void Scene::SetDone(bool t_done)
 	done = t_done;
 }
 //end run
+
+/*
+void Scene::SetDisplayCamera() { 
+	display->SetCamera(camera); 
+}
+*/

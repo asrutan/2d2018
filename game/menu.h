@@ -14,29 +14,30 @@ class Game;
 class Menu : public Scene
 {
     private:
-		Display *display;
+		//Display *display = nullptr;
 		Movement movement;
 		Collision collision;
-		Input *input;
-		Camera camera;
-		World *world;
-		Hud *hud;
+		Input *input = nullptr;
+		//Camera *camera = nullptr;
+		World *world = nullptr;
+		Hud *hud = nullptr;
 		Gui gui;
-		bool *editMode;
-		bool *mouseDown;
+		bool *editMode = nullptr;
+		bool *mouseDown = nullptr;
 		unsigned int currentTime;
 		bool create = false;
 
-		Game *game;
+		Game *game = nullptr;
 
     public:
         Menu();
 		Menu(Game*);
-		~Menu() {}
+		~Menu();
 		void Update();
 		bool Init(Game *game);
 		void HandleCommand(Command *command);
 		CommandBus mcbus;
+		//virtual void SetDisplayCamera();
 
 		//
 

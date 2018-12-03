@@ -13,11 +13,13 @@
 #include "command.h"
 #include "command_bus.h"
 #include "gui.h"
+#include "display.h"
 
 const int SPAWN = 0;
 const int BULLET = 0;
 
 class Game;
+class Camera;
 class Display;
 class Movement;
 class Collision;
@@ -34,19 +36,15 @@ class BaseScene
 {
     protected:
 		Display *display = nullptr;
-		Movement movement;
-		Collision collision;
 		Input *input = nullptr;
-		Camera camera;
 		World *world = nullptr;
 		Hud *hud = nullptr;
 		Gui *gui = nullptr;
-		Background background;
+		Background* background = nullptr;
+		Camera *camera = nullptr;
 		//bool *quit = nullptr;
 		bool *editMode = nullptr;
 		bool *mouseDown = nullptr;
-		unsigned int currentTime;
-		bool create = false;
 
 		Game *game = nullptr;
 
@@ -68,6 +66,7 @@ class BaseScene
 		CommandBus cbus;
 
 		virtual void HandleCommand(Command* command) = 0;
+		virtual void SetDisplayCamera() { display->SetCamera(camera); };
         
 }; //end BaseScene
 

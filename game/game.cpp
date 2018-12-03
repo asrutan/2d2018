@@ -62,10 +62,12 @@ int Game::Init() {
 bool Game::Pause() {
 	if (m_paused) {
 		m_paused = false;
+		scene->SetDisplayCamera(); //Give scene camera back to scene. When paused, we get menu camera.
 		Alert("unpaused");
 	}
 	else {
 		m_paused = true;
+		m_menu.SetDisplayCamera();
 		Alert("paused");
 	}
 	return m_paused;

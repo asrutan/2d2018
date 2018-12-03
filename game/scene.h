@@ -11,15 +11,15 @@
 class Scene : public BaseScene
 {
     protected:	
-		Display *display;
+		//Display *display;
 		Movement movement;
 		Collision collision;
 		Input *input;
-		Camera camera;
+		//Camera *camera;
 		World *world;
 		Hud *hud;
 		Gui *gui = nullptr;
-		Background background;
+		Background *background;
 		//bool *quit;
 		bool *editMode;
 		bool *mouseDown;
@@ -67,7 +67,7 @@ class Scene : public BaseScene
 
 		bool TimeUp();
 		unsigned int GetTime();
-        
+		//virtual void SetDisplayCamera();
 }; //end Scene
 
 #endif //SCENE_EXISTS
