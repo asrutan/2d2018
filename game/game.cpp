@@ -53,7 +53,9 @@ int Game::Init() {
 	m_menu.Init(this);
 	//Pause menu
 
+	console.SetGame(this);
 	console.SetDisplay(display);
+	console.SetInput(input);
 	return(0);
 }
 
@@ -96,11 +98,33 @@ void Game::RunScene()
 	*/
 	scene->Init();
 	while (!scene->done) {
+
+		/*
+		====Console====
+		*/
+		if (console.active) {
+			console.GetInput();
+			console.Draw();
+		}
+		/*
+		===============
+		*/
+
 		display->update();
 		input->keyEvents();
 		if (input->flags & IF_ESC) {
 			input->flags &= ~(IF_ESC);
 			scene->paused = Pause();
+		}
+		if (input->flags & IF_TILDE) {
+			if (!console.active) {
+				console.active = true;
+			}
+			else {
+				console.active = false;
+				console.ClearMessage();
+			}
+			input->flags &= ~(IF_TILDE);			
 		}
 		if (!scene->paused) {
 			scene->Update();
@@ -137,4 +161,9 @@ void Game::LoadScene()
 {
 	scene = new Scene(this);
 	m_gui.SetScene(scene);
+}
+
+void Game::ConsoleCommand(Command *command)
+{
+	scene->HandleCommand(command);
 }

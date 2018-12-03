@@ -158,7 +158,6 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 		if (entityTexture[entityID] == NULL)
 		{
 			success = false;
-			cout << "adfdafaf" << endl;
 			return success;
 		}
 		if (entityID == 0) 
@@ -415,10 +414,10 @@ void Display::DrawConsole()
 	std::string text = console.SGetMessage();
 
 	//Clear message.
-	for (int i = 0; i++; i < 20) {
+	//for (int i = 0; i++; i < 20) {
 		//messageLog[i].letterIndex[i] = 0;
 		//messageLog[i].messageLength = 0;
-	}
+	//}
 
 	int i = 0;
 	int pointer = 0;
