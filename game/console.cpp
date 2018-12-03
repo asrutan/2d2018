@@ -4,6 +4,9 @@
 #include <iostream>
 #include "console.h"
 #include "display.h"
+#include "input.h"
+#include "command.h"
+#include "game.h"
 
 using namespace std;
 /*
@@ -23,9 +26,19 @@ Console::~Console()
 {
 } //end destructor
 
+void Console::SetGame(Game * t_game)
+{
+	game = t_game;
+}
+
 void Console::SetDisplay(Display * t_display)
 {
 	display = t_display;
+}
+
+void Console::SetInput(Input * t_input)
+{
+	input = t_input;
 }
 
 void Console::Draw() {
@@ -42,6 +55,42 @@ void Console::SetMessage(std::string t_message)
 	m_smessage = t_message;
 }
 
+void Console::ClearMessage()
+{
+	m_smessage = "";
+	m_userInput = "";
+}
+
+void Console::GetInput()
+{
+	char letter = ' ';
+	if (input->flags & IF_ENTER) {
+		input->flags &= ~(IF_ENTER);
+		Send();
+	}
+	else {
+		letter = input->letterEvents();
+		if (letter != NULL) {
+			TypeLetter(letter);
+		}
+		SetMessage(m_userInput);
+	}
+}
+
+void Console::TypeLetter(char c)
+{
+	m_userInput += c;
+}
+
+void Console::Send()
+{
+	if (m_userInput == "jump") {
+		game->ConsoleCommand(&jump);
+	}
+
+	m_userInput = "";
+}
+
 const char* Console::CGetMessage()
 {
 	return m_cmessage;
@@ -56,12 +105,14 @@ Console console;
 
 void Alert(const char* t_string)
 {
-	console.SetMessage(t_string);
+	std::string convert = t_string;
+	console.SetMessage(convert);
 	console.Draw();
 }
 
 void Alert(std::string t_string)
 {
+	cout << t_string << endl;
 	console.SetMessage(t_string);
 	console.Draw();
 }

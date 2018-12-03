@@ -31,6 +31,19 @@ Display::Display()
 	rects[0].w = testBox.w;
 	rects[0].h = testBox.h;
 
+	/*
+	======Console======
+	*/
+	consoleRect.x = 0;
+	consoleRect.y = 0;
+	consoleRect.w = 800;
+	consoleRect.h = 25;
+
+
+	/*
+	===================
+	*/
+
 }//end constructor
 
 Display::~Display()
@@ -158,7 +171,6 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 		if (entityTexture[entityID] == NULL)
 		{
 			success = false;
-			cout << "adfdafaf" << endl;
 			return success;
 		}
 		if (entityID == 0) 
@@ -226,6 +238,8 @@ bool Display::LoadFont()
 
 void Display::PrintText()
 {
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //white
+	SDL_RenderFillRect(renderer, &consoleRect);
 	for (int i = 0; i < messageLog[0].messageLength; i++) {
 		SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[i]], NULL, &messageLog[0].rects[i]);
 	}
@@ -393,7 +407,10 @@ void Display::render()
 	//Test render text
 	//SDL_RenderCopy(renderer, fontTexture, NULL, &textRect[0]);
 
-	PrintText();
+	if (drawConsoleThisFrame) {
+		PrintText();
+		drawConsoleThisFrame = false;
+	}
 
 	//SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[2]], NULL, messageLog[0].rects);
 
@@ -415,10 +432,10 @@ void Display::DrawConsole()
 	std::string text = console.SGetMessage();
 
 	//Clear message.
-	for (int i = 0; i++; i < 20) {
+	//for (int i = 0; i++; i < 20) {
 		//messageLog[i].letterIndex[i] = 0;
 		//messageLog[i].messageLength = 0;
-	}
+	//}
 
 	int i = 0;
 	int pointer = 0;
@@ -439,9 +456,9 @@ void Display::DrawConsole()
 	}
 
 	messageLog[0].messageLength = i;
-
 	//cout << letters[2] << endl;
 	//cout << text[4] << endl;
+	drawConsoleThisFrame = true;
 }
 
 

@@ -42,6 +42,8 @@ class Game
 		void RunScene();
 		void LoadScene();
 
+		void ConsoleCommand(Command *command);
+
 		int sceneruntimes;
         
 }; //end Game

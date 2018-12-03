@@ -53,6 +53,10 @@ class Display
 		};
 		Box testBox;
 
+		SDL_Rect consoleRect;
+
+		bool drawConsoleThisFrame = false;
+
     public:
 		Display();
 		~Display();

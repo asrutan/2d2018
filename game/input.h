@@ -14,6 +14,8 @@ const int IF_RIGHT = 8;
 const int IF_TAB = 16;
 const int IF_CTRL = 32;
 const int IF_ESC = 64;
+const int IF_TILDE = 128;
+const int IF_ENTER = 256;
 //Input flags
 class Input
 {
@@ -34,6 +36,7 @@ public:
 	int mousey;
 
 	void keyEvents();
+	char letterEvents();
 	int getMouse();
 	bool *GetQuitPtr();
 	bool *GetEditTogglePtr();
