@@ -85,7 +85,7 @@ bool Scene::Init()
 	//Load background based on world info
 	background.SetScene(this);
 
-	display->loadTextures("player.bmp", 0);
+	display->loadTextures("redDude.png", 0);
 	display->loadTextures("blocks.bmp", 1);
 	display->loadTextures("greenBackground.bmp", 2);
 
@@ -278,116 +278,7 @@ Pass the map information on to player and the setEnemyMap via pointer
 Create an instance of camera and send it values for number of rays and player's initial position
 Create an instance of SDL_Event for player input, events change bools to "true"
  */
-int Scene::Run()
-{
-	printf("Run number: %d \n", game->sceneruntimes);
 
-	world = new World;
-	world->define();
-	world->Load();
-
-	display->loadTextures("player.bmp", 0);
-	display->loadTextures("blocks.bmp", 1);
-
-	//Hud test
-	hud = new Hud;
-	hud->CreateElement("hud text test", 0, 0);
-	display->draw(hud);
-	//end hud
-
-	display->SetCamPtr(&camera);
-
-	spawn(0);
-
-	entlist[0]->SetScene(this);
-
-	//Create scale enemy demo and rotate enemy demo
-	spawn(4);
-	spawn(5);
-
-	camera.Init(entlist[0]);
-	bool keepGoing = true;
-	int nextScene = 0;
-	while (keepGoing)
-	{
-		currentTime = SDL_GetTicks();
-		if (input->flags & IF_LEFT) {
-			entlist[0]->Input(IF_LEFT);
-		}
-		if (input->flags & IF_RIGHT) {
-			entlist[0]->Input(IF_RIGHT);
-		}
-		if (input->flags & IF_SPACE) {
-			entlist[0]->Input(IF_SPACE);
-		}
-		if (input->flags & IF_CTRL) {
-			entlist[0]->Input(IF_CTRL);
-		}
-
-		if (input->flags & IF_TAB) {
-			SceneLoop();
-		}
-		else {
-			EditLoop();
-		}
-
-		if (*quit)
-		{
-			keepGoing = false;
-			if (entlist[0]->direction == 1) {
-				nextScene = 1;
-			}
-			*quit = false;
-		} //end if
-
-		entlist[0]->update();
-		camera.update();
-		/**************/
-		//movement.move(entlist[0]); //move, checkbounds, update
-
-		 //skeleton
-		//collision.checkBounds(entlist[0], world->horizonts[0]);
-
-		//Iterate through all the brushes but stop as soon as we hit one of them and start over.
-		for (int i = 0; i < world->brushCount; i++) {
-			collision.checkBounds(entlist[0], world->brushes[i]);
-			if (entlist[0]->onGround) {
-				//cout << i << endl;
-				//printf("Brush hit: %d\n", i);
-				i = world->brushCount;
-			}
-		}
-
-		//collision.checkBounds(entlist[0], world->verts[0]);
-		//collision.checkBounds(entlist[0], world->verts[1]);
-
-		//skeleton
-		//Act(entlist[0]->SceneRequest());
-		display->update(); // background and clear
-		for (int i = 0; i < entcount; i++) {
-			if (i != 0)movement.move(entlist[i]);
-			collision.checkBounds(entlist[i], world->verts[0]);
-			collision.checkBounds(entlist[i], world->verts[1]);
-			if (i != 0)collision.checkBounds(entlist[0], entlist[i]);
-			if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
-			if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
-			display->draw(entlist[i]);
-			if (entlist[i]->getIsDead())despawn(entlist[i]);
-		} //update entities
-		  /**************/
-		display->draw(world);
-
-		gui->Update();
-
-		cbus.Tick();
-
-		display->render(); //draw to screen
-
-	// end updates
-	} //end while 
-	printf("\nNEXTSCENE: %d \n", nextScene);
-	return (nextScene);
-}
 int Scene::End()
 {
 	printf("\nNEXTSCENE: %d \n", nextScene);

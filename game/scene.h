@@ -57,7 +57,6 @@ class Scene
 		int GetCamY();
 		bool loadTextures();
 		bool Init();
-        int Run();
 		int End();
 		void Update();
 		void SetDone(bool done);

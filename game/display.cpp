@@ -138,7 +138,8 @@ SDL_Window* Display::getWindow()
 bool Display::loadTextures(const char *spriteName, int entityID)
 {
     bool success = true;
-	surface = SDL_LoadBMP(spriteName);
+	//surface = SDL_LoadBMP(spriteName);
+	surface = IMG_Load(spriteName);
     if(surface == NULL)
 	{
 		cout << "Surface couldn't initialize!" << endl;
@@ -166,8 +167,8 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 			srcrect[entityID].y = 0;
 			srcrect[entityID].w = 0;
 			srcrect[entityID].h = 0;
-			dstrect[entityID].w = 95;
-			dstrect[entityID].h = 128;
+			dstrect[entityID].w = 114;
+			dstrect[entityID].h = 159;
 		}
 		else if (entityID == 1)
 		{
