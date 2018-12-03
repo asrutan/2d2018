@@ -31,6 +31,19 @@ Display::Display()
 	rects[0].w = testBox.w;
 	rects[0].h = testBox.h;
 
+	/*
+	======Console======
+	*/
+	consoleRect.x = 0;
+	consoleRect.y = 0;
+	consoleRect.w = 800;
+	consoleRect.h = 25;
+
+
+	/*
+	===================
+	*/
+
 }//end constructor
 
 Display::~Display()
@@ -225,6 +238,8 @@ bool Display::LoadFont()
 
 void Display::PrintText()
 {
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //white
+	SDL_RenderFillRect(renderer, &consoleRect);
 	for (int i = 0; i < messageLog[0].messageLength; i++) {
 		SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[i]], NULL, &messageLog[0].rects[i]);
 	}
@@ -392,7 +407,10 @@ void Display::render()
 	//Test render text
 	//SDL_RenderCopy(renderer, fontTexture, NULL, &textRect[0]);
 
-	PrintText();
+	if (drawConsoleThisFrame) {
+		PrintText();
+		drawConsoleThisFrame = false;
+	}
 
 	//SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[2]], NULL, messageLog[0].rects);
 
@@ -438,9 +456,9 @@ void Display::DrawConsole()
 	}
 
 	messageLog[0].messageLength = i;
-
 	//cout << letters[2] << endl;
 	//cout << text[4] << endl;
+	drawConsoleThisFrame = true;
 }
 
 

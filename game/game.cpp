@@ -98,7 +98,6 @@ void Game::RunScene()
 	*/
 	scene->Init();
 	while (!scene->done) {
-
 		/*
 		====Console====
 		*/

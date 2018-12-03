@@ -105,12 +105,14 @@ Console console;
 
 void Alert(const char* t_string)
 {
-	console.SetMessage(t_string);
+	std::string convert = t_string;
+	console.SetMessage(convert);
 	console.Draw();
 }
 
 void Alert(std::string t_string)
 {
+	cout << t_string << endl;
 	console.SetMessage(t_string);
 	console.Draw();
 }
