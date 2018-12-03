@@ -6,6 +6,7 @@
 #include "player.h"
 #include "game.h"
 #include "console.h"
+#include "hud.h"
 
 using namespace std;
 

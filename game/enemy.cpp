@@ -140,7 +140,7 @@ void Enemy::update()
 				dir[2] = false;
 				xVelocity = 0;
 				yVelocity = 0;
-				scene->HandleCommand(&jump);
+				//scene->HandleCommand(&jump);
 			}
 		}
 	}

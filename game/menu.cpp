@@ -2,7 +2,6 @@
 // Alex Rutan
 // 11/14/18
 #include <iostream>
-#include "Menu.h"
 #include "game.h"
 #include "console.h"
 #include "menu.h"
@@ -38,7 +37,7 @@ bool Menu::Init(Game *t_game)
 
 	gui.SetDisplay(display);
 	gui.CreateButton("resume", 400, 300, 50, 50, &unpause );
-	gui.CreateButton("quit", 400, 400, 50, 50, &quit);
+	gui.CreateButton("quit", 400, 400, 50, 50, &quit );
 
 	//Make scene scenebase abstract.
 	gui.SetScene(this);
