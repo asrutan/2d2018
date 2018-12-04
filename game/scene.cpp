@@ -74,6 +74,7 @@ bool Scene::Init()
 
 	world = new World;
 	world->define();
+	world->lines = true;
 	//cout << game->GetNextMap() << endl;
 	world->Load(game->GetNextMap());
 	
