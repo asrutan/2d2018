@@ -289,6 +289,7 @@ Create an instance of camera and send it values for number of rays and player's 
 Create an instance of SDL_Event for player input, events change bools to "true"
  */
 
+/*
 int Scene::End()
 {
 	printf("\nEND CONDITION: %d\n", endcondition);
@@ -296,7 +297,7 @@ int Scene::End()
 	return (endcondition);
 }
 //end run
-
+*/
 
 void Scene::Update()
 {
@@ -318,10 +319,10 @@ void Scene::Update()
 	}
 
 	if (input->flags & IF_TAB) {
-		SceneLoop();
-	}
-	else {
 		EditLoop();
+	}
+	else {		
+		SceneLoop();
 	}
 
 	entlist[0]->update();
@@ -373,10 +374,6 @@ void Scene::Update()
 	//display->render(); //draw to screen
 
 					   // end updates
-}
-void Scene::SetDone(bool t_done)
-{
-	done = t_done;
 }
 //end run
 

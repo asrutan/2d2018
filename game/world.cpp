@@ -111,7 +111,28 @@ void World::Load(std::string name)
 
 	string str = name;
 	if (!LoadFromFile(str)) {
-		Load();
+		CreateNew();
+	}
+}
+
+void World::CreateNew()
+{
+	lines = false;
+	const int m_brushesLen = 2;
+	struct newBrush {
+		int t_x;
+		int	t_y;
+		int t_w;
+		int t_h;
+		int t_type;
+	};
+
+	newBrush newBrushes[m_brushesLen];
+	newBrushes[0].t_x = 10; newBrushes[0].t_y = 450; newBrushes[0].t_w = 400; newBrushes[0].t_h = 10; newBrushes[0].t_type = SOLID;
+	newBrushes[1].t_x = 400; newBrushes[1].t_y = 550; newBrushes[1].t_w = 400; newBrushes[1].t_h = 50; newBrushes[1].t_type = SOLID;
+
+	for (int i = 0; i < m_brushesLen; i++) {
+		CreateBrush(newBrushes[i].t_x, newBrushes[i].t_y, newBrushes[i].t_w, newBrushes[i].t_h, newBrushes[i].t_type);
 	}
 }
 
@@ -187,9 +208,9 @@ bool World::LoadFromFile(string filename)
 	return false;
 }
 
-void World::SaveToFile() {
+void World::SaveToFile(string filename) {
 	ofstream myfile;
-	myfile.open("testmap.map"); 
+	myfile.open(filename += ".map");
 	
 	for(int i = 0; i < brushCount; i++){
 		for (int j = 0; j < 5; j++) {

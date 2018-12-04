@@ -88,12 +88,10 @@ void Console::Send()
 	if (m_userInput == "jump") {
 		game->ConsoleCommand(&jump);
 	}
-	else if (m_userInput == "save") {
-		game->ConsoleCommand(&savemap);
-	}
 	else if (length > 5) {
-		std::string comp = "load ";
-		if (m_userInput.substr(0, 5) == comp) {
+		std::string load = "load ";
+		std::string save = "save ";
+		if (m_userInput.substr(0, 5) == load) {	
 			std::string mapname = m_userInput.substr(5, length);
 			//mapname.erase(remove(mapname.begin(), mapname.end(), ' '), mapname.end());
 			if (mapname.length() > 0) {
@@ -102,10 +100,19 @@ void Console::Send()
 			else {
 				loadmap.mapname = "error";
 			}
+			game->ConsoleCommand(&loadmap);
 		}
-		game->ConsoleCommand(&loadmap);
+		else if(m_userInput.substr(0, 5) == save){
+			std::string mapname = m_userInput.substr(5, length);
+			if (mapname.length() > 0) {
+				savemap.mapname = mapname;
+			}
+			else {
+				savemap.mapname = "";
+			}
+			game->ConsoleCommand(&savemap);
+		}
 	}
-
 	m_userInput = "";
 }
 

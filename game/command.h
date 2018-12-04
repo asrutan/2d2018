@@ -60,6 +60,7 @@ public:
 	SaveMapCommand() {}
 	SaveMapCommand(std::string name) {}
 	void Execute(BaseScene * target);
+	std::string mapname = "";
 };
 
 class LoadMapCommand : public Command {
@@ -70,11 +71,19 @@ public:
 	std::string mapname = "";
 };
 
+class SwitchModeCommand : public Command {
+public:
+	SwitchModeCommand() {}
+	SwitchModeCommand(std::string name) {}
+	void Execute(Game * target);
+};
+
 extern JumpCommand jump;
 extern UnpauseCommand unpause;
 extern QuitCommand quit;
 extern SaveMapCommand savemap;
 extern LoadMapCommand loadmap;
+extern SwitchModeCommand switchmode;
 
 #endif //COMMAND_EXISTS
 

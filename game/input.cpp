@@ -41,6 +41,12 @@ void Input::keyEvents()
 			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 				flags &= ~(IF_RIGHT);
 			}
+			if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
+				flags &= ~(IF_UP);
+			}
+			if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
+				flags &= ~(IF_DOWN);
+			}
 			if (event.key.keysym.sym == SDLK_LCTRL) {
 				flags &= ~(IF_CTRL);
 			}
@@ -67,6 +73,12 @@ void Input::keyEvents()
 			}
 			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 				flags |= IF_RIGHT;
+			}
+			if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
+				flags |= IF_UP;
+			}
+			if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
+				flags |= IF_DOWN;
 			}
 			if (event.key.keysym.sym == SDLK_LCTRL) {
 				flags |= IF_CTRL;

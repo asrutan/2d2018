@@ -33,6 +33,7 @@ void CommandBus::PostCommand(Command * command)
 	Command *newcom = command;
 	command->sent = false;
 	commandAmount++;
+	cout << "POST COMMAND" << endl;
 }
 
 Command *CommandBus::DoCommand()
@@ -41,7 +42,7 @@ Command *CommandBus::DoCommand()
 		//cout << commands[0]->sent << endl;
 		commands[0]->sent = true;
 		//cout << commands[0]->sent << endl;
-
+		cout << "DO COMMAND" << endl;
 		return commands[0];
 	}
 	return(NULL);

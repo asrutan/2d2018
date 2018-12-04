@@ -6,6 +6,7 @@
 #define GAME_EXIST
 
 #include "scene.h"
+#include "basescene.h"
 #include "editor.h"
 #include "display.h"
 #include "gui.h"
@@ -15,7 +16,7 @@
 class Game
 {
     private:
-		Scene *scene;
+		BaseScene *scene;
 		Editor *editor;
 		Display m_display;
 		Input m_input;
@@ -49,6 +50,8 @@ class Game
 		int Init();
 		void RunScene();
 		void LoadScene();
+		void LoadEditor();
+		void SwitchScene();
 		void SetNextMap(std::string mapname);
 		std::string GetNextMap();
 

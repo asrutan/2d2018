@@ -20,23 +20,26 @@ class Editor : public BaseScene
 		bool loadTextures();
 		bool Init();
         int Run();
-		int End();
+		//int End();
 		void Update();
-		void SetDone(bool done);
 		int nextEditor = 0;
 		int spawn(int);
 		int despawn(Entity*);
 		virtual void SaveMap(std::string name);
 		virtual void LoadMap(std::string name);
+		virtual void SwitchScene() {};
+
+		//virtual void Execute();
+
 		int entcount;
 		int mousex;
 		int mousey;
 		int playercount;
 		int enemycount;
-		bool done = false;
+		//bool done = false;
 		bool paused = false;
 
-		CommandBus cbus;
+		//CommandBus cbus;
 
 		void HandleCommand(Command* command);
 

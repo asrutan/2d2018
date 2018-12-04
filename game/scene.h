@@ -38,20 +38,19 @@ class Scene : public BaseScene
 		int screenHeight = 600;
 		bool loadTextures();
 		bool Init();
-		int End();
-		void Update();
-		void SetDone(bool done);
-		int endcondition = 0;
+		//virtual int End();
+		virtual void Update();
+		//void SetDone(bool t_done);
 		int spawn(int);
 		int despawn(Entity*);
 		virtual void SaveMap(std::string name) {};
 		virtual void LoadMap(std::string name);
+		virtual void SwitchScene() {};
 		int entcount;
 		int mousex;
 		int mousey;
 		int playercount;
 		int enemycount;
-		bool done = false;
 		bool paused = false;
 
 		void HandleCommand(Command* command);

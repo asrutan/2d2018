@@ -54,9 +54,12 @@ class BaseScene
 		virtual bool Init() = 0;
 		virtual void SaveMap(std::string name) = 0;
 		virtual void LoadMap(std::string name) = 0;
+		virtual void SwitchScene() = 0;
 		virtual int GetCamX() { return camera->x; };
 		virtual int GetCamY() { return camera->y; };
 		virtual int spawn(int entityID) = 0;
+		virtual void Update() = 0;
+		virtual int End() { return (endcondition); };
 		virtual void Execute() {
 			Command *command = cbus.DoCommand();
 				if (command != NULL) {
@@ -64,6 +67,7 @@ class BaseScene
 				}
 			command = nullptr;
 		}
+		virtual void SetDone(bool t_done) { done = t_done; }
 		int nextScene = 0;
 		int screenWidth = 800;
 		int screenHeight = 600;
@@ -74,6 +78,7 @@ class BaseScene
 		int enemycount = 0;
 		bool done = false;
 		bool paused = false;
+		int endcondition = 0;
 
 		CommandBus cbus;
 

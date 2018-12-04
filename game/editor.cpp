@@ -19,13 +19,6 @@ Editor::Editor()
 	Entity *entlist = new Entity[255];
 	//entlist = new Entity[255];
 	entcount = 0;
-	//cout << "Editor constructed" << endl;
-
-	//quit = false;
-
-	//quit = input->GetQuitPtr();
-	//editMode = input->GetEditTogglePtr();
-	//mouseDown = input->GetMouseDownPtr();
 
 } //end constructor
 
@@ -44,7 +37,7 @@ Editor::Editor(Game *t_game)
 	//quit = false;
 
 	//quit = input->GetQuitPtr();
-	editMode = input->GetEditTogglePtr();
+	//editMode = input->GetEditTogglePtr();
 	mouseDown = input->GetMouseDownPtr();
 
 } //end constructor
@@ -72,30 +65,32 @@ bool Editor::Init()
 	printf("Run number: %d \n", game->sceneruntimes);
 
 	world = new World;
-	world->define();
-	world->Load();
+	//world->define();
+	world->lines = false;
+	std::string map = game->GetNextMap();
+	if (map == "") {
+		world->CreateNew();
+	}
+	else {
+		world->Load(map);
+	}
 
 	//Load background based on world info
 	background->SetScene(this);
 
-	display->loadTextures("redDude.png", 0);
-	display->loadTextures("blocks.bmp", 1);
-	display->loadTextures("greenBackground.bmp", 2);
+	//display->loadTextures("redDude.png", 0);
+	//display->loadTextures("blocks.bmp", 1);
+	//display->loadTextures("greenBackground.bmp", 2);
 
 	camera = new Camera();
 	//display->SetCamera(camera);
 	SetDisplayCamera();
 
-	spawn(0);
-
-	entlist[0]->SetScene(this);
-
 	//Create scale enemy demo and rotate enemy demo
-	spawn(4);
-	spawn(5);
+	//spawn(4);
+	//spawn(5);
 
-	camera->Init(entlist[0]);
-	int nextScene = 0;
+	*mouseDown = false;
 
 	return success;
 }
@@ -204,10 +199,20 @@ display->SetCamera(&camera);
 void Editor::SaveMap(std::string t_name) {
 	const char* name = t_name.c_str();
 	printf("Saving: %s\n", name);
+	world->SaveToFile(t_name);
 }
+
 void Editor::LoadMap(std::string t_name){
 	const char* name = t_name.c_str();
-	printf("Loading: %s\n", name);
+	if (world->CheckExist(name)) {
+		printf("Loaded: %s\n", name);
+		endcondition = 2;
+		game->SetNextMap(t_name);
+		done = true;
+	}
+	else {
+		printf("Map '%s' does not exist!\n", name);
+	}
 }
 void Editor::HandleCommand(Command* command)
 {
@@ -238,15 +243,6 @@ Create an instance of camera and send it values for number of rays and player's 
 Create an instance of SDL_Event for player input, events change bools to "true"
 */
 
-int Editor::End()
-{
-	printf("\nNEXTSCENE: %d \n", nextScene);
-	world->SaveToFile();
-	return (nextScene);
-}
-//end run
-
-
 void Editor::Update()
 {
 	currentTime = SDL_GetTicks();
@@ -254,21 +250,21 @@ void Editor::Update()
 	Execute();
 
 	if (input->flags & IF_LEFT) {
-		entlist[0]->Input(IF_LEFT);
+		camera->x -= 10;
 	}
 	if (input->flags & IF_RIGHT) {
-		entlist[0]->Input(IF_RIGHT);
+		camera->x += 10;
 	}
-	if (input->flags & IF_SPACE) {
-		entlist[0]->Input(IF_SPACE);
+	if (input->flags & IF_UP) {
+		camera->y -= 10;
 	}
-	if (input->flags & IF_CTRL) {
-		entlist[0]->Input(IF_CTRL);
+	if (input->flags & IF_DOWN) {
+		camera->y += 10;
 	}
-	
+
 	EditLoop();
 
-	entlist[0]->update();
+	//entlist[0]->update();
 	camera->update();
 	/**************/
 	//movement.move(entlist[0]); //move, checkbounds, update
@@ -276,15 +272,22 @@ void Editor::Update()
 	//skeleton
 	//Act(entlist[0]->SceneRequest());
 	//display->update(); // background and clear
-	for (int i = 0; i < entcount; i++) {
-		if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
-		if (entlist[i]->getIsDead())despawn(entlist[i]);
-	} //update entities
-	  /**************/
+
+	if (entcount > 0) {
+		for (int i = 0; i < entcount; i++) {
+			if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
+			if (entlist[i]->getIsDead())despawn(entlist[i]);
+		} //update entities
+		  /**************/
+	}
+
 	background->Update();
 	display->draw(background);
-	for (int i = 0; i < entcount; i++) {
-		display->draw(entlist[i]);
+
+	if (entcount > 0) {
+		for (int i = 0; i < entcount; i++) {
+			display->draw(entlist[i]);
+		}
 	}
 
 	display->draw(world);
@@ -297,12 +300,13 @@ void Editor::Update()
 
 	// end updates
 }
+/*
 void Editor::SetDone(bool t_done)
 {
 	done = t_done;
 }
 //end run
-
+*/
 /*
 void Scene::SetDisplayCamera() {
 display->SetCamera(camera);

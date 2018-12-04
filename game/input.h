@@ -16,6 +16,8 @@ const int IF_CTRL = 32;
 const int IF_ESC = 64;
 const int IF_TILDE = 128;
 const int IF_ENTER = 256;
+const int IF_UP = 512;
+const int IF_DOWN = 1024;
 //Input flags
 class Input
 {

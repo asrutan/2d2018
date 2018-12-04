@@ -60,15 +60,24 @@ void QuitCommand::Execute(Game * target)
 
 void SaveMapCommand::Execute(BaseScene * target)
 {
-	target->SaveMap("TestMap");
+	if (mapname != "") {
+		target->SaveMap(mapname);
+		mapname = "";
+	}
 }
 
 void LoadMapCommand::Execute(BaseScene * target)
 {
-	if (mapname != "") {
+	if (mapname != "") {		
 		target->LoadMap(mapname);
 		mapname = "";
 	}
+}
+
+void SwitchModeCommand::Execute(Game * target)
+{
+	//End and switch to opposite mode.
+	target->SwitchScene();
 }
 
 JumpCommand jump;
@@ -76,3 +85,4 @@ UnpauseCommand unpause;
 QuitCommand quit;
 SaveMapCommand savemap;
 LoadMapCommand loadmap;
+SwitchModeCommand switchmode;

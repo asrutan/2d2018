@@ -9,7 +9,7 @@
 
 class Display;
 class Button;
-class Scene;
+class BaseScene;
 class Menu; //get rid of menu include when inheritance from scene abstract implemented properly.
 class Command;
 class Gui
@@ -24,12 +24,12 @@ class Gui
 		Gui();
 		Gui(Display* display);
 		~Gui();
-		Scene *scene = nullptr;
+		BaseScene *scene = nullptr;
 		Menu *mscene = nullptr;
 		//Display* GetGui();
 		void Update();
 		void SetDisplay(Display* display);
-		void SetScene(Scene* scene);
+		void SetScene(BaseScene* scene);
 		void SetScene(Menu* scene);
 		void CheckMouse(const int x, const int y);
 		void SetMessage(const char* message);
