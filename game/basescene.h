@@ -45,13 +45,25 @@ class BaseScene
 		//bool *quit = nullptr;
 		bool *editMode = nullptr;
 		bool *mouseDown = nullptr;
-
+		unsigned int currentTime = 0;
 		Game *game = nullptr;
 
     public:
 		Entity* entlist[255];
 		virtual bool loadTextures() = 0;
 		virtual bool Init() = 0;
+		virtual void SaveMap(std::string name) = 0;
+		virtual void LoadMap(std::string name) = 0;
+		virtual int GetCamX() { return camera->x; };
+		virtual int GetCamY() { return camera->y; };
+		virtual int spawn(int entityID) = 0;
+		virtual void Execute() {
+			Command *command = cbus.DoCommand();
+				if (command != NULL) {
+					command->Execute(this);
+				}
+			command = nullptr;
+		}
 		int nextScene = 0;
 		int screenWidth = 800;
 		int screenHeight = 600;

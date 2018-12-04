@@ -38,9 +38,9 @@ void CommandBus::PostCommand(Command * command)
 Command *CommandBus::DoCommand()
 {
 	if (commandAmount != 0) {
-		cout << commands[0]->sent << endl;
+		//cout << commands[0]->sent << endl;
 		commands[0]->sent = true;
-		cout << commands[0]->sent << endl;
+		//cout << commands[0]->sent << endl;
 
 		return commands[0];
 	}

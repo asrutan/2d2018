@@ -8,6 +8,7 @@
 #include "console.h"
 #include "player.h"
 #include "game.h"
+#include "basescene.h"
 
 using namespace std;
 
@@ -57,6 +58,19 @@ void QuitCommand::Execute(Game * target)
 	target->Quit();
 }
 
+void SaveMapCommand::Execute(BaseScene * target)
+{
+	target->SaveMap("TestMap");
+}
+
+void LoadMapCommand::Execute(BaseScene * target)
+{
+	target->LoadMap(mapname);
+	mapname = "";
+}
+
 JumpCommand jump;
 UnpauseCommand unpause;
 QuitCommand quit;
+SaveMapCommand savemap;
+LoadMapCommand loadmap;

@@ -165,9 +165,8 @@ int Entity::GameRequest()
 }
 //end setXY
 
-void Entity::SetScene(Scene * t_game)
+void Entity::SetScene(BaseScene * t_game)
 {
-	//game = t_game;
 }
 
 Player& Entity::NewPlayer()

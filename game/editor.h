@@ -5,42 +5,11 @@
 #ifndef EDITOR_EXIST
 #define	EDITOR_EXIST
 
-#include <SDL.h>
-#include <string>
-#include "display.h"
-#include "camera.h"
-#include "texture.h"
-#include "entity.h"
-#include "player.h"
-#include "movement.h"
-#include "collision.h"
-#include "input.h"
-#include "hud.h"
-#include "gui.h"
-#include "command.h"
-#include "command_bus.h"
+#include "basescene.h"
 
-//const int SPAWN = 0;
-//const int BULLET = 0;
-
-class Game;
-class Editor
+class Editor : public BaseScene
 {
     private:
-		Display *display;
-		Movement movement;
-		Input *input;
-		Camera camera;
-		World *world;
-		Hud *hud;
-		Gui *gui = nullptr;
-		bool *quit;
-		bool *editMode;
-		bool *mouseDown;
-		unsigned int currentTime;
-		bool create = false;
-
-		Game *game;
 
     public:
         Editor();
@@ -57,6 +26,8 @@ class Editor
 		int nextEditor = 0;
 		int spawn(int);
 		int despawn(Entity*);
+		virtual void SaveMap(std::string name);
+		virtual void LoadMap(std::string name);
 		int entcount;
 		int mousex;
 		int mousey;
@@ -69,7 +40,7 @@ class Editor
 
 		void HandleCommand(Command* command);
 
-		void EditorLoop();
+		//void EditorLoop();
 		void EditLoop();
 
 		unsigned int GetTime();

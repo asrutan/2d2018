@@ -28,6 +28,7 @@ public:
 	virtual void Execute(Entity *target) {}
 	virtual void Execute(Player *target) {}
 	virtual void Execute(Game *target) {}
+	virtual void Execute(BaseScene *target) {}
 	virtual bool BExecute(Game *target) { return false; }
 }; //end command
 
@@ -54,9 +55,26 @@ public:
 	void Execute(Game * target);
 };
 
+class SaveMapCommand : public Command {
+public:
+	SaveMapCommand() {}
+	SaveMapCommand(std::string name) {}
+	void Execute(BaseScene * target);
+};
+
+class LoadMapCommand : public Command {
+public:
+	LoadMapCommand() {}
+	LoadMapCommand(std::string name) {}
+	void Execute(BaseScene * target);
+	std::string mapname = "";
+};
+
 extern JumpCommand jump;
 extern UnpauseCommand unpause;
 extern QuitCommand quit;
+extern SaveMapCommand savemap;
+extern LoadMapCommand loadmap;
 
 #endif //COMMAND_EXISTS
 

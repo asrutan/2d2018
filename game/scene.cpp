@@ -62,16 +62,6 @@ Entity & Scene::GetPlayer()
 	return *entlist[0];
 }
 
-int Scene::GetCamX()
-{
-	return camera->x;
-}
-
-int Scene::GetCamY()
-{
-	return camera->y;
-}
-
 bool Scene::loadTextures()
 {  
     return true;
@@ -206,6 +196,12 @@ int Scene::despawn(Entity* entity)
 	else { cout << "can't despawn entity" << endl; return 0; }
 } //end spawn
 
+void Scene::LoadMap(std::string t_name)
+{
+	const char* name = t_name.c_str();
+	printf("Loaded: %s\n", name);
+}
+
 bool Scene::TimeUp()
 {
 	//if()
@@ -227,13 +223,6 @@ void Scene::SetDisplayCamera()
 void Scene::HandleCommand(Command* command)
 {
 	cbus.PostCommand(command);
-}
-
-void Scene::Act(int request)
-{
-	if (request == 1) {
-		spawn(3);
-	}
 }
 
 void Scene::SceneLoop() {
@@ -304,6 +293,8 @@ int Scene::End()
 void Scene::Update()
 {
 	currentTime = SDL_GetTicks();
+
+	Execute();
 
 	if (input->flags & IF_LEFT) {
 		entlist[0]->Input(IF_LEFT);

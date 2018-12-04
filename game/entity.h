@@ -11,7 +11,7 @@ const int MF_FIRE = 32;
 const int MF_LEFT = 4;
 const int MF_RIGHT = 8;
 
-class Scene;
+class BaseScene;
 class Player;
 
 class Entity{
@@ -41,7 +41,7 @@ class Entity{
 		int acceleration = 1;
 		unsigned int *time;
 
-		Scene *scene;
+		BaseScene *scene;
 
 		struct GameAction{
 			int action;
@@ -98,7 +98,7 @@ class Entity{
 		bool rotating = false;
 		double angle = 0;
 
-		virtual void SetScene(Scene *t_game);
+		virtual void SetScene(BaseScene *t_game);
 
 		Player& NewPlayer();
 

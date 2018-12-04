@@ -6,6 +6,7 @@
 #define GAME_EXIST
 
 #include "scene.h"
+#include "editor.h"
 #include "display.h"
 #include "gui.h"
 #include "input.h"
@@ -15,6 +16,7 @@ class Game
 {
     private:
 		Scene *scene;
+		Editor *editor;
 		Display m_display;
 		Input m_input;
 		Gui m_gui;
@@ -27,6 +29,10 @@ class Game
 		//Console *console = nullptr;
 
 		bool m_paused = false;
+
+		const int GAME = 0;
+		const int EDIT = 1;
+		int m_mode = GAME;
 
     public:
         Game();

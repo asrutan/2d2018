@@ -166,5 +166,10 @@ void Game::LoadScene()
 
 void Game::ConsoleCommand(Command *command)
 {
-	scene->HandleCommand(command);
+	if (m_mode == GAME) {
+		scene->HandleCommand(command);
+	}
+	else if (m_mode == EDIT) {
+		editor->HandleCommand(command);
+	}
 }

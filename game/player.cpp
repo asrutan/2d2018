@@ -70,6 +70,7 @@ void Player::update()//changed from entity
 	if (command != NULL) {
 		command->Execute(this);
 	}
+	command = nullptr;
 
 	if (!onGround)
 	{	
@@ -142,7 +143,7 @@ void Player::Jump()
 	//Alert("player jumped");
 }
 
-void Player::SetScene(Scene *t_scene)
+void Player::SetScene(BaseScene * t_scene)
 {
 	scene = t_scene;
 	cout << "SETSCENE" << endl;
