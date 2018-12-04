@@ -40,7 +40,7 @@ class Player : public Entity
 
 		void Jump();
 
-		void SetScene(Scene * t_scene);
+		void SetScene(BaseScene * scene);
 
 }; //end Player
 

@@ -8,6 +8,7 @@
 #include "console.h"
 #include "player.h"
 #include "game.h"
+#include "basescene.h"
 
 using namespace std;
 
@@ -57,6 +58,31 @@ void QuitCommand::Execute(Game * target)
 	target->Quit();
 }
 
+void SaveMapCommand::Execute(BaseScene * target)
+{
+	if (mapname != "") {
+		target->SaveMap(mapname);
+		mapname = "";
+	}
+}
+
+void LoadMapCommand::Execute(BaseScene * target)
+{
+	if (mapname != "") {		
+		target->LoadMap(mapname);
+		mapname = "";
+	}
+}
+
+void SwitchModeCommand::Execute(Game * target)
+{
+	//End and switch to opposite mode.
+	target->SwitchScene();
+}
+
 JumpCommand jump;
 UnpauseCommand unpause;
 QuitCommand quit;
+SaveMapCommand savemap;
+LoadMapCommand loadmap;
+SwitchModeCommand switchmode;

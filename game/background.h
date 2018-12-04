@@ -5,17 +5,17 @@
 #ifndef BACKGROUND_EXIST
 #define BACKGROUND_EXIST
 
-class Scene;
+class BaseScene;
 class Background
 {
 	private:
-		Scene *scene = nullptr;
+		BaseScene *scene = nullptr;
 		int sWidth = 0;
 
     public:
         Background();
         ~Background();
-		void SetScene(Scene* scene);
+		void SetScene(BaseScene* scene);
 		void Update();
 		int yCoords[3];
 		int xCoords[3];

@@ -25,13 +25,16 @@ class World
 	//void loadWorld(std::string, Display*);
 
 		void Load();
+		void Load(std::string name);
+		void CreateNew();
 		void CreateBrush(int t_x, int t_y);
 		void CreateBrush(int t_x, int t_y, int t_w, int t_h, int t_type);
 		void EditBrush(int t_x, int t_y);
 		void NormalizeBrush();
+		bool CheckExist(const char* name);
 
-		bool LoadFromFile();
-		void SaveToFile();
+		bool LoadFromFile(std::string filename);
+		void SaveToFile(std::string filename);
 
 		struct horizontal {
 			int y;
@@ -52,6 +55,8 @@ class World
 		Brush *brushes[255];
 
 		void define();
+
+		bool lines = true;
 }; //end World(lol)
 
 #endif //WORLD_EXISTS

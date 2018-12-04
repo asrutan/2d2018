@@ -149,8 +149,20 @@ void Game::RunScene()
 
 		display->close();
 	}
-	else {
+	else if (scene->End() == 1){
 		printf("New Scene\n");
+		delete this->scene;
+		scene = nullptr;
+		LoadScene();
+		RunScene();
+	}
+	else if (scene->End() == 2) {
+		delete this->scene;
+		scene = nullptr;
+		LoadEditor();
+		RunScene();
+	}
+	else if (scene->End() == 3) {
 		delete this->scene;
 		scene = nullptr;
 		LoadScene();
@@ -162,6 +174,37 @@ void Game::LoadScene()
 {
 	scene = new Scene(this);
 	m_gui.SetScene(scene);
+}
+
+void Game::LoadEditor()
+{
+	scene = new Editor(this);
+	m_gui.SetScene(scene);
+}
+
+void Game::SwitchScene()
+{
+	if (m_mode == GAME) {
+		m_mode = EDIT;
+		nextmap = "";
+		scene->endcondition = 2;
+	}
+	else if (m_mode == EDIT) {
+		m_mode = GAME;
+		scene->endcondition = 3;
+	}
+
+	scene->SetDone(true);
+}
+
+void Game::SetNextMap(std::string mapname)
+{
+	nextmap = mapname;
+}
+
+std::string Game::GetNextMap()
+{
+	return nextmap;
 }
 
 void Game::ConsoleCommand(Command *command)

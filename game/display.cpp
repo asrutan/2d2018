@@ -319,30 +319,33 @@ void Display::draw(World *world)
 
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 
-	SDL_RenderDrawLine(
-		renderer,
-		world->horizonts[0]->x1 - camX, 
-		world->horizonts[0]->y - camY,
-		world->horizonts[0]->x2 - camX, 
-		world->horizonts[0]->y - camY
-	);
+	if (world->lines) {
 
-	SDL_RenderDrawLine(
-		renderer, 
-		world->verts[0]->x - camX, 
-		world->verts[0]->y1 - camY, 
-		world->verts[0]->x - camX, 
-		world->verts[0]->y2 - camY
-	);
 
-	SDL_RenderDrawLine(
-		renderer,
-		world->verts[1]->x - camX,
-		world->verts[1]->y1 - camY,
-		world->verts[1]->x - camX,
-		world->verts[1]->y2 - camY
-	);
+		SDL_RenderDrawLine(
+			renderer,
+			world->horizonts[0]->x1 - camX,
+			world->horizonts[0]->y - camY,
+			world->horizonts[0]->x2 - camX,
+			world->horizonts[0]->y - camY
+		);
 
+		SDL_RenderDrawLine(
+			renderer,
+			world->verts[0]->x - camX,
+			world->verts[0]->y1 - camY,
+			world->verts[0]->x - camX,
+			world->verts[0]->y2 - camY
+		);
+
+		SDL_RenderDrawLine(
+			renderer,
+			world->verts[1]->x - camX,
+			world->verts[1]->y1 - camY,
+			world->verts[1]->x - camX,
+			world->verts[1]->y2 - camY
+		);
+	}
 	for (int i = 0; i < world->brushCount; i++) {
 		rects[i].x = world->brushes[i]->x - camX;
 		rects[i].y = world->brushes[i]->y - camY;

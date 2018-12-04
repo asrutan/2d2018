@@ -23,7 +23,6 @@ class Scene : public BaseScene
 		//bool *quit;
 		bool *editMode;
 		bool *mouseDown;
-		unsigned int currentTime;
 		bool create = false;
 
 		Game *game;
@@ -37,30 +36,24 @@ class Scene : public BaseScene
 		Entity& GetPlayer();
 		int screenWidth = 800;
 		int screenHeight = 600;
-		int GetCamX();
-		int GetCamY();
 		bool loadTextures();
 		bool Init();
-		int End();
-		void Update();
-		void SetDone(bool done);
-		int nextScene = 0;
+		//virtual int End();
+		virtual void Update();
+		//void SetDone(bool t_done);
 		int spawn(int);
 		int despawn(Entity*);
+		virtual void SaveMap(std::string name) {};
+		virtual void LoadMap(std::string name);
+		virtual void SwitchScene() {};
 		int entcount;
 		int mousex;
 		int mousey;
 		int playercount;
 		int enemycount;
-		bool done = false;
 		bool paused = false;
-		
-
-		CommandBus cbus;
 
 		void HandleCommand(Command* command);
-
-		void Act(int request);
 
 		void SceneLoop();
 		void EditLoop();

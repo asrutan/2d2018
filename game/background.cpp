@@ -3,7 +3,7 @@
 // 1/5/16
 
 #include "background.h"
-#include "scene.h"
+#include "basescene.h"
 
 Background::Background()
 {
@@ -26,11 +26,19 @@ Background::~Background()
 	scene = nullptr;
 } //end destructor
 
+void Background::SetScene(BaseScene * t_scene)
+{
+	scene = t_scene;
+	sWidth = scene->screenWidth;
+}
+
+/*
 void Background::SetScene(Scene * t_scene)
 {
 	scene = t_scene;
 	sWidth = scene->screenWidth;
 }
+*/
 
 void Background::Update()
 {	

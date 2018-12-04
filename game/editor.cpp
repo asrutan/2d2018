@@ -10,13 +10,14 @@
 using namespace std;
 
 /*
-Editor constructor 
+Editor constructor
 defines the values used for the resolution of the screen
 initializes values used by SDL for renderer, window, and textures
- */
+*/
 Editor::Editor()
 {
 	Entity *entlist = new Entity[255];
+	//entlist = new Entity[255];
 	entcount = 0;
 
 } //end constructor
@@ -27,16 +28,25 @@ Editor::Editor(Game *t_game)
 	input = game->GetInput();
 	display = game->GetDisplay();
 	gui = game->GetGui();
+	background = new Background();
 	Entity *entlist = new Entity[255];
+	//entlist = new Entity[255];
 	entcount = 0;
-	editMode = input->GetEditTogglePtr();
+	//cout << "Scene constructed" << endl;
+
+	//quit = false;
+
+	//quit = input->GetQuitPtr();
+	//editMode = input->GetEditTogglePtr();
 	mouseDown = input->GetMouseDownPtr();
 
 } //end constructor
 
 Editor::~Editor()
 {
-	delete[] *entlist;
+	delete camera;
+	camera = nullptr;
+	delete[] * entlist;
 } //end destructor
 
 Entity & Editor::GetPlayer()
@@ -45,39 +55,42 @@ Entity & Editor::GetPlayer()
 }
 
 bool Editor::loadTextures()
-{  
-    return true;
+{
+	return true;
 } //end loadTextures
 
 bool Editor::Init()
 {
 	bool success = true;
+	printf("Run number: %d \n", game->sceneruntimes);
 
 	world = new World;
-	world->define();
-	world->Load();
+	//world->define();
+	world->lines = false;
+	std::string map = game->GetNextMap();
+	if (map == "") {
+		world->CreateNew();
+	}
+	else {
+		world->Load(map);
+	}
 
-	display->loadTextures("player.bmp", 0);
-	display->loadTextures("blocks.bmp", 1);
+	//Load background based on world info
+	background->SetScene(this);
 
-	//Hud test
-	hud = new Hud;
-	hud->CreateElement("hud text test", 0, 0);
-	display->draw(hud);
-	//end hud
+	//display->loadTextures("redDude.png", 0);
+	//display->loadTextures("blocks.bmp", 1);
+	//display->loadTextures("greenBackground.bmp", 2);
 
-	display->SetCamera(&camera);
-
-	spawn(0);
-
-	//entlist[0]->SetEditor(this);
+	camera = new Camera();
+	//display->SetCamera(camera);
+	SetDisplayCamera();
 
 	//Create scale enemy demo and rotate enemy demo
-	spawn(4);
-	spawn(5);
+	//spawn(4);
+	//spawn(5);
 
-	camera.Init(entlist[0]);
-	int nextEditor = 0;
+	*mouseDown = false;
 
 	return success;
 }
@@ -85,16 +98,18 @@ bool Editor::Init()
 int Editor::spawn(int entid)
 {
 	if (entid == 0)
-		{ 
-			//entlist[entcount] = new Player(&currentTime);
-			entlist[entcount]->setListID(entcount);
-			entcount++;
+	{
+		//entlist[entcount] = new Entity(&currentTime, 0);
+		//*entlist[entcount] = entlist[entcount]->NewPlayer();
+		entlist[entcount] = new Player(&currentTime);
+		entlist[entcount]->setListID(entcount);
+		entcount++;
 
-			return 0;
-		}
+		return 0;
+	}
 	else if (entid == 1)
 	{
-		//entlist[entcount] = new Enemy(1, this);
+		entlist[entcount] = new Enemy(1, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(mousex, mousey);
 		entcount++;
@@ -102,7 +117,7 @@ int Editor::spawn(int entid)
 	}
 	else if (entid == 2)
 	{
-		//entlist[entcount] = new Enemy(2, this);
+		entlist[entcount] = new Enemy(2, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(mousex, mousey);
 		entcount++;
@@ -110,11 +125,11 @@ int Editor::spawn(int entid)
 	}
 	else if (entid == 3) {
 		if (entlist[0]->direction == 0) {
-			//entlist[entcount] = new Enemy(2, this);
+			entlist[entcount] = new Enemy(2, this);
 			entlist[entcount]->setXY(entlist[0]->x - 60, entlist[0]->y);
 		}
 		else {
-			//entlist[entcount] = new Enemy(1, this);
+			entlist[entcount] = new Enemy(1, this);
 			entlist[entcount]->setXY(entlist[0]->x + 100, entlist[0]->y);
 		}
 		entlist[entcount]->setListID(entcount);
@@ -123,7 +138,7 @@ int Editor::spawn(int entid)
 	}
 	//Scale Demo
 	else if (entid == 4) {
-		//entlist[entcount] = new Enemy(3, this);
+		entlist[entcount] = new Enemy(3, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(700, 250);
 		entcount++;
@@ -131,7 +146,7 @@ int Editor::spawn(int entid)
 	}
 	//Rotate Demo
 	else if (entid == 5) {
-		//entlist[entcount] = new Enemy(4, this);
+		entlist[entcount] = new Enemy(4, this);
 		entlist[entcount]->setListID(entcount);
 		entlist[entcount]->setXY(100, 250);
 		entcount++;
@@ -151,15 +166,15 @@ int Editor::despawn(Entity* entity)
 	{
 		delete entity;
 		entity = NULL;
-		for (int i = old; i < entcount-1; i++)
+		for (int i = old; i < entcount - 1; i++)
 		{
-			entlist[i] = entlist[i+1];
+			entlist[i] = entlist[i + 1];
 			entlist[i]->setListID(i);
 		}
 		entcount--;
 		return 0;
 	}
-	else if(entity->getListID() == entcount)
+	else if (entity->getListID() == entcount)
 	{
 		delete entity;
 		entity = NULL;
@@ -174,48 +189,41 @@ unsigned int Editor::GetTime()
 	return SDL_GetTicks();
 }
 
+/*
+void Scene::SetDisplayCamera()
+{
+display->SetCamera(&camera);
+}
+*/
+
+void Editor::SaveMap(std::string t_name) {
+	const char* name = t_name.c_str();
+	printf("Saving: %s\n", name);
+	world->SaveToFile(t_name);
+}
+
+void Editor::LoadMap(std::string t_name){
+	const char* name = t_name.c_str();
+	if (world->CheckExist(name)) {
+		printf("Loaded: %s\n", name);
+		endcondition = 2;
+		game->SetNextMap(t_name);
+		done = true;
+	}
+	else {
+		printf("Map '%s' does not exist!\n", name);
+	}
+}
 void Editor::HandleCommand(Command* command)
 {
 	cbus.PostCommand(command);
 }
 
-void Editor::EditorLoop() {
-	//input->keyEvents();
-	if (input->getMouse() != 0)
-	{
-		//Send to gui before we do camera offset calculations
-		gui->CheckMouse(input->mousex, input->mousey);
-
-		entlist[0]->TestQueue();
-		//cout << "click" << endl;
-		mousex = input->mousex + camera.x;
-		mousey = input->mousey + camera.y;
-
-		if (input->mousex > 700 && input->mousex < 750 && input->mousey > 500 && input->mousey < 550)
-		{
-			if (create)
-			{
-				create = false;
-			}
-			else create = true;
-			//entlist[0]->kill();
-		}
-		else
-		{
-			if (create)
-			{
-				if (mousex > 400)spawn(1);
-				else(spawn(2));
-			}
-		}
-	} //end if
-}
-
 void Editor::EditLoop() {
 	//input->keyEvents();
-	mousex = input->mousex + camera.x;
-	mousey = input->mousey + camera.y;
-	if (input->getMouse() != 0){
+	mousex = input->mousex + camera->x;
+	mousey = input->mousey + camera->y;
+	if (input->getMouse() != 0) {
 		world->CreateBrush(mousex, mousey);
 	} //end if
 
@@ -224,7 +232,7 @@ void Editor::EditLoop() {
 	}
 	else {
 		world->NormalizeBrush();
-	} 
+	}
 }
 
 /*
@@ -233,154 +241,55 @@ Create and instance of map, map is loaded when it is constructed
 Pass the map information on to player and the setEnemyMap via pointer
 Create an instance of camera and send it values for number of rays and player's initial position
 Create an instance of SDL_Event for player input, events change bools to "true"
- */
-int Editor::Run()
-{
-	world = new World;
-	world->define();
-	world->Load();
-
-	display->loadTextures("player.bmp", 0);
-	display->loadTextures("blocks.bmp", 1);
-
-	//Hud test
-	hud = new Hud;
-	hud->CreateElement("hud text test", 0, 0);
-	display->draw(hud);
-	//end hud
-
-	//display->SetCamera(&camera);
-
-	spawn(0);
-
-	//entlist[0]->SetScene(this);
-
-	//Create scale enemy demo and rotate enemy demo
-	spawn(4);
-	spawn(5);
-
-	camera.Init(entlist[0]);
-	bool keepGoing = true;
-	int nextEditor = 0;
-	while (keepGoing)
-	{
-		currentTime = SDL_GetTicks();
-		if (input->flags & IF_LEFT) {
-			entlist[0]->Input(IF_LEFT);
-		}
-		if (input->flags & IF_RIGHT) {
-			entlist[0]->Input(IF_RIGHT);
-		}
-		if (input->flags & IF_SPACE) {
-			entlist[0]->Input(IF_SPACE);
-		}
-		if (input->flags & IF_CTRL) {
-			entlist[0]->Input(IF_CTRL);
-		}
-
-		if (input->flags & IF_TAB) {
-			EditorLoop();
-		}
-		else {
-			EditLoop();
-		}
-
-		if (*quit)
-		{
-			keepGoing = false;
-			if (entlist[0]->direction == 1) {
-				nextEditor = 1;
-			}
-			*quit = false;
-		} //end if
-
-		entlist[0]->update();
-		camera.update();
-		/**************/
-		//movement.move(entlist[0]); //move, checkbounds, update
-
-		 //skeleton
-		//collision.checkBounds(entlist[0], world->horizonts[0]);
-
-		//collision.checkBounds(entlist[0], world->verts[0]);
-		//collision.checkBounds(entlist[0], world->verts[1]);
-
-		//skeleton
-		//Act(entlist[0]->EditorRequest());
-		display->update(); // background and clear
-		for (int i = 0; i < entcount; i++) {
-			if (i != 0)movement.move(entlist[i]);;
-			if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
-			display->draw(entlist[i]);
-			if (entlist[i]->getIsDead())despawn(entlist[i]);
-		} //update entities
-		  /**************/
-		display->draw(world);
-
-		gui->Update();
-
-		cbus.Tick();
-
-		display->render(); //draw to screen
-
-	// end updates
-	} //end while 
-	printf("\nNEXTEditor: %d \n", nextEditor);
-	return (nextEditor);
-}
-int Editor::End()
-{
-	printf("\nNEXTEditor: %d \n", nextEditor);
-	return (nextEditor);
-}
-//end run
-
+*/
 
 void Editor::Update()
 {
 	currentTime = SDL_GetTicks();
 
+	Execute();
+
 	if (input->flags & IF_LEFT) {
-		entlist[0]->Input(IF_LEFT);
+		camera->x -= 10;
 	}
 	if (input->flags & IF_RIGHT) {
-		entlist[0]->Input(IF_RIGHT);
+		camera->x += 10;
 	}
-	if (input->flags & IF_SPACE) {
-		entlist[0]->Input(IF_SPACE);
+	if (input->flags & IF_UP) {
+		camera->y -= 10;
 	}
-	if (input->flags & IF_CTRL) {
-		entlist[0]->Input(IF_CTRL);
-	}
-
-	if (input->flags & IF_TAB) {
-		EditorLoop();
-	}
-	else {
-		EditLoop();
+	if (input->flags & IF_DOWN) {
+		camera->y += 10;
 	}
 
-	entlist[0]->update();
-	camera.update();
+	EditLoop();
+
+	//entlist[0]->update();
+	camera->update();
 	/**************/
 	//movement.move(entlist[0]); //move, checkbounds, update
 
 	//skeleton
-	//collision.checkBounds(entlist[0], world->horizonts[0]);
-
-	//collision.checkBounds(entlist[0], world->verts[0]);
-	//collision.checkBounds(entlist[0], world->verts[1]);
-
-	//skeleton
-	//Act(entlist[0]->EditorRequest());
+	//Act(entlist[0]->SceneRequest());
 	//display->update(); // background and clear
-	for (int i = 0; i < entcount; i++) {
-		if (i != 0)movement.move(entlist[i]);
-		if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
-		display->draw(entlist[i]);
-		if (entlist[i]->getIsDead())despawn(entlist[i]);
-	} //update entities
-	  /**************/
+
+	if (entcount > 0) {
+		for (int i = 0; i < entcount; i++) {
+			if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
+			if (entlist[i]->getIsDead())despawn(entlist[i]);
+		} //update entities
+		  /**************/
+	}
+
+	background->Update();
+	display->draw(background);
+
+	if (entcount > 0) {
+		for (int i = 0; i < entcount; i++) {
+			display->draw(entlist[i]);
+		}
+	}
+
 	display->draw(world);
 
 	gui->Update();
@@ -389,10 +298,18 @@ void Editor::Update()
 
 	//display->render(); //draw to screen
 
-					   // end updates
+	// end updates
 }
+/*
 void Editor::SetDone(bool t_done)
 {
 	done = t_done;
 }
 //end run
+*/
+/*
+void Scene::SetDisplayCamera() {
+display->SetCamera(camera);
+}
+*/
+

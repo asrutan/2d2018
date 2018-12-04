@@ -36,6 +36,7 @@ class Menu : public Scene
 		void Update();
 		bool Init(Game *game);
 		void HandleCommand(Command *command);
+		void SwitchMode();
 		CommandBus mcbus;
 		//virtual void SetDisplayCamera();
 

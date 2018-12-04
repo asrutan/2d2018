@@ -4,7 +4,7 @@
 #include <iostream>
 #include "enemy.h"
 #include "entity.h"
-#include "scene.h"
+#include "basescene.h"
 
 using namespace std;
 
@@ -37,7 +37,7 @@ Enemy::Enemy()
 	entityID = 1;
 } //end constructor
 
-Enemy::Enemy(int t_mode, Scene *t_scene)
+Enemy::Enemy(int t_mode, BaseScene *t_scene)
 {
 	scene = t_scene;
 	mode = t_mode;

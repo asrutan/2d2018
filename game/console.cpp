@@ -84,10 +84,35 @@ void Console::TypeLetter(char c)
 
 void Console::Send()
 {
+	int length = m_userInput.length();
 	if (m_userInput == "jump") {
 		game->ConsoleCommand(&jump);
 	}
-
+	else if (length > 5) {
+		std::string load = "load ";
+		std::string save = "save ";
+		if (m_userInput.substr(0, 5) == load) {	
+			std::string mapname = m_userInput.substr(5, length);
+			//mapname.erase(remove(mapname.begin(), mapname.end(), ' '), mapname.end());
+			if (mapname.length() > 0) {
+				loadmap.mapname = mapname;
+			}
+			else {
+				loadmap.mapname = "error";
+			}
+			game->ConsoleCommand(&loadmap);
+		}
+		else if(m_userInput.substr(0, 5) == save){
+			std::string mapname = m_userInput.substr(5, length);
+			if (mapname.length() > 0) {
+				savemap.mapname = mapname;
+			}
+			else {
+				savemap.mapname = "";
+			}
+			game->ConsoleCommand(&savemap);
+		}
+	}
 	m_userInput = "";
 }
 

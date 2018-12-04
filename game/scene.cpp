@@ -62,16 +62,6 @@ Entity & Scene::GetPlayer()
 	return *entlist[0];
 }
 
-int Scene::GetCamX()
-{
-	return camera->x;
-}
-
-int Scene::GetCamY()
-{
-	return camera->y;
-}
-
 bool Scene::loadTextures()
 {  
     return true;
@@ -84,7 +74,8 @@ bool Scene::Init()
 
 	world = new World;
 	world->define();
-	world->Load();
+	//cout << game->GetNextMap() << endl;
+	world->Load(game->GetNextMap());
 	
 	//Load background based on world info
 	background->SetScene(this);
@@ -112,7 +103,6 @@ bool Scene::Init()
 	spawn(5);
 
 	camera->Init(entlist[0]);
-	int nextScene = 0;
 
 	return success;
 }
@@ -206,6 +196,20 @@ int Scene::despawn(Entity* entity)
 	else { cout << "can't despawn entity" << endl; return 0; }
 } //end spawn
 
+void Scene::LoadMap(std::string t_name)
+{
+	const char* name = t_name.c_str();
+	if (world->CheckExist(name)) {
+		printf("Loaded: %s\n", name);
+		endcondition = 1;
+		game->SetNextMap(t_name);
+		done = true;
+	}
+	else {
+		printf("Map '%s' does not exist!\n", name);
+	}
+}
+
 bool Scene::TimeUp()
 {
 	//if()
@@ -227,13 +231,6 @@ void Scene::SetDisplayCamera()
 void Scene::HandleCommand(Command* command)
 {
 	cbus.PostCommand(command);
-}
-
-void Scene::Act(int request)
-{
-	if (request == 1) {
-		spawn(3);
-	}
 }
 
 void Scene::SceneLoop() {
@@ -292,18 +289,21 @@ Create an instance of camera and send it values for number of rays and player's 
 Create an instance of SDL_Event for player input, events change bools to "true"
  */
 
+/*
 int Scene::End()
 {
-	printf("\nNEXTSCENE: %d \n", nextScene);
-	world->SaveToFile();
-	return (nextScene);
+	printf("\nEND CONDITION: %d\n", endcondition);
+	//world->SaveToFile();
+	return (endcondition);
 }
 //end run
-
+*/
 
 void Scene::Update()
 {
 	currentTime = SDL_GetTicks();
+
+	Execute();
 
 	if (input->flags & IF_LEFT) {
 		entlist[0]->Input(IF_LEFT);
@@ -319,10 +319,10 @@ void Scene::Update()
 	}
 
 	if (input->flags & IF_TAB) {
-		SceneLoop();
-	}
-	else {
 		EditLoop();
+	}
+	else {		
+		SceneLoop();
 	}
 
 	entlist[0]->update();
@@ -374,10 +374,6 @@ void Scene::Update()
 	//display->render(); //draw to screen
 
 					   // end updates
-}
-void Scene::SetDone(bool t_done)
-{
-	done = t_done;
 }
 //end run
 

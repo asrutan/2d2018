@@ -64,10 +64,17 @@ void Gui::SetDisplay(Display * t_display)
 	display = t_display;
 }
 
+void Gui::SetScene(BaseScene * t_scene)
+{
+	scene = t_scene;
+}
+
+/*
 void Gui::SetScene(Scene * t_scene)
 {
 	scene = t_scene;
 }
+*/
 
 void Gui::SetScene(Menu * t_scene) {
 	mscene = t_scene;

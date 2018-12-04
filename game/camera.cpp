@@ -37,6 +37,7 @@ void Camera::Init(Entity *p) {
 	printf("%d",p->x);
 	parent = p;
 	campan = true;
+	free = false;
 }
 
 void Camera::move()
@@ -64,8 +65,10 @@ void Camera::move()
 
 void Camera::update()
 {
-    x = parent->x - 350;
-	y = parent->y - 200;
+	if (!free) {
+		x = parent->x - 350;
+		y = parent->y - 200;
+	}
 
 	//printf("Camera x: %d\n", parent->x);
 
