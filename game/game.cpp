@@ -16,6 +16,7 @@ Game::Game()
 	display = &m_display;
 	input = &m_input;
 	gui = &m_gui;
+	sound = &m_sound;
 } //end constructor
 
 Game::~Game()
@@ -64,11 +65,13 @@ bool Game::Pause() {
 		m_paused = false;
 		scene->SetDisplayCamera(); //Give scene camera back to scene. When paused, we get menu camera.
 		Alert("unpaused");
+		m_sound.resumeBGMusic();
 	}
 	else {
 		m_paused = true;
 		m_menu.SetDisplayCamera();
 		Alert("paused");
+		m_sound.pauseBGMusic();
 	}
 	return m_paused;
 }
@@ -99,6 +102,7 @@ void Game::RunScene()
 	}
 	*/
 	scene->Init();
+	m_sound.playBGMusic();
 	while (!scene->done) {
 		/*
 		====Console====
@@ -146,7 +150,7 @@ void Game::RunScene()
 		display->GameOver();
 		printf("Game over. Thanks for playing!\n");
 		//system("pause");
-
+		m_sound.stopBGMusic();
 		display->close();
 	}
 	else if (scene->End() == 1){

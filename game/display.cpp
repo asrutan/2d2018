@@ -307,6 +307,9 @@ void Display::draw(Entity *entity)
 	if (entity->rotating) {
 		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], entity->angle, NULL, SDL_FLIP_NONE);
 	}
+	else if (entity->direction == 0) {
+		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], NULL, NULL, SDL_FLIP_HORIZONTAL);
+	}
 	else {
 		SDL_RenderCopy(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()]); //draw entity
 	}

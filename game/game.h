@@ -12,12 +12,14 @@
 #include "gui.h"
 #include "input.h"
 #include "menu.h"
+#include "sound.h"
 
 class Game
 {
     private:
 		BaseScene *scene;
 		Editor *editor;
+		Sound m_sound;
 		Display m_display;
 		Input m_input;
 		Gui m_gui;
@@ -27,6 +29,7 @@ class Game
 		Display *display = nullptr;
 		Input *input = nullptr;
 		Gui *gui = nullptr;
+		Sound *sound = nullptr;
 		//Console *console = nullptr;
 
 		bool m_paused = false;
