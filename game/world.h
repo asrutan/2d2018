@@ -25,12 +25,14 @@ class World
 	//void loadWorld(std::string, Display*);
 
 		void Load();
+		void Load(std::string name);
 		void CreateBrush(int t_x, int t_y);
 		void CreateBrush(int t_x, int t_y, int t_w, int t_h, int t_type);
 		void EditBrush(int t_x, int t_y);
 		void NormalizeBrush();
+		bool CheckExist(const char* name);
 
-		bool LoadFromFile();
+		bool LoadFromFile(std::string filename);
 		void SaveToFile();
 
 		struct horizontal {

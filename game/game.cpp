@@ -164,6 +164,18 @@ void Game::LoadScene()
 	m_gui.SetScene(scene);
 }
 
+void Game::SetNextMap(std::string mapname)
+{
+	nextmap = mapname;
+	cout << nextmap << endl;
+}
+
+std::string Game::GetNextMap()
+{
+	cout << nextmap << endl;
+	return nextmap;
+}
+
 void Game::ConsoleCommand(Command *command)
 {
 	if (m_mode == GAME) {

@@ -34,6 +34,8 @@ class Game
 		const int EDIT = 1;
 		int m_mode = GAME;
 
+		std::string nextmap = "testmap";
+
     public:
         Game();
         ~Game();
@@ -47,6 +49,8 @@ class Game
 		int Init();
 		void RunScene();
 		void LoadScene();
+		void SetNextMap(std::string mapname);
+		std::string GetNextMap();
 
 		void ConsoleCommand(Command *command);
 

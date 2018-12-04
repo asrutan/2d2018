@@ -74,7 +74,8 @@ bool Scene::Init()
 
 	world = new World;
 	world->define();
-	world->Load();
+	//cout << game->GetNextMap() << endl;
+	world->Load(game->GetNextMap());
 	
 	//Load background based on world info
 	background->SetScene(this);
@@ -102,7 +103,6 @@ bool Scene::Init()
 	spawn(5);
 
 	camera->Init(entlist[0]);
-	int nextScene = 0;
 
 	return success;
 }
@@ -199,7 +199,15 @@ int Scene::despawn(Entity* entity)
 void Scene::LoadMap(std::string t_name)
 {
 	const char* name = t_name.c_str();
-	printf("Loaded: %s\n", name);
+	if (world->CheckExist(name)) {
+		printf("Loaded: %s\n", name);
+		endcondition = 1;
+		game->SetNextMap(t_name);
+		done = true;
+	}
+	else {
+		printf("Map '%s' does not exist!\n", name);
+	}
 }
 
 bool Scene::TimeUp()
@@ -283,9 +291,9 @@ Create an instance of SDL_Event for player input, events change bools to "true"
 
 int Scene::End()
 {
-	printf("\nNEXTSCENE: %d \n", nextScene);
-	world->SaveToFile();
-	return (nextScene);
+	printf("\nEND CONDITION: %d\n", endcondition);
+	//world->SaveToFile();
+	return (endcondition);
 }
 //end run
 

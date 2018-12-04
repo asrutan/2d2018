@@ -65,8 +65,10 @@ void SaveMapCommand::Execute(BaseScene * target)
 
 void LoadMapCommand::Execute(BaseScene * target)
 {
-	target->LoadMap(mapname);
-	mapname = "";
+	if (mapname != "") {
+		target->LoadMap(mapname);
+		mapname = "";
+	}
 }
 
 JumpCommand jump;
