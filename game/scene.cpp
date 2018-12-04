@@ -72,7 +72,7 @@ bool Scene::Init()
 	world->define();
 	world->Load();
 
-	display->loadTextures("player.bmp", 0);
+	display->loadTextures("redDude.bmp", 0);
 	display->loadTextures("blocks.bmp", 1);
 
 	//Hud test
