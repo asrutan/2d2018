@@ -22,7 +22,7 @@ class Enemy : public Entity
     public:
         Enemy();
 		//Enemy(int direction);
-		Enemy(int t_mode, BaseScene *scene);
+		Enemy(int t_mode);
         ~Enemy();
         virtual void tryMove();
 		virtual void move();

@@ -13,17 +13,12 @@ const int IF_LEFT = 4;
 const int IF_RIGHT = 8;
 const int IF_TAB = 16;
 const int IF_CTRL = 32;
-const int IF_ESC = 64;
-const int IF_TILDE = 128;
-const int IF_ENTER = 256;
-const int IF_UP = 512;
-const int IF_DOWN = 1024;
 //Input flags
 class Input
 {
 private:
 	SDL_Event event;
-	//bool escape = false;
+	bool quit = false;
 	bool click;
 	bool editToggle = false;
 	bool mouseDown = false;
@@ -38,7 +33,6 @@ public:
 	int mousey;
 
 	void keyEvents();
-	char letterEvents();
 	int getMouse();
 	bool *GetQuitPtr();
 	bool *GetEditTogglePtr();

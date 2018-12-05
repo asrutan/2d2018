@@ -1,8 +1,6 @@
 // collision.cpp
 // PA
-// Alex Rutan
 // 12/01/15
-// mod 10/16/17
 
 #include <iostream>
 #include "collision.h"
@@ -22,7 +20,6 @@ Collision::~Collision()
 
 //WORKING
 
-//Check for collisions between two entities, tell them they've collided.
 void Collision::checkBounds(Entity * entity1, Entity * entity2)
 {
 	if (entity1->x + entity1->width > entity2->x && entity1->x < entity2->x) // right side collide
@@ -66,7 +63,56 @@ void Collision::checkBounds(Entity * entity1, Entity * entity2)
 	}
 }
 
-//Check collision between an entity and a horizontal line.
+
+/*
+//EXPERIMENTAL
+void Collision::checkBounds(Entity * entity1, Entity * entity2)
+{
+	if (entity1->x + entity1->width > entity2->x && entity1->x < entity2->x) // right side collide
+	{
+		if (entity1->y < entity2->y + entity2->height && entity1->y + entity1->height > entity2->y)
+		{
+			entity1->collided = true;
+			entity2->collided = true;
+			cout << "right" << endl;
+		}
+	}
+
+	else if (entity1->x < entity2->x + entity2->width && entity1->x + entity1->width > entity2->x + entity2->width) // left side collide
+	{
+		if (entity1->y < entity2->y + entity2->height && entity1->y + entity1->height > entity2->y)
+		{
+			entity1->collided = true;
+			entity2->collided = true;
+			cout << "left" << endl;
+		}
+	}
+
+	if (entity1->y < entity2->y + entity2->height && entity1->y + entity1->height > entity2->y + entity2->height) // top collide
+	{
+		if (entity1->x + entity1->width > entity2->x && entity1->x < entity2->x + entity2->width)
+		{
+			entity1->collided = true;
+			entity2->collided = true;
+			cout << "top" << endl;
+			if (entity1->x >= entity2->x)(entity1->collideSide[1] = true, cout << "leftHit" << endl);
+			if (entity1->x <= entity2->x)(entity1->collideSide[0] = true, cout << "rightHit" << endl);
+			if (entity1->y >= entity2->y)(entity1->collideSide[3] = true, cout << "topHit" << endl);
+		}
+	}
+
+	if (entity1->y + entity1->height > entity2->y && entity1->y < entity2->y) // bottom collide
+	{
+		if (entity1->x + entity1->width > entity2->x && entity1->x < entity2->x + entity2->width)
+		{
+			entity1->collided = true;
+			entity2->collided = true;
+			//cout << "bottom" << endl;
+			if (entity1->y >= entity2->y)(entity1->collideSide[4] = true, cout << "bottom" << endl);
+		}
+	}
+}*/
+
 void Collision::checkBounds(Entity * entity1, World::horizontal* horizont)
 {
 	if (entity1->y + entity1->height > horizont->y) // bottom collide
@@ -79,7 +125,6 @@ void Collision::checkBounds(Entity * entity1, World::horizontal* horizont)
 	}
 }
 
-//Check collision between an entity and a vertical line.
 void Collision::checkBounds(Entity * entity1, World::vertical* vert)
 {
 	if (entity1->x + entity1->width > vert->x) // side collide
@@ -108,7 +153,6 @@ void Collision::checkBounds(Entity * entity1, World::vertical* vert)
 	}
 }
 
-//Check collision between an entity and a brush.
 void Collision::checkBounds(Entity *entity1, Brush *brush)
 {
 	if (entity1->x + entity1->width > brush->x && entity1->x < brush->x) // right side collide
@@ -155,7 +199,6 @@ void Collision::checkBounds(Entity *entity1, Brush *brush)
 	}
 }
 
-//Check collision between an entity and a given point.
 void Collision::checkBounds(Entity * entity1, int x, int y)
 {
 	if (entity1->x + entity1->width > x && entity1->x < x) // right side collide

@@ -38,9 +38,10 @@ class Player : public Entity
 		int GameRequest();
 		void CooldownOff();
 
-		void Jump();
+		void SetGame(Game * t_game);
 
-		void SetScene(BaseScene * scene);
+		//template<typename T>
+		//void SetGame(T *t_game);
 
 }; //end Player
 

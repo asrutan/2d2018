@@ -20,7 +20,6 @@ class Camera
 		int xVelocity;
 		int yVelocity;
 		bool campan = true;
-		bool free = true;
 
     public:
         Camera();
