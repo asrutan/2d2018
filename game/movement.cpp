@@ -6,6 +6,13 @@
 
 using namespace std;
 
+/*
+==========================Movement()===========================
+Exepriment in having a seperate object move entities.
+===============================================================
+*/
+
+
 Movement::Movement()
 {
 } //end constructor

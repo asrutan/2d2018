@@ -9,9 +9,14 @@
 
 using namespace std;
 
-Scene *scene = 0;
+Scene *scene = nullptr;
 //Or set to nullptr idr.
 
+/*
+==========================Player()=============================
+Set variables and flags for the player character.
+===============================================================
+*/
 Player::Player(unsigned int *Time)
 {
     spriteX = 50;//wraps collision box closer to sprite
@@ -56,23 +61,30 @@ Player::~Player()
 //{
 //}
 
+/*
+==========================update()=============================
+Update states and move the player based on them.
+===============================================================
+*/
 void Player::update()//changed from entity
 {
-	if (dying)dead = true;
+	if (dying)dead = true; //Kill the player
 
 	/*
 	if (console.GetMessage() == "jump") {
 		Jump();
 	}
 	*/
-
+	/*
+	Do commands in cbus, can only jump.
+	*/
 	Command *command = scene->cbus.DoCommand();
 	if (command != NULL) {
 		command->Execute(this);
 	}
 	command = nullptr;
 
-	if (!onGround)
+	if (!onGround) //fall
 	{	
 		if (yVelocity < 10) {
 			//cout << yVelocity << endl;
@@ -82,9 +94,15 @@ void Player::update()//changed from entity
 	Move();
 	//printf("Player x: %d ", x);
 	//TestQueue();
-	DoMethod(queue.Execute());
+	DoMethod(queue.Execute()); //Queue methods
 } //end update
 
+/*
+==========================Move()===============================
+Evaluate flags that are set in Input()
+Experimenting with cool bitwise flags
+===============================================================
+*/
 void Player::Move()
 {
 	//cout << "move" << endl;
@@ -118,6 +136,11 @@ void Player::Input(int t_flags) {
 	//mFlags |= t_flags;
 }
 
+/*
+==========================Fire()===============================
+Spawn a bullet (or just an enemy) in the direction we're facing
+===============================================================
+*/
 void Player::Fire() {
 	if (!fireCooldown) {
 		cout << "BANG" << endl;
@@ -139,19 +162,30 @@ void Player::Jump()
 		yVelocity = -30;
 		onGround = false;
 	}
-	mFlags &= ~(MF_JUMP);
+	mFlags &= ~(MF_JUMP); //Set opposite of jump
 	//Alert("player jumped");
 }
 
+/*
+=========================SetScene()============================
+Player receives a pointer to the scene in which he exists so
+he can call functions within scene.
+===============================================================
+*/
 void Player::SetScene(BaseScene * t_scene)
 {
 	scene = t_scene;
-	cout << "SETSCENE" << endl;
+	//cout << "SETSCENE" << endl;
 	int sixtynine = testExt;
-	cout << sixtynine << endl;
+	//cout << sixtynine << endl;
 	Alert("player says hi");
 }
 
+/*
+=========================GameRequest()============================
+Did we fire?
+===============================================================
+*/
 int Player::GameRequest() {
 	if (fired) {
 		fired = false;
@@ -159,8 +193,3 @@ int Player::GameRequest() {
 	}
 	return 0;
 }
-
-//void Entity::move()
-//{
-//	x = x + xVelocity;//update x by xVelocity
-//}

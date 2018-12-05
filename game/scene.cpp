@@ -10,26 +10,21 @@
 
 using namespace std;
 
-/*
-Scene constructor 
-defines the values used for the resolution of the screen
-initializes values used by SDL for renderer, window, and textures
- */
 Scene::Scene()
 {
 	Entity *entlist = new Entity[255];
-	//entlist = new Entity[255];
 	entcount = 0;
-    //cout << "Scene constructed" << endl;
-
-	//quit = false;
-
-	//quit = input->GetQuitPtr();
-	//editMode = input->GetEditTogglePtr();
-	//mouseDown = input->GetMouseDownPtr();
-
 } //end constructor
 
+/*
+============================Scene()============================
+Scene constructor that takes a pointer to the game that
+instantiated it.
+Gets pointers to:
+Game, Input, Display, Gui, Background.
+Initializes list of entites.
+===============================================================
+*/
 Scene::Scene(Game *t_game)
 {
 	game = t_game;
@@ -59,14 +54,23 @@ Scene::~Scene()
 
 Entity & Scene::GetPlayer()
 {
-	return *entlist[0];
+	return *entlist[0]; //player is always at first spot in list
 }
 
+//Moved to display
 bool Scene::loadTextures()
 {  
     return true;
 } //end loadTextures
 
+/*
+============================Init()=============================
+Initializes the world and runs the map that is dictated by the
+game. Loads all of the textures we will use into memory on
+the display. Creates a camera and sets it in display as the 
+current camera. Spawns the player and test entities.
+===============================================================
+*/
 bool Scene::Init()
 {
 	bool success = true;
@@ -75,7 +79,6 @@ bool Scene::Init()
 	world = new World;
 	world->define();
 	world->lines = true;
-	//cout << game->GetNextMap() << endl;
 	world->Load(game->GetNextMap());
 	
 	//Load background based on world info
@@ -108,6 +111,13 @@ bool Scene::Init()
 	return success;
 }
 
+/*
+============================Spawn()============================
+Takes an entity ID, spawns the appropriate entity by
+instantiating it and placing it in the entlist array, which
+is iterated through for updating and displaying in Update().
+===============================================================
+*/
 int Scene::spawn(int entid)
 {
 	if (entid == 0)
@@ -168,6 +178,13 @@ int Scene::spawn(int entid)
 	else { cout << "can't spawn entity" << endl; return 0; }
 } //end spawn
 
+/*
+============================Despawn()==========================
+Calls the destructor on an entity and removes it from the array
+of entities in this scene. Sorts the array of entities so that
+there are no gaps. 
+===============================================================
+*/
 int Scene::despawn(Entity* entity)
 {
 	if (entcount < 1) { cout << "nothing to despawn" << endl;  return 0; }
@@ -197,19 +214,28 @@ int Scene::despawn(Entity* entity)
 	else { cout << "can't despawn entity" << endl; return 0; }
 } //end spawn
 
+/*
+============================LoadMap()==========================
+Used by a command to initiate a map loading sequence. If it
+is successful, set the map to the next map and end the scene.
+When the scene ends, the game will immediately start a new scene
+with the new map.
+===============================================================
+*/
 void Scene::LoadMap(std::string t_name)
 {
 	const char* name = t_name.c_str();
 	if (world->CheckExist(name)) {
 		printf("Loaded: %s\n", name);
-		endcondition = 1;
-		game->SetNextMap(t_name);
+		endcondition = 1; //Start next scene
+		game->SetNextMap(t_name); //Load this after this one closes
 		done = true;
 	}
 	else {
 		printf("Map '%s' does not exist!\n", name);
 	}
 }
+
 
 bool Scene::TimeUp()
 {
@@ -229,11 +255,24 @@ void Scene::SetDisplayCamera()
 }
 */
 
+/*
+==========================HandleCommand()======================
+Used by elements within the scene to push commands to the game.
+Used by the console and by buttons to issue commands to the
+current scene or elements in the scene.
+===============================================================
+*/
 void Scene::HandleCommand(Command* command)
 {
 	cbus.PostCommand(command);
 }
 
+/*
+==========================SceneLoop()=========================
+Control behavior for when the scene is not in "edit" mode.
+Meaning we cannot create brushes.
+===============================================================
+*/
 void Scene::SceneLoop() {
 	//input->keyEvents();
 	if (input->getMouse() != 0)
@@ -241,19 +280,22 @@ void Scene::SceneLoop() {
 		//Send to gui before we do camera offset calculations
 		gui->CheckMouse(input->mousex, input->mousey);
 
-		entlist[0]->TestQueue();
+		entlist[0]->TestQueue(); //test queue functionality
 		//cout << "click" << endl;
 		mousex = input->mousex + camera->x;
 		mousey = input->mousey + camera->y;
 
+		/*
+		Entlist spawn testing (turned off)
+		*/
 		if (input->mousex > 700 && input->mousex < 750 && input->mousey > 500 && input->mousey < 550)
 		{
+			//never do anything
 			if (create)
 			{
 				create = false;
 			}
 			else create = true;
-			//entlist[0]->kill();
 		}
 		else
 		{
@@ -266,6 +308,12 @@ void Scene::SceneLoop() {
 	} //end if
 }
 
+/*
+==========================EditLoop()===========================
+If edit mode is on, we can click and drag the mouse to create
+new brushes that immediately become usable.
+===============================================================
+*/
 void Scene::EditLoop() {
 	//input->keyEvents();
 	mousex = input->mousex + camera->x;
@@ -283,29 +331,21 @@ void Scene::EditLoop() {
 }
 
 /*
-First, take each of the textures and assign them to their own specific rectangles to be drawn later
-Create and instance of map, map is loaded when it is constructed
-Pass the map information on to player and the setEnemyMap via pointer
-Create an instance of camera and send it values for number of rays and player's initial position
-Create an instance of SDL_Event for player input, events change bools to "true"
- */
-
-/*
-int Scene::End()
-{
-	printf("\nEND CONDITION: %d\n", endcondition);
-	//world->SaveToFile();
-	return (endcondition);
-}
-//end run
+==========================Update()=============================
+Execute any commands in the command bus, get control states,
+update entities, camera, world, and draw them. Get rid of anything
+left in the command bus at the end of the frame.
+===============================================================
 */
-
 void Scene::Update()
 {
-	currentTime = SDL_GetTicks();
+	currentTime = SDL_GetTicks(); //update current time
 
-	Execute();
+	Execute(); //cbus commands
 
+	/*
+	Player input commands.
+	*/
 	if (input->flags & IF_LEFT) {
 		entlist[0]->Input(IF_LEFT);
 	}
@@ -319,6 +359,9 @@ void Scene::Update()
 		entlist[0]->Input(IF_CTRL);
 	}
 
+	/*
+	Toggle edit mode on and off.
+	*/
 	if (input->flags & IF_TAB) {
 		EditLoop();
 	}
@@ -366,20 +409,11 @@ void Scene::Update()
 		display->draw(entlist[i]);
 	}
 
-	display->draw(world);
+	display->draw(world); //draw world!
 
-	gui->Update();
+	gui->Update(); //update buttons
 
-	cbus.Tick();
+	cbus.Tick(); //Clear current command in cbus
 
-	//display->render(); //draw to screen
-
-					   // end updates
+	//display->render(); //draw to screen moved to game
 }
-//end run
-
-/*
-void Scene::SetDisplayCamera() { 
-	display->SetCamera(camera); 
-}
-*/
