@@ -1,5 +1,5 @@
-							437 Final Project
-							Bailey Dishman & Alexander Rutan
+437 Final Project
+Bailey Dishman & Alexander Rutan
 
 Project Summary:
 	Our project is a tech demo build with our own C++/SDL2 game engine. Upon loading up the game, your controls will be WASD, or the arrow keys to move around, space to jump, control (ctrl) to fire, tilde (~/`) to open the developer console, and escape (esc) to pause. You will also see a button (purple square) in the top right. Upon pressing the button, the player’s jump command will be called, and the player will jump. When paused, there are three buttons the top button resumes the game, the middle button switches to edit mode, and the bottom button exits the game. When in edit mode, you can click and drag to place blocks around the world. To save a map, open the developer console, type “save”, followed by a space, then a map name, all with lower case letters. To switch back to the game, pause, and press the middle button again. Other valid commands that can be made using the developer console are: jump, load mapname, and save mapname.
