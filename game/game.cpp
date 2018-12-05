@@ -1,16 +1,18 @@
 // game.cpp
 // Alex Rutan
 // 4/1/15
+// mod 12/3/18
 #include <iostream>
 #include "game.h"
 #include "console.h"
 using namespace std;
 
-/*
-Game constructor 
-Display, Input, gui, and Sound are created and 
-their pointers are set. We pass these pointers to 
-Scene objects.
+ /*
+ ============================Game()=============================
+ Game constructor.
+ Display, Input, gui, and Sound are created andtheir pointers
+ are set. We pass these pointers to Scene objects.
+ ===============================================================
  */
 Game::Game()
 {
