@@ -15,8 +15,12 @@ CommandBus::CommandBus()
 	}
 }
 
-//Call tick to clear all commands that have already been sent.
-//TODO only works if one event is sent per frame.
+
+/*
+==============================Tick()===========================
+Call tick to clear all commands that have already been sent.
+===============================================================
+*///TODO only works if one event is sent per frame.
 void CommandBus::Tick()
 {
 	for (int i = 0; i < commandAmount; i++) {
@@ -27,6 +31,11 @@ void CommandBus::Tick()
 	}
 }
 
+/*
+===========================PostCommand()=======================
+Add a command to the command buffer. Called by the scene or game.
+===============================================================
+*/
 void CommandBus::PostCommand(Command * command)
 {
 	commands[commandAmount] = command;
@@ -36,6 +45,13 @@ void CommandBus::PostCommand(Command * command)
 	cout << "POST COMMAND" << endl;
 }
 
+/*
+===========================PostCommand()=======================
+Return the command to an object which can then execute the
+command. Once the command has been sent, remove it.
+If there is no command in the buffer, return NULL.
+===============================================================
+*/
 Command *CommandBus::DoCommand()
 {
 	if (commandAmount != 0) {

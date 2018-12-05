@@ -1,6 +1,7 @@
 // world.cpp
 // Alex Rutan
 // 11/22/15
+// mod 11/10/18
 #include <iostream>
 #include <vector>
 #include <string>
@@ -29,6 +30,12 @@ World::~World()
 {
 } //end destructor
 
+/*
+===========================CreateBrush()=======================
+Create new world geometry, increment our counter of world
+geometries.
+===============================================================
+*/
 void World::CreateBrush(int t_x, int t_y) {
 	brushes[brushCount] = new Brush(t_x, t_y, 0, 0, SOLID);
 	brushCount++;
@@ -39,6 +46,13 @@ void World::CreateBrush(int t_x, int t_y, int t_w, int t_h, int t_type) {
 	brushCount++;
 }
 
+/*
+===========================EditBrush()=========================
+When the mouse is held down, this function is called to change
+the current width and height of the brush. Set allnormal to
+false because after the mouse is released, we have to normalize.
+===============================================================
+*/
 void World::EditBrush(int t_x, int t_y)
 {
 	//cout << t_x << endl;
@@ -47,10 +61,16 @@ void World::EditBrush(int t_x, int t_y)
 	m_allNormal = false;
 }
 
+/*
+========================NormalizeBrush()=======================
+If not every brush is normal, change it so that there are no
+negative values in the width or height. If they are negative,
+collision doesn't know what to do.
+===============================================================
+*/
 void World::NormalizeBrush() {
 	if (!m_allNormal)
 	{
-		//cout << "NORMALIZE" << endl;
 		if (brushes[brushCount - 1]->w < 0) {
 			brushes[brushCount - 1]->x += brushes[brushCount - 1]->w;
 			brushes[brushCount - 1]->w *= -1;
@@ -63,6 +83,12 @@ void World::NormalizeBrush() {
 	m_allNormal = true;
 }
 
+/*
+==========================CheckExist()=========================
+Check to see if a file that matches the requested map name
+exists in the current directory.
+===============================================================
+*/
 bool World::CheckExist(const char * t_name)
 {
 	string name = t_name;
@@ -77,8 +103,12 @@ bool World::CheckExist(const char * t_name)
 	return false;
 }
 
-//Hard coded world for now. 
-//Load map from file later.
+
+/*
+=============================Load()============================
+"Load" a map that is hard-coded. Usually used if all else fails.
+===============================================================
+*/
 void World::Load() {
 	const int m_brushesLen = 2;
 	struct newBrush {
@@ -98,6 +128,12 @@ void World::Load() {
 	}
 }
 
+/*
+=============================Load()============================
+Take the name of a map and try to load the information from
+a file. If that fails, create a new empty map.
+===============================================================
+*/
 void World::Load(std::string name)
 {
 	const int m_brushesLen = 2;
@@ -115,6 +151,11 @@ void World::Load(std::string name)
 	}
 }
 
+/*
+==========================CreateNew()==========================
+Create a pre-defined map. Used when the editor is started.
+===============================================================
+*/
 void World::CreateNew()
 {
 	lines = false;
@@ -136,6 +177,11 @@ void World::CreateNew()
 	}
 }
 
+/* TODO: ELIMINATE
+==========================Define()==========================
+Old code that creates red lines for a sprite test.
+============================================================
+*/
 void World::define()
 {
 	
@@ -159,6 +205,14 @@ void World::define()
 	//brushCount++;
 }
 
+/*
+========================LoadFromFile()=========================
+Try to load a file by the same name as the map requested. If 
+we can open it, iterate through every 5 numbers for x,y,width,
+height, and type. Create a new brush for each five lines, then
+close the file.
+===============================================================
+*/
 bool World::LoadFromFile(string filename)
 {
 	string line;
@@ -208,6 +262,13 @@ bool World::LoadFromFile(string filename)
 	return false;
 }
 
+/*
+========================SaveToFile()===========================
+Open or create a file by the name of the map name requested. 
+Write the information for each brush in the current world line
+by line. Every five lines indicates a new brush.
+===============================================================
+*/
 void World::SaveToFile(string filename) {
 	ofstream myfile;
 	myfile.open(filename += ".map");

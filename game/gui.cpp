@@ -144,8 +144,8 @@ void Gui::DrawButton(Button * button)
 	display->draw(
 		button->x,
 		button->y,
-		button->height,
-		button->width
+		button->width,
+		button->height
 	);
 }
 

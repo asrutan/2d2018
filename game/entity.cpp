@@ -1,6 +1,8 @@
 // entity.cpp
 // PA
+// Alex Rutan
 // 1/5/16
+// Mod 10/31/18
 #include <iostream>
 #include <cmath>
 #include "entity.h"

@@ -49,9 +49,9 @@ bool Menu::Init(Game *t_game)
 	display->loadTextures("greenBackground.bmp", 3);
 
 	gui.SetDisplay(display);
-	gui.CreateButton("resume", 375, 200, 50, 100, &unpause );
-	gui.CreateButton("editor", 375, 300, 50, 100, &switchmode );
-	gui.CreateButton("quit", 375, 400, 50, 100, &quit );
+	gui.CreateButton("resume", 375, 200, 100, 50, &unpause );
+	gui.CreateButton("editor", 375, 300, 100, 50, &switchmode );
+	gui.CreateButton("quit", 375, 400, 100, 50, &quit );
 
 	//Make scene scenebase abstract.
 	gui.SetScene(this);

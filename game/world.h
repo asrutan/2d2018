@@ -5,7 +5,6 @@
 #ifndef WORLD_EXIST
 #define WORLD_EXIST
 
-#include <vector>
 #include <string>
 #include "tile.h"
 #include "brush.h"
@@ -13,16 +12,12 @@
 class World
 {
     private:
-	//std::vector<Tile> tiles;
-	//int stringToInt(std::string);
+
 		bool m_allNormal = true;
 
     public:
         World();
-	//World(Display*);
-	//World(Display*, std::string);
         ~World();
-	//void loadWorld(std::string, Display*);
 
 		void Load();
 		void Load(std::string name);
@@ -56,7 +51,7 @@ class World
 
 		void define();
 
-		bool lines = true;
-}; //end World(lol)
+		bool lines = true; //Whether or not to draw the red lines indicating the sprite test.
+}; //end World
 
 #endif //WORLD_EXISTS
