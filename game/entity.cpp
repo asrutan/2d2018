@@ -1,10 +1,13 @@
 // entity.cpp
 // PA
+// Alex Rutan
 // 1/5/16
+// Mod 10/31/18
 #include <iostream>
 #include <cmath>
 #include "entity.h"
-#include "game.h"
+#include "scene.h"
+#include "player.h"
 
 using namespace std;
 //Game *game = nullptr;
@@ -29,8 +32,7 @@ Entity::Entity()
 
 } //end constructor
 
-/*
-Entity::Entity(Game *game)
+Entity::Entity(unsigned int * t_time, const int t_type)
 {
 	spriteX = 0;
 	spriteY = 0;
@@ -47,15 +49,15 @@ Entity::Entity(Game *game)
 	//end public var
 	//queue.SetEntity(*this);
 
-	cout << "GAME" << endl;
-	cout << game->GetTime() << endl;
-
-} //end constructor
-*/
+	time = t_time;
+}
 
 Entity::~Entity()
 {
 } //end deconstructor
+
+void Entity::update() {
+}
 
 void Entity::setListID(int id)
 {
@@ -70,11 +72,6 @@ int Entity::getEntityID()
 	return entityID;
 }
 //end setListID
-
-void Entity::update()
-{
-	//TestQueue();
-} //end update
 
 bool Entity::getIsDead()
 {
@@ -142,7 +139,7 @@ void Entity::DoMethod(int methodId)
 {
 	if (methodId == PRINTTEST) {
 		repeatedTimes++;
-		printf("Queue Test %d\n", repeatedTimes);
+		//printf("Queue Test %d\n", repeatedTimes);
 		if (repeatedTimes == 5) {
 			queue.Push(TIMETEST, 0, false, 0);
 		}
@@ -170,9 +167,13 @@ int Entity::GameRequest()
 }
 //end setXY
 
-void Entity::SetGame(Game * t_game)
+void Entity::SetScene(BaseScene * t_game)
 {
-	//game = t_game;
+}
+
+Player& Entity::NewPlayer()
+{
+	return Player(time);
 }
 
 void Entity::kill()

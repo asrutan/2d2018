@@ -1,301 +1,290 @@
 // game.cpp
 // Alex Rutan
 // 4/1/15
+// mod 12/3/18
 #include <iostream>
 #include "game.h"
-
+#include "console.h"
 using namespace std;
 
-/*
-Game constructor 
-defines the values used for the resolution of the screen
-initializes values used by SDL for renderer, window, and textures
+ /*
+ ============================Game()=============================
+ Game constructor.
+ Display, Input, gui, and Sound are created andtheir pointers
+ are set. We pass these pointers to Scene objects.
+ ===============================================================
  */
 Game::Game()
 {
-	Entity *entlist = new Entity[255];
-	//entlist = new Entity[255];
-	entcount = 0;
-    //cout << "Game constructed" << endl;
-
-	//quit = false;
-
-	quit = input.GetQuitPtr();
-	editMode = input.GetEditTogglePtr();
-	mouseDown = input.GetMouseDownPtr();
-
+	display = &m_display;
+	input = &m_input;
+	gui = &m_gui;
+	sound = &m_sound;
 } //end constructor
 
 Game::~Game()
 {
-	delete[] *entlist;
 } //end destructor
 
-bool Game::loadTextures()
-{  
-    return true;
-} //end loadTextures
-
-int Game::spawn(int entid)
+Input * Game::GetInput()
 {
-	if (entid == 0)
-		{ 
-			entlist[entcount] = new Player(&currentTime);
-			entlist[entcount]->setListID(entcount);
-			entcount++;
-
-			return 0;
-		}
-	else if (entid == 1)
-	{
-		entlist[entcount] = new Enemy(1);
-		entlist[entcount]->setListID(entcount);
-		entlist[entcount]->setXY(mousex, mousey);
-		entcount++;
-		return 0;
-	}
-	else if (entid == 2)
-	{
-		entlist[entcount] = new Enemy(2);
-		entlist[entcount]->setListID(entcount);
-		entlist[entcount]->setXY(mousex, mousey);
-		entcount++;
-		return 0;
-	}
-	else if (entid == 3) {
-		if (entlist[0]->direction == 0) {
-			entlist[entcount] = new Enemy(2);
-			entlist[entcount]->setXY(entlist[0]->x - 60, entlist[0]->y);
-		}
-		else {
-			entlist[entcount] = new Enemy(1);
-			entlist[entcount]->setXY(entlist[0]->x + 100, entlist[0]->y);
-		}
-		entlist[entcount]->setListID(entcount);
-		entcount++;
-		return 0;
-	}
-	//Scale Demo
-	else if (entid == 4) {
-		entlist[entcount] = new Enemy(3);
-		entlist[entcount]->setListID(entcount);
-		entlist[entcount]->setXY(700, 250);
-		entcount++;
-		return 0;
-	}
-	//Rotate Demo
-	else if (entid == 5) {
-		entlist[entcount] = new Enemy(4);
-		entlist[entcount]->setListID(entcount);
-		entlist[entcount]->setXY(100, 250);
-		entcount++;
-		return 0;
-	}
-	else { cout << "can't spawn entity" << endl; return 0; }
-} //end spawn
-
-int Game::despawn(Entity* entity)
-{
-	if (entcount < 1) { cout << "nothing to despawn" << endl;  return 0; }
-
-	int old = entity->getListID();
-	int right = entcount - old;
-
-	if (old < entcount)
-	{
-		delete entity;
-		entity = NULL;
-		for (int i = old; i < entcount-1; i++)
-		{
-			entlist[i] = entlist[i+1];
-			entlist[i]->setListID(i);
-		}
-		entcount--;
-		return 0;
-	}
-	else if(entity->getListID() == entcount)
-	{
-		delete entity;
-		entity = NULL;
-		entcount--;
-		return 0;
-	}
-	else { cout << "can't despawn entity" << endl; return 0; }
-} //end spawn
-
-bool Game::TimeUp()
-{
-	//if()
-	return false;
+	return input;
 }
 
-unsigned int Game::GetTime()
+Display * Game::GetDisplay()
 {
-	return SDL_GetTicks();
+	return display;
 }
 
-void Game::Act(int request)
+Gui * Game::GetGui()
 {
-	if (request == 1) {
-		spawn(3);
-	}
-}
-
-void Game::GameLoop() {
-	input.keyEvents();
-	if (input.getMouse() != 0)
-	{
-		entlist[0]->TestQueue();
-		//cout << "click" << endl;
-		mousex = input.mousex + camera.x;
-		mousey = input.mousey + camera.y;
-		if (input.mousex > 700 && input.mousex < 750 && input.mousey > 500 && input.mousey < 550)
-		{
-			if (create)
-			{
-				create = false;
-			}
-			else create = true;
-			//entlist[0]->kill();
-		}
-		else
-		{
-			if (create)
-			{
-				if (mousex > 400)spawn(1);
-				else(spawn(2));
-			}
-		}
-	} //end if
-}
-
-void Game::EditLoop() {
-	input.keyEvents();
-	mousex = input.mousex + camera.x;
-	mousey = input.mousey + camera.y;
-	if (input.getMouse() != 0){
-		world->CreateBrush(mousex, mousey);
-	} //end if
-
-	if (*mouseDown) {
-		world->EditBrush(mousex, mousey);
-	}
-	else {
-		world->NormalizeBrush();
-	} 
+	return gui;
 }
 
 /*
-First, take each of the textures and assign them to their own specific rectangles to be drawn later
-Create and instance of map, map is loaded when it is constructed
-Pass the map information on to player and the setEnemyMap via pointer
-Create an instance of camera and send it values for number of rays and player's initial position
-Create an instance of SDL_Event for player input, events change bools to "true"
- */
-int Game::run()
+============================Init()=============================
+Initialize the display that we will use until the game is over.
+Send a pointer to this object to the main menu and the console.
+===============================================================
+*/
+int Game::Init() {
+	if (!display->init())
+	{
+		return(1);
+	} //end if
+
+	//GUI
+	//This adds a button in the top right of the screen.
+	//When we click it, the player will jump.
+	m_gui.SetDisplay(display);
+	m_gui.CreateButton("button", 500, 10, 60, 60, &jump);
+	//GUI
+
+	//Pause menu
+	m_menu.Init(this);
+	//Pause menu
+
+	console.SetGame(this);
+	console.SetDisplay(display);
+	console.SetInput(input);
+	return(0);
+}
+
+/*
+============================Pause()============================
+If this is called, return a bool indicating whether or not the 
+game is not paused. Print to the console whether or not we are 
+paused. Pause/Resume the background music.
+===============================================================
+*/
+bool Game::Pause() {
+	if (m_paused) {
+		m_paused = false;
+		scene->SetDisplayCamera(); //Give scene camera back to scene. When paused, we get menu camera.
+		Alert("unpaused");
+		m_sound.resumeBGMusic();
+	}
+	else {
+		m_paused = true;
+		m_menu.SetDisplayCamera();
+		Alert("paused");
+		m_sound.pauseBGMusic();
+	}
+	return m_paused;
+}
+
+/*
+============================Quit()=============================
+If this is called, make the scene run it's cleanup after the 
+current frame.
+===============================================================
+*/
+void Game::Quit() {
+	scene->SetDone(true);
+	cout << "Quit" << endl;
+}
+
+/*
+============================RunScene()=========================
+Initialzies a new scene, starts the music, and runs the frame-
+by-frame loop. After the loop, decide whether to switch to the
+editor, load a new scene, or exit the program.
+===============================================================
+*/
+void Game::RunScene()
 {
-    if (!display.init())
-    {
-		cout << "Coudn't initialize" << endl;
-    } //end if
-    else
-    {
+	sceneruntimes++; //Counter for debugging purposes to see how many scenes we've loaded since the program began.
+	scene->Init(); //Initialize the current scene or editor.
+	m_sound.playBGMusic(); //Start the music
 
-		world = new World;
-		world->define();
-		world->Load();
+	/*
+	Ends when the scene's done bool evaluates to true.
+	Update the display. (Clear it)
+	Make input read the keyboard.
+	Perform high-level checks for pausing etc.
+	Allow scene to perform this frame's calculations and display calls.
+	Read and execute special command bus just for game.
+	Draw the current frame.
+	*/
+	while (!scene->done) {
+		/*
+		====Console====
+		If we are typing into the console, draw it and read the keyboard.
+		*/
+		if (console.active) {
+			console.GetInput();
+			console.Draw();
+		}
+		/*
+		===============
+		*/
 
-		display.loadTextures("player.bmp", 0);
-		display.loadTextures("blocks.bmp", 1);
-
-		//Hud test
-		hud = new Hud;
-		hud->CreateElement("hud text test", 0, 0);
-		display.draw(hud);
-		//end hud
-		
-		display.SetCamPtr(&camera);
-
-		spawn(0);
-
-		entlist[0]->SetGame(this);
-
-		//Create scale enemy demo and rotate enemy demo
-		spawn(4);
-		spawn(5);
-
-		camera.Init(entlist[0]);
-        bool keepGoing = true;
-        while(keepGoing)
-		{
-			currentTime = SDL_GetTicks();
-			if (input.flags & IF_LEFT) {
-				entlist[0]->Input(IF_LEFT);
-			}
-			if (input.flags & IF_RIGHT) {
-				entlist[0]->Input(IF_RIGHT);
-			}
-			if (input.flags & IF_SPACE) {
-				entlist[0]->Input(IF_SPACE);
-			}
-			if (input.flags & IF_CTRL) {
-				entlist[0]->Input(IF_CTRL);
-			}
-
-			if (input.flags & IF_TAB) {
-				GameLoop();
+		display->update();
+		input->keyEvents();
+		if (input->flags & IF_ESC) {
+			input->flags &= ~(IF_ESC);
+			scene->paused = Pause();
+		}
+		if (input->flags & IF_TILDE) {
+			if (!console.active) {
+				console.active = true;
 			}
 			else {
-				EditLoop();
+				console.active = false;
+				console.ClearMessage();
 			}
-
-			if (*quit)
-			{
-				keepGoing = false;
-			} //end if
-
-			entlist[0]->update();
-			camera.update();
-			/**************/
-			//movement.move(entlist[0]); //move, checkbounds, update
-
-			 //skeleton
-			//collision.checkBounds(entlist[0], world->horizonts[0]);
-
-			//Iterate through all the brushes but stop as soon as we hit one of them and start over.
-			for (int i = 0; i < world->brushCount; i++) {
-				collision.checkBounds(entlist[0], world->brushes[i]);
-				if (entlist[0]->onGround) {
-					//cout << i << endl;
-					//printf("Brush hit: %d\n", i);
-					i = world->brushCount;
-				}
+			input->flags &= ~(IF_TILDE);			
+		}
+		if (!scene->paused) {
+			scene->Update();
+		}
+		else {
+			m_menu.Update();
+			Command *command = m_menu.mcbus.DoCommand();
+			if (command != NULL) {
+				command->Execute(this);
+				scene->paused = m_paused; //Janky, a command can pause the game, account for that command.
 			}
+		}
+		display->render(); //Draw the current frame.
+	}
+	/*
+	If the scene ends and returns a 0, close everything and end the game.
+	*/
+	if (scene->End() == 0) {
+		Alert("game over");
+		display->GameOver();
+		printf("Game over. Thanks for playing!\n");
+		//system("pause");
+		m_sound.stopBGMusic();
+		display->close();
+	}
+	/*
+	If the scene ends and returns a 1, load a new scene.
+	*/
+	else if (scene->End() == 1){
+		delete this->scene;
+		scene = nullptr;
+		LoadScene();
+		RunScene();
+	}
+	/*
+	If the scene ends and returns a 2, get rid of the scene and switch to the editor.
+	(can only evaluate true if current scene is a scene.)
+	*/
+	else if (scene->End() == 2) {
+		delete this->scene;
+		scene = nullptr;
+		LoadEditor();
+		RunScene();
+	}
+	/*
+	If the scene ends and returns a 3, get rid of the editor and switch to a scene.
+	(can only evaluate true if current scene is an editor.)
+	*/
+	else if (scene->End() == 3) {
+		delete this->scene;
+		scene = nullptr;
+		LoadScene();
+		RunScene();
+	}
+}
 
-			//collision.checkBounds(entlist[0], world->verts[0]);
-			//collision.checkBounds(entlist[0], world->verts[1]);
+/*
+============================LoadScene()========================
+Instantiate a new scene and set our pointer to point to it.
+Pass the pointer to our gui.
+===============================================================
+*/
+void Game::LoadScene()
+{
+	scene = new Scene(this);
+	m_gui.SetScene(scene);
+}
 
-			//skeleton
-			//Act(entlist[0]->GameRequest());
-			display.update(); // background and clear
-			for (int i = 0; i < entcount; i++){
-				if(i != 0)movement.move(entlist[i]);
-				collision.checkBounds(entlist[i], world->verts[0]);
-				collision.checkBounds(entlist[i], world->verts[1]);
-				if(i != 0)collision.checkBounds(entlist[0], entlist[i]);
-				if (i != 0 && !create)collision.checkBounds(entlist[i], mousex, mousey);
-				if (i != 0)entlist[i]->update(); //if collide, do not update to newX/newY
-				display.draw(entlist[i]);
-				if (entlist[i]->getIsDead())despawn(entlist[i]);
-			} //update entities
-			  /**************/
-			display.draw(world);
-			display.render(); //draw to screen
+/*
+============================LoadEditor()========================
+Instantiate a new editor and set our pointer to point to it.
+Pass the pointer to our gui.
+===============================================================
+*/
+void Game::LoadEditor()
+{
+	scene = new Editor(this);
+	m_gui.SetScene(scene);
+}
 
-	    // end updates
-		} //end while 
-    } //end else 
+/*
+============================SwitchScene()======================
+Called when we want to switch the current scene to an editor
+or current editor to a scene. Sets the end conditions
+accordingly. End the scene.
+===============================================================
+*/
+void Game::SwitchScene()
+{
+	if (m_mode == GAME) {
+		m_mode = EDIT;
+		nextmap = ""; //No default map to load for the editor. If we send this, it just creates a new one.
+		scene->endcondition = 2;
+	}
+	else if (m_mode == EDIT) {
+		m_mode = GAME;
+		scene->endcondition = 3;
+	}
 
-    display.close();
-    return (0);
-}//end run
+	scene->SetDone(true);
+}
+
+/*
+============================SetNextMap()=======================
+The next scene that gets loaded, load this map for it.
+===============================================================
+*/
+void Game::SetNextMap(std::string mapname)
+{
+	nextmap = mapname;
+}
+
+/*
+============================GetNextMap()=======================
+Return the name of the next map, used for the scene when it is
+initializing.
+===============================================================
+*/
+std::string Game::GetNextMap()
+{
+	return nextmap;
+}
+
+/*
+============================ConsoleCommand()===================
+When a valid command has been entered into the console and the
+return key has been hit, take that command and send it to the 
+current scene so that it may add it to the commmand bus.
+===============================================================
+*/
+void Game::ConsoleCommand(Command *command)
+{
+	scene->HandleCommand(command);
+}
