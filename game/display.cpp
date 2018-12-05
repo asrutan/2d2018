@@ -1,5 +1,6 @@
 //display.cpp
-//Alex Rutan / PA
+// PA
+//Alex Rutan 
 //11/22/15
 
 #include <iostream>
@@ -14,6 +15,11 @@
 
 using namespace std;
 
+/*
+===========================Display()===========================
+Initialize sdl rectangles, allocate arrays for textures.
+===============================================================
+*/
 Display::Display()
 {
     resX = 800;
@@ -55,7 +61,14 @@ Display::~Display()
 /*
 Initializes SDL and creates window, renderer, and assigns values for their initialization
 Has checks to make sure everythin initializes properly
-wiOtherwise it would be very hard to pinpoint what is breaking when nothing happens
+Otherwise it would be very hard to pinpoint what is breaking when nothing happens
+*/
+/*
+===========================init()=============================
+Create the window and initialize the libraries for display 
+text and pictures. Set the window and video modes. Turn on
+vertical-sync to prevent screen-tearing and cap the framerate.
+===============================================================
 */
 
 bool Display::init()
@@ -68,7 +81,7 @@ bool Display::init()
 	} //end if
 	else
 	{
-		window = SDL_CreateWindow("Kawaii", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, resX, resY, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("2D Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, resX, resY, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			cout << "Window Can't Be Created Fool" << endl;
@@ -111,6 +124,12 @@ bool Display::init()
 	}
 }//end init
 
+/*
+===========================close()=============================
+Free up every surface, get rid of textures, destroy the renderer.
+Quit SDL, TTF, and IMG libraries.
+===============================================================
+*/
 void Display::close()
 {
     SDL_DestroyRenderer(renderer);
@@ -148,6 +167,16 @@ SDL_Window* Display::getWindow()
     return window;
 }
 
+/*
+===========================loadTextures()======================
+Depending on the element, load the appropriate image file and 
+convert it to an SDL surface. We use SDL_IMG to load .png files
+and maintain their transparency. From there, create an SDL 
+Texture from the surface and add it to an array of textures.
+Any time we want to draw an object with that texture, just look
+at that spot in the array and blit it to the renderer.
+===============================================================
+*/
 bool Display::loadTextures(const char *spriteName, int entityID)
 {
     bool success = true;
@@ -213,15 +242,22 @@ bool Display::loadTextures(const char *spriteName, int entityID)
     return success;
 } //end loadTextures 
 
+/*
+============================LoadFont()=========================
+Using the same approach as loadTextures(), iterate through each
+letter of the alphabet, create a texture from surface for it, 
+and add it to the array of letter textures. Any time we need
+that letter, just look for the nth letter of the alphabet.
+===============================================================
+*/
 bool Display::LoadFont()
 {
-
 	//Loading success flag 
 	bool success = true; 
 	//Open the font 
 	font = TTF_OpenFont( "Basic-Regular.ttf", 18 ); 
 	if( font == NULL ) {
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf( "Failed to load font. SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false; 
 	}
 	else 
@@ -238,12 +274,18 @@ bool Display::LoadFont()
 			int textW = 0;
 			int textH = 0;
 			SDL_QueryTexture(letterTextures[i], NULL, NULL, &textW, &textH);
-			letterRect[i] = { 0, 0, textW, textH };
+			letterRect[i] = { 0, 0, textW, textH }; //Makes it so the spacing between letters is appropriate for the width of each letter.
 		}
 	}
 	return success;
 }
 
+/*
+============================PrintText()========================
+For each letter in the message from console, print each letter
+using the array of letter textures.
+===============================================================
+*/
 void Display::PrintText()
 {
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //white
@@ -274,6 +316,11 @@ int Display::getResY()
     return resY;
 }
 
+/*
+============================Update()===========================
+Clear the window and fill it with white.
+===============================================================
+*/
 void Display::update()
 {
 	SDL_UpdateWindowSurface(window);
@@ -285,6 +332,13 @@ void Display::update()
 //{
 //}
 
+/*
+============================Draw()=============================
+Draw an entity using it's location offset by the camera position.
+If it is flipped or rotating, use RenderCopyEx, otherwise just
+use RenderCopy to put the texture on the renderer.
+===============================================================
+*/
 void Display::draw(Entity *entity)
 {
 	dstrect[entity->getEntityID()].x = entity->x - camera->x;
@@ -292,29 +346,22 @@ void Display::draw(Entity *entity)
 	dstrect[entity->getEntityID()].w = entity->width;
 	dstrect[entity->getEntityID()].h = entity->height;
 
-
-	//SDL_Rect fillRect = {50, 50, 50, 50 };
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-	//SDL_RenderFillRect(renderer, &fillRect);
-
-	SDL_RenderDrawPoint(renderer, 700, 500);
-	SDL_RenderDrawPoint(renderer, 700, 550);
-	SDL_RenderDrawPoint(renderer, 750, 500);
-	SDL_RenderDrawPoint(renderer, 750, 550);
-
-	//SDL_RenderCopy(renderer, entityTexture[entity->entityID], &srcrect[entity->entityID], &dstrect[entity->entityID]);
-
 	if (entity->rotating) {
-		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], entity->angle, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], entity->angle, NULL, SDL_FLIP_NONE); //Rotating sprite
 	}
 	else if (entity->direction == 0) {
-		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], NULL, NULL, SDL_FLIP_HORIZONTAL);
+		SDL_RenderCopyEx(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()], NULL, NULL, SDL_FLIP_HORIZONTAL); //flipped sprite
 	}
 	else {
 		SDL_RenderCopy(renderer, entityTexture[entity->getEntityID()], NULL, &dstrect[entity->getEntityID()]); //draw entity
 	}
 }
 
+/*
+============================Draw()=============================
+Draw the lines of the world brushes using rects. They are green.
+===============================================================
+*/
 void Display::draw(World *world)
 {
 	int camX = camera->x;
@@ -322,7 +369,7 @@ void Display::draw(World *world)
 
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 
-	if (world->lines) {
+	if (world->lines) { //If we want to display the red box for sprite demo.
 
 
 		SDL_RenderDrawLine(
@@ -349,14 +396,11 @@ void Display::draw(World *world)
 			world->verts[1]->y2 - camY
 		);
 	}
-	for (int i = 0; i < world->brushCount; i++) {
+	for (int i = 0; i < world->brushCount; i++) { //Update the rect positions relative to the camera.
 		rects[i].x = world->brushes[i]->x - camX;
 		rects[i].y = world->brushes[i]->y - camY;
 		rects[i].w = world->brushes[i]->w;
 		rects[i].h = world->brushes[i]->h;
-
-		//rects[i].x = testBox.x - camX;
-		//rects[i].y = testBox.y - camY;
 
 		//wont work here
 		SDL_SetRenderDrawColor(
@@ -368,24 +412,25 @@ void Display::draw(World *world)
 		);
 	}
 
+	//Draw all the rects in the brush array in one call!
 	SDL_RenderDrawRects(
 		renderer,
 		rects,
 		world->brushCount
 	);
-	/*
-	SDL_RenderFillRect(
-		renderer,
-		rects
-	);
-	*/
 }
 
+//Not used yet.
 void Display::draw(Hud *hud)
 {
 	cout << hud->GetElementString(0) << endl;
 }
 
+/*
+============================Draw()=============================
+Draw our matrix of background textures relative to the camera.
+===============================================================
+*/
 void Display::draw(Background *background)
 {
 	for (int i = 0; i < 3; i++) {
@@ -397,6 +442,12 @@ void Display::draw(Background *background)
 	}
 }
 
+/*
+============================Draw()=============================
+Used for drawing buttons since we have not implemented textured
+buttons yet. Just draws a rectangle.
+===============================================================
+*/
 void Display::draw(const int t_x, const int t_y, const int t_w, const int t_h) {
 	
 	buttonRect.x = t_x;
@@ -408,6 +459,11 @@ void Display::draw(const int t_x, const int t_y, const int t_w, const int t_h) {
 	SDL_RenderDrawRect(renderer, &buttonRect);
 }
 
+/*
+============================GameOver()=============================
+Clear the screen with white.
+===============================================================
+*/
 void Display::GameOver()
 {
 	SDL_UpdateWindowSurface(window);
@@ -416,6 +472,13 @@ void Display::GameOver()
 	render();
 }
 
+/*
+============================render()===========================
+Render the current frame to the screen. If the console is active,
+draw it. Otherwise just present the renderer, which has already
+been prepared from render calls above.
+===============================================================
+*/
 void Display::render()
 {
 	//Test render text
@@ -432,24 +495,29 @@ void Display::render()
 
 }
 
+/*
+============================SetCamera()========================
+Set the current camera we use for our offset, good when switching
+between active scenes.
+===============================================================
+*/
 void Display::SetCamera(Camera *t_camera)
 {
 	camera = t_camera;
 }
 
+/*
+============================DrawConsole()======================
+If a message needs to be displayed by the console: for each
+letter in the message, iterate through the letter array until
+we've found a match, then save that index for drawing our
+letter textures onto the renderer.
+(letters[n] = lettertextures[n])
+===============================================================
+*/
 void Display::DrawConsole()
 {
-	//printf("Console message: %s \n", console.GetMessage());
-	//PrintText(console.GetMessage());
-
-	//const char* text = console.GetMessage();
 	std::string text = console.SGetMessage();
-
-	//Clear message.
-	//for (int i = 0; i++; i < 20) {
-		//messageLog[i].letterIndex[i] = 0;
-		//messageLog[i].messageLength = 0;
-	//}
 
 	int i = 0;
 	int pointer = 0;
@@ -463,15 +531,13 @@ void Display::DrawConsole()
 				//messageLog[0].rects[i].y = 0;
 				messageLog[0].letterIndex[i] = j;
 				pointer += letterRect[j].w;
-				j = 27; //exit for
+				j = 27; //exit for by going over limit
 			}
 		}
 		i++;
 	}
 
 	messageLog[0].messageLength = i;
-	//cout << letters[2] << endl;
-	//cout << text[4] << endl;
 	drawConsoleThisFrame = true;
 }
 
