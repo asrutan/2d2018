@@ -47,6 +47,10 @@ bool Menu::Init(Game *t_game)
 	//not setting scene of background because we do not need to update it.
 	background = new Background();
 	display->loadTextures("greenBackground.bmp", 3);
+	display->loadTextures("resumeButt.png", 4);
+	display->loadTextures("switchButt.png", 5);
+	display->loadTextures("quitButt.png", 6);
+	display->loadTextures("jumpButt.png", 7);
 
 	gui.SetDisplay(display);
 	gui.CreateButton("resume", 375, 200, 100, 50, &unpause );

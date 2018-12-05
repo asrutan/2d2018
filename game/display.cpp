@@ -237,6 +237,38 @@ bool Display::loadTextures(const char *spriteName, int entityID)
 			dstrect[entityID].w = 990;
 			dstrect[entityID].h = 780;
 		}
+		else if (entityID == 4) { //resume button
+			srcrect[entityID].x = 0;
+			srcrect[entityID].y = 0;
+			srcrect[entityID].w = 100;
+			srcrect[entityID].h = 50;
+			dstrect[entityID].w = 100;
+			dstrect[entityID].h = 50;
+		}
+		else if (entityID == 5) { //switch button
+			srcrect[entityID].x = 0;
+			srcrect[entityID].y = 0;
+			srcrect[entityID].w = 100;
+			srcrect[entityID].h = 50;
+			dstrect[entityID].w = 100;
+			dstrect[entityID].h = 50;
+		}
+		else if (entityID == 6) { //quit button
+			srcrect[entityID].x = 0;
+			srcrect[entityID].y = 0;
+			srcrect[entityID].w = 100;
+			srcrect[entityID].h = 50;
+			dstrect[entityID].w = 100;
+			dstrect[entityID].h = 50;
+		}
+		else if (entityID == 7) { //jump button
+			srcrect[entityID].x = 0;
+			srcrect[entityID].y = 0;
+			srcrect[entityID].w = 50;
+			srcrect[entityID].h = 50;
+			dstrect[entityID].w = 50;
+			dstrect[entityID].h = 50;
+		}
 	} //end else
 	surface = NULL;
     return success;
@@ -455,7 +487,23 @@ void Display::draw(const int t_x, const int t_y, const int t_w, const int t_h) {
 	buttonRect.w = t_w;
 	buttonRect.h = t_h;
 
+	/*
+	THIS IS THE WORST THING I HAVE EVER DONE.
+	*/
 	SDL_SetRenderDrawColor(renderer, 0x89, 0x37, 0xA4, 0xFF); 
+	if (t_y == 200) {
+		SDL_RenderCopy(renderer, entityTexture[4], NULL, &buttonRect); //draw entity
+	}
+	else if (t_y == 300) {
+		SDL_RenderCopy(renderer, entityTexture[5], NULL, &buttonRect); //draw entity
+	}
+	else if (t_y == 400) {
+		SDL_RenderCopy(renderer, entityTexture[6], NULL, &buttonRect); //draw entity
+	}
+	else {
+		SDL_RenderCopy(renderer, entityTexture[7], NULL, &buttonRect); //draw entity
+	}
+	
 	SDL_RenderDrawRect(renderer, &buttonRect);
 
 }
