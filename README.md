@@ -6,6 +6,10 @@ Project Summary:
 A video of these demonstration can be found here:
 https://www.youtube.com/watch?v=nV0idgHiX68&feature=youtu.be
 
+Software Engineering Plan:
+	Originally, the plan was to create a game engine, as well as a game with the engine to present. Due to time limitations, and technical difficulties along the way, it isn’t as much of a game as much as it is a tech demo, with the project being very much about the software design, research, and how robust the engine itself is at this time.  
+	Many aspects of the project were approached, and completed together such as planning, and software design. Some specific mentions of feature implementation would be that Alexander implemented the developer console, edit mode, map saving and loading, whereas Bailey implemented sound, an animation structure, the command structure using the command pattern, and all art assets. 
+
 Compilation Instructions:
 	In order to run this project, you will need to install the development libraries for SDL, SDL image, SDL ttf, and SDL mixer. Links to the download page for each of these libraries can be found below. Under the “Development Libraries” section at each of the links, download the zip and extract them somewhere easily accessible. 
 
