@@ -11,8 +11,7 @@ const int MF_FIRE = 32;
 const int MF_LEFT = 4;
 const int MF_RIGHT = 8;
 
-class BaseScene;
-class Player;
+class Game;
 
 class Entity{
 
@@ -41,8 +40,6 @@ class Entity{
 		int acceleration = 1;
 		unsigned int *time;
 
-		BaseScene *scene;
-
 		struct GameAction{
 			int action;
 		};
@@ -53,9 +50,8 @@ class Entity{
         Entity();
 		//Entity(Game*);
         //~Entity();
-		Entity(unsigned int *time, const int type);
 		virtual ~Entity();
-		virtual void update();
+        virtual void update();
 		int x; // CHANGE THESE VALUES BACK TO PRIVATE
 		int y; // THIS IS JUST TO TEST MOVING THE SPRITE IN Game!!!
 		int height;
@@ -90,7 +86,6 @@ class Entity{
 		virtual void CooldownOff();
 		void DoMethod(int);
 		void Move();
-		void Jump() {}
 		void Input(int t_flags);
 		virtual int GameRequest();
 
@@ -98,9 +93,7 @@ class Entity{
 		bool rotating = false;
 		double angle = 0;
 
-		virtual void SetScene(BaseScene *t_game);
-
-		Player& NewPlayer();
+		virtual void SetGame(Game *t_game);
 
 }; //end Entity
 

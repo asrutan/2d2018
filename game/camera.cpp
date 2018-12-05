@@ -37,7 +37,6 @@ void Camera::Init(Entity *p) {
 	printf("%d",p->x);
 	parent = p;
 	campan = true;
-	free = false; //Whether or not the camera is parented to an entity.
 }
 
 void Camera::move()
@@ -62,16 +61,10 @@ void Camera::move()
         y++;
     }
 } //end move
-
 void Camera::update()
 {
-	/*
-	If we aren't free, move to the entity minus the offset, centering the entity on the screen.
-	*/
-	if (!free) {
-		x = parent->x - 350;
-		y = parent->y - 200;
-	}
+    x = parent->x - 350;
+	y = parent->y - 200;
 
 	//printf("Camera x: %d\n", parent->x);
 
