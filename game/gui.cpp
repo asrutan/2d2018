@@ -15,6 +15,11 @@ using namespace std;
 const int HOVER = 1;
 const int DOWN = 2;
 
+/*
+============================Button=============================
+Define the class here since no one else can make buttons.
+===============================================================
+*/
 class Button : public Entity{
 	private:
 		bool active = true;
@@ -80,13 +85,20 @@ void Gui::SetScene(Menu * t_scene) {
 	mscene = t_scene;
 }
 
+/*
+============================CheckMouse=========================
+Check to see if we've clicked on a button.
+===============================================================
+*/
 void Gui::CheckMouse(const int x, const int y)
 {
 	int leftb = 0;
 	int rightb = 0;
 	int topb = 0;
 	int bottomb = 0;
-
+	/*
+	Get the boundaries for each button.
+	*/
 	for (int i = 0; i < buttonAmount; i++) {
 		leftb = buttons[i]->x;
 		rightb = leftb + buttons[i]->width;
@@ -149,6 +161,11 @@ void Gui::DrawButton(Button * button)
 	);
 }
 
+/*
+============================SendCommand()======================
+Send a command to the scene if a button has been clicked.
+===============================================================
+*/
 void Gui::SendCommand(Command * command)
 {
 	//Temporary until menu is of type scene.
@@ -164,6 +181,11 @@ Button::Button()
 {
 }
 
+/*
+============================Button()===========================
+Define where the button is and what it does when clicked.
+===============================================================
+*/
 Button::Button(const char * t_name, const int t_x, const int t_y, const int t_w, const int t_h, Command *t_command)
 {
 	name = t_name;
@@ -196,6 +218,11 @@ void Button::Hovered(bool t_hovered)
 
 }
 
+/*
+============================Press()============================
+Mouse down on button. Send command.
+===============================================================
+*/
 void Button::Press()
 {
 	Alert("button pressed");
@@ -205,6 +232,11 @@ void Button::Press()
 	gui->SendCommand(command);
 }
 
+/*
+============================Release()==========================
+Mouse up on button.
+===============================================================
+*/
 void Button::Release()
 {
 	if (state & HOVER & DOWN) {

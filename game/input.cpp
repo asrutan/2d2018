@@ -15,6 +15,15 @@ Input::~Input()
 {
 } //end destructor
 
+/*
+============================keyEvents()========================
+Called every frame to poll the keyboard for presses.
+We have a flag int, each flag represents a const int. We use
+bitwise operations to set and evaluate these flags. I saw it
+used when reading the source code for Doom 3 and thought it was
+cool.
+===============================================================
+*/
 void Input::keyEvents()
 {
 	while (SDL_PollEvent(&event) != 0)
@@ -62,10 +71,10 @@ void Input::keyEvents()
 					flags |= IF_TAB;
 				}
 			}
-			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
+			if (event.key.keysym.sym == SDLK_BACKQUOTE) { //console
 				flags |= IF_TILDE;
 			}
-			if (event.key.keysym.sym == SDLK_SPACE) {
+			if (event.key.keysym.sym == SDLK_SPACE) { //jump
 				flags |= IF_SPACE;
 			}
 			if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a){
@@ -87,6 +96,12 @@ void Input::keyEvents()
 	} //end if
 } //end while
 
+/*
+============================letterEvents()=====================
+Only gets called when the console is active, so that we can 
+type into it.
+===============================================================
+*/
 char Input::letterEvents()
 {
 		while (SDL_PollEvent(&event) != 0)

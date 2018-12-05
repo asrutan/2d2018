@@ -31,7 +31,11 @@ class Gui;
 class Entity;
 class CommandBus;
 class Command;
-
+/*
+=========================BaseScene=============================
+Abstract class from which Scene, Editor, and Menu are derived.
+===============================================================
+*/
 class BaseScene
 {
     protected:
@@ -60,6 +64,7 @@ class BaseScene
 		virtual int spawn(int entityID) = 0;
 		virtual void Update() = 0;
 		virtual int End() { return (endcondition); };
+		//Do command bus commands.
 		virtual void Execute() {
 			Command *command = cbus.DoCommand();
 				if (command != NULL) {

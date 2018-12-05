@@ -457,6 +457,7 @@ void Display::draw(const int t_x, const int t_y, const int t_w, const int t_h) {
 
 	SDL_SetRenderDrawColor(renderer, 0x89, 0x37, 0xA4, 0xFF); 
 	SDL_RenderDrawRect(renderer, &buttonRect);
+
 }
 
 /*

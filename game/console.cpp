@@ -82,6 +82,12 @@ void Console::TypeLetter(char c)
 	m_userInput += c;
 }
 
+/*
+============================Send()=============================
+Read the message that the user has sent and determine if it's 
+a valid command, then act on it.
+===============================================================
+*/
 void Console::Send()
 {
 	int length = m_userInput.length();
@@ -128,6 +134,11 @@ std::string Console::SGetMessage()
 
 Console console;
 
+/*
+============================Alert()============================
+Can be called from anywhere, will print to the console.
+===============================================================
+*/
 void Alert(const char* t_string)
 {
 	std::string convert = t_string;

@@ -9,11 +9,13 @@
 
 using namespace std;
 
-/*
-Editor constructor
-defines the values used for the resolution of the screen
-initializes values used by SDL for renderer, window, and textures
-*/
+//
+//
+//JUST A STRIPPED DOWN SCENE
+//
+//
+
+
 Editor::Editor()
 {
 	Entity *entlist = new Entity[255];
@@ -78,17 +80,9 @@ bool Editor::Init()
 	//Load background based on world info
 	background->SetScene(this);
 
-	//display->loadTextures("redDude.png", 0);
-	//display->loadTextures("blocks.bmp", 1);
-	//display->loadTextures("greenBackground.bmp", 2);
-
 	camera = new Camera();
-	//display->SetCamera(camera);
-	SetDisplayCamera();
 
-	//Create scale enemy demo and rotate enemy demo
-	//spawn(4);
-	//spawn(5);
+	SetDisplayCamera();
 
 	*mouseDown = false;
 
@@ -234,14 +228,6 @@ void Editor::EditLoop() {
 		world->NormalizeBrush();
 	}
 }
-
-/*
-First, take each of the textures and assign them to their own specific rectangles to be drawn later
-Create and instance of map, map is loaded when it is constructed
-Pass the map information on to player and the setEnemyMap via pointer
-Create an instance of camera and send it values for number of rays and player's initial position
-Create an instance of SDL_Event for player input, events change bools to "true"
-*/
 
 void Editor::Update()
 {
