@@ -29,8 +29,8 @@ void Input::keyEvents()
 		}
 		if (event.type == SDL_KEYUP) {
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				quit = true;
-				cout << "QUIT HIT" << endl;
+				flags |= IF_ESC;
+				cout << "ESC HIT" << endl;
 			}
 			if (event.key.keysym.sym == SDLK_SPACE) {
 				flags &= ~(IF_SPACE);
@@ -40,6 +40,12 @@ void Input::keyEvents()
 			}
 			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 				flags &= ~(IF_RIGHT);
+			}
+			if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
+				flags &= ~(IF_UP);
+			}
+			if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
+				flags &= ~(IF_DOWN);
 			}
 			if (event.key.keysym.sym == SDLK_LCTRL) {
 				flags &= ~(IF_CTRL);
@@ -56,6 +62,9 @@ void Input::keyEvents()
 					flags |= IF_TAB;
 				}
 			}
+			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
+				flags |= IF_TILDE;
+			}
 			if (event.key.keysym.sym == SDLK_SPACE) {
 				flags |= IF_SPACE;
 			}
@@ -65,12 +74,92 @@ void Input::keyEvents()
 			if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
 				flags |= IF_RIGHT;
 			}
+			if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) {
+				flags |= IF_UP;
+			}
+			if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
+				flags |= IF_DOWN;
+			}
 			if (event.key.keysym.sym == SDLK_LCTRL) {
 				flags |= IF_CTRL;
 			}
 		}
 	} //end if
 } //end while
+
+char Input::letterEvents()
+{
+		while (SDL_PollEvent(&event) != 0)
+		{
+			if (event.type == SDL_KEYDOWN) {
+				if (event.key.keysym.sym == SDLK_BACKQUOTE) {
+					flags |= IF_TILDE;
+				}
+				else if (event.key.keysym.sym == SDLK_RETURN) {
+					flags |= IF_ENTER;
+				}
+
+				switch (event.key.keysym.sym) {
+				case SDLK_a:
+					return('a');
+				case SDLK_b:
+					return('b');
+				case SDLK_c:
+					return('c');
+				case SDLK_d:
+					return('d');
+				case SDLK_e:
+					return('e');
+				case SDLK_f:
+					return('f');
+				case SDLK_g:
+					return('g');
+				case SDLK_h:
+					return('h');
+				case SDLK_i:
+					return('i');
+				case SDLK_j:
+					return('j');
+				case SDLK_k:
+					return('k');
+				case SDLK_l:
+					return('l');
+				case SDLK_m:
+					return('m');
+				case SDLK_n:
+					return('n');
+				case SDLK_o:
+					return('o');
+				case SDLK_p:
+					return('p');
+				case SDLK_q:
+					return('q');
+				case SDLK_r:
+					return('r');
+				case SDLK_s:
+					return('s');
+				case SDLK_t:
+					return('t');
+				case SDLK_u:
+					return('u');
+				case SDLK_v:
+					return('v');
+				case SDLK_w:
+					return('w');
+				case SDLK_x:
+					return('x');
+				case SDLK_y:
+					return('y');
+				case SDLK_z:
+					return('z');
+				case SDLK_SPACE:
+					return(' ');
+				}
+			}
+		} //end if
+
+		return(NULL);
+}
   //end keyEvents
 
 int Input::getMouse()
@@ -85,7 +174,8 @@ int Input::getMouse()
 
 bool * Input::GetQuitPtr()
 {
-	return &quit;
+	//return &quit;
+	return false;
 }
 
 bool * Input::GetEditTogglePtr()

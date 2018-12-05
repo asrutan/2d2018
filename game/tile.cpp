@@ -85,15 +85,15 @@ collideBox Tile::getCollideBox()
 bool Tile::textureTile(string path)
 {
     bool success = true;
-    if(!texture.makeTexture(path))
-    {
-	success = false;
-    }
-    else
-    {
-        myTexture = texture.getTexture();
-    }
-    return success;
+   // if(!texture.makeTexture(path))
+    //{
+	//success = false;
+    //}
+  //  else
+   // {
+   //     myTexture = texture.getTexture();
+  //  }
+   return success;
 }
 
 SDL_Texture* Tile::getTexture()

@@ -6,6 +6,13 @@
 
 using namespace std;
 
+/*
+=============================Brush()===========================
+Create a new brush and set its color information and
+coordinates. Eventually, brushes of different types will be 
+created. For now, they are all solid.
+===============================================================
+*/
 Brush::Brush(int t_x, int t_y, int t_w, int t_h, int t_type){
 	x = t_x;
 	y = t_y;

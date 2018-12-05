@@ -5,61 +5,62 @@
 #ifndef GAME_EXIST
 #define GAME_EXIST
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_image.h>
-#include <string>
+#include "scene.h"
+#include "basescene.h"
+#include "editor.h"
 #include "display.h"
-#include "camera.h"
-#include "texture.h"
-#include "player.h"
-#include "enemy.h"
-#include "entity.h"
-#include "movement.h"
-#include "collision.h"
+#include "gui.h"
 #include "input.h"
-#include "hud.h"
-
-const int SPAWN = 0;
-const int BULLET = 0;
+#include "menu.h"
+#include "sound.h"
 
 class Game
 {
     private:
-		Display display;
-		Movement movement;
-		Collision collision;
-		Input input;
-		Camera camera;
-		World *world;
-		Hud *hud;
-		bool *quit;
-		bool *editMode;
-		bool *mouseDown;
-		unsigned int currentTime;
-		bool create = true;
+		BaseScene *scene;
+		Editor *editor;
+		Sound m_sound;
+		Display m_display;
+		Input m_input;
+		Gui m_gui;
+		Menu m_menu;
+		//Console m_console;
+		
+		Display *display = nullptr;
+		Input *input = nullptr;
+		Gui *gui = nullptr;
+		Sound *sound = nullptr;
+		//Console *console = nullptr;
+
+		bool m_paused = false;
+
+		const int GAME = 0;
+		const int EDIT = 1;
+		int m_mode = GAME;
+
+		std::string nextmap = "testmap";
 
     public:
         Game();
         ~Game();
-		Entity* entlist[255];
-		bool loadTextures();
-        int run();
-		int spawn(int);
-		int despawn(Entity*);
-		int entcount;
-		int mousex;
-		int mousey;
-		int playercount;
-		int enemycount;
 
-		void Act(int request);
+		Input* GetInput();
+		Display* GetDisplay();
+		Gui* GetGui();
 
-		void GameLoop();
-		void EditLoop();
+		bool Pause();
+		void Quit();
+		int Init();
+		void RunScene();
+		void LoadScene();
+		void LoadEditor();
+		void SwitchScene();
+		void SetNextMap(std::string mapname);
+		std::string GetNextMap();
 
-		bool TimeUp();
-		unsigned int GetTime();
+		void ConsoleCommand(Command *command);
+
+		int sceneruntimes;
         
 }; //end Game
 

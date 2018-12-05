@@ -5,18 +5,18 @@
 #include <cmath>
 #include "player.h"
 #include "game.h"
+#include "console.h"
 
 using namespace std;
 
-Game *game = nullptr;
+Scene *scene = 0;
+//Or set to nullptr idr.
 
 Player::Player(unsigned int *Time)
 {
-	//game = 
-
     spriteX = 50;//wraps collision box closer to sprite
     spriteY = 0;
-    speed = 10;//movement speed
+    speed = 15;//movement speed
     //end protected inherited vars
 
 	collided[0] = false;
@@ -60,6 +60,18 @@ void Player::update()//changed from entity
 {
 	if (dying)dead = true;
 
+	/*
+	if (console.GetMessage() == "jump") {
+		Jump();
+	}
+	*/
+
+	Command *command = scene->cbus.DoCommand();
+	if (command != NULL) {
+		command->Execute(this);
+	}
+	command = nullptr;
+
 	if (!onGround)
 	{	
 		if (yVelocity < 10) {
@@ -81,20 +93,18 @@ void Player::Move()
 	if (mFlags & MF_LEFT) {
 		x -= 5;
 		direction = 0;
+		//Alert("player facing left");
 		mFlags &= ~(MF_LEFT);
 	}
 	if (mFlags & MF_RIGHT) {
 		direction = 1;
+		//Alert("player facing right");
+		//Alert("the player is facing right");
 		x += 5;
 		mFlags &= ~(MF_RIGHT);
 	}
 	if (mFlags & MF_JUMP) {
-		if (onGround) {
-			y--;
-			yVelocity = -30;
-			onGround = false;		
-		}
-		mFlags &= ~(MF_JUMP);
+		Jump();
 	}
 
 	if (mFlags & MF_FIRE) {
@@ -111,7 +121,7 @@ void Player::Input(int t_flags) {
 void Player::Fire() {
 	if (!fireCooldown) {
 		cout << "BANG" << endl;
-		game->spawn(3);
+		scene->spawn(3);
 		fired = true;
 		fireCooldown = true;
 		queue.Push(4, coolDownTime, false, 0);
@@ -122,10 +132,24 @@ void Player::CooldownOff() {
 	fireCooldown = false;
 }
 
-void Player::SetGame(Game *t_game)
+void Player::Jump()
 {
-	game = t_game;
-	cout << "SETGAME" << endl;
+	if (onGround) {
+		y--;
+		yVelocity = -30;
+		onGround = false;
+	}
+	mFlags &= ~(MF_JUMP);
+	//Alert("player jumped");
+}
+
+void Player::SetScene(BaseScene * t_scene)
+{
+	scene = t_scene;
+	cout << "SETSCENE" << endl;
+	int sixtynine = testExt;
+	cout << sixtynine << endl;
+	Alert("player says hi");
 }
 
 int Player::GameRequest() {
