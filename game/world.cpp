@@ -83,6 +83,36 @@ void World::NormalizeBrush() {
 	m_allNormal = true;
 }
 
+void World::DeleteBrush(int x, int y)
+{
+	int bx = 0;
+	int by = 0;
+	int bh = 0;
+	int bw = 0;
+	for (int i = 0; i < brushCount; i++) {
+		bx = brushes[i]->x;
+		by = brushes[i]->y;
+		bh = brushes[i]->h + by;
+		bw = brushes[i]->w + bx;
+		if (x > bx && x < bw && y > by && y < bh) {
+			if (i == brushCount - 1) {
+				delete brushes[i];
+				brushes[i] = nullptr;
+			}
+			else {
+				delete brushes[i];
+				brushes[i] = nullptr;
+
+				for (int j = i; j < brushCount - 1; j++) {
+					brushes[j] = brushes[j + 1];
+				}
+			}
+			brushCount--;
+			i = brushCount; //end for loop
+		}
+	}
+}
+
 /*
 ==========================CheckExist()=========================
 Check to see if a file that matches the requested map name

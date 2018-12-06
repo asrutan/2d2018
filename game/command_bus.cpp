@@ -58,6 +58,8 @@ Command *CommandBus::DoCommand()
 		//cout << commands[0]->sent << endl;
 		commands[0]->sent = true;
 		//cout << commands[0]->sent << endl;
+		cout << "TYPE" << endl;
+		cout << commands[0]->type << endl;
 		cout << "DO COMMAND" << endl;
 		return commands[0];
 	}

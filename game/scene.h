@@ -24,13 +24,13 @@ class Scene : public BaseScene
 		bool *editMode;
 		bool *mouseDown;
 		bool create = false;
-
+		bool jumpbutton = false;
 		Game *game;
 
     public:
         Scene();
 		Scene(Game*);
-        ~Scene();
+        virtual ~Scene();
 		
 		Entity* entlist[255];
 		Entity& GetPlayer();

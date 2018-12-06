@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="..\game\animation.cpp" />
     <ClCompile Include="..\game\background.cpp" />
+    <ClCompile Include="..\game\bailey_enemy.cpp" />
+    <ClCompile Include="..\game\bailey_player.cpp" />
+    <ClCompile Include="..\game\bailey_scene.cpp" />
     <ClCompile Include="..\game\basescene.cpp" />
     <ClCompile Include="..\game\brush.cpp" />
     <ClCompile Include="..\game\camera.cpp" />
@@ -52,6 +55,9 @@
   <ItemGroup>
     <ClInclude Include="..\game\animation.h" />
     <ClInclude Include="..\game\background.h" />
+    <ClInclude Include="..\game\bailey_enemy.h" />
+    <ClInclude Include="..\game\bailey_player.h" />
+    <ClInclude Include="..\game\bailey_scene.h" />
     <ClInclude Include="..\game\basescene.h" />
     <ClInclude Include="..\game\brush.h" />
     <ClInclude Include="..\game\camera.h" />

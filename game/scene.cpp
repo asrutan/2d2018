@@ -47,6 +47,9 @@ Scene::Scene(Game *t_game)
 
 Scene::~Scene()
 {
+	if (jumpbutton) {
+		gui->DeleteJumpButton();
+	}
 	delete camera;
 	camera = nullptr;
 	delete[] *entlist;
@@ -75,6 +78,9 @@ bool Scene::Init()
 {
 	bool success = true;
 	printf("Run number: %d \n", game->sceneruntimes);
+
+	gui->CreateButton("jump", 500, 10, 60, 60, &jump);
+	jumpbutton = true;
 
 	world = new World;
 	world->define();
@@ -378,13 +384,16 @@ void Scene::Update()
 	//collision.checkBounds(entlist[0], world->horizonts[0]);
 
 	//Iterate through all the brushes but stop as soon as we hit one of them and start over.
+	entlist[0]->onGround = false; //moved this out of checkbounds for now.
+	entlist[0]->collideSide[0] = false;
+	entlist[0]->collideSide[1] = false;
 	for (int i = 0; i < world->brushCount; i++) {
 		collision.checkBounds(entlist[0], world->brushes[i]);
-		if (entlist[0]->onGround) {
+		//if (entlist[0]->onGround) {
 			//cout << i << endl;
 			//printf("Brush hit: %d\n", i);
-			i = world->brushCount;
-		}
+		//	i = world->brushCount;
+		//}
 	}
 
 	//collision.checkBounds(entlist[0], world->verts[0]);

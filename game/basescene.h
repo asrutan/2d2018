@@ -53,6 +53,7 @@ class BaseScene
 		Game *game = nullptr;
 
     public:
+		virtual ~BaseScene() { };
 		Entity* entlist[255];
 		virtual bool loadTextures() = 0;
 		virtual bool Init() = 0;
@@ -84,6 +85,7 @@ class BaseScene
 		bool done = false;
 		bool paused = false;
 		int endcondition = 0;
+		int score = 0;
 
 		CommandBus cbus;
 

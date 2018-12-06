@@ -53,6 +53,13 @@ Enemy::Enemy(int t_mode, BaseScene *t_scene)
 	dir[3] = false;
 	dir[4] = false;
 
+	if (t_mode == 8)
+	{
+
+		dir[4] = true;
+
+	}
+
 	// if it's 1 or 2, change the direction.
 	if (t_mode < 3) {
 		dir[t_mode] = true;
@@ -88,7 +95,6 @@ Enemy::~Enemy()
 {
 } //end deconstructor
 
-bool shrinking = false;
 void Enemy::update()
 {
 	if (!dying)
@@ -118,30 +124,37 @@ void Enemy::update()
 		else {
 			if (collided[0])kill(); //if collided with player (entID = 0)
 
-			if (!collided[1])
+			if (entityID != 8)
 			{
-				x = newX;
-				y = newY;
 
-				if (x < 0)
+				if (!collided[1])
 				{
-					x = 800;
+					x = newX;
+					y = newY;
+
+					if (x < 0)
+					{
+						x = 800;
+					}
+
+					if (x > 800)
+					{
+						x = 0;
+					}
+				}
+				else
+				{
+					dir[0] = true;
+					dir[1] = false;
+					dir[2] = false;
+					xVelocity = 0;
+					yVelocity = 0;
+					//scene->HandleCommand(&jump);
 				}
 
-				if (x > 800)
-				{
-					x = 0;
-				}
+
 			}
-			else
-			{
-				dir[0] = true;
-				dir[1] = false;
-				dir[2] = false;
-				xVelocity = 0;
-				yVelocity = 0;
-				//scene->HandleCommand(&jump);
-			}
+	
 		}
 	}
 	else

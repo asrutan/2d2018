@@ -23,7 +23,6 @@ Define the class here since no one else can make buttons.
 class Button : public Entity{
 	private:
 		bool active = true;
-		const char* name;
 		Gui *gui = nullptr;
 		Command *command;
 
@@ -36,6 +35,7 @@ class Button : public Entity{
 		void Hovered(bool hover);
 		void Press();
 		void Release();
+		const char* name;
 
 		int state = 0;
 };
@@ -149,6 +149,25 @@ void Gui::CreateButton(const char * name, const int x, const int y, const int w,
 	buttons[buttonAmount] = new Button(name, x, y, w, h, command);
 	buttons[buttonAmount]->SetGui(this);
 	buttonAmount++;
+}
+
+void Gui::DeleteJumpButton()
+{
+	for (int i = 0; i < buttonAmount; i++) {
+		if (buttons[i]->name == "jump") {
+			if (i == buttonAmount - 1) {
+				delete buttons[i];
+				buttons[i] = nullptr;
+			}
+			else {
+				for (int j = i; j < buttonAmount - 1; j++) {
+					buttons[j] = buttons[j + 1];
+				}
+			}
+			buttonAmount--;
+			i = buttonAmount;
+		}	
+	}
 }
 
 void Gui::DrawButton(Button * button)

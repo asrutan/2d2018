@@ -27,6 +27,9 @@ Player::Player(unsigned int *Time)
 	collided[0] = false;
 	collided[1] = false;
 	
+	collideSide[0] = false;
+	collideSide[1] = false;
+
 	x = 400;
     y = 300;
     height = 128;//height of player/sprite - used by collidebox
@@ -106,15 +109,22 @@ Experimenting with cool bitwise flags
 void Player::Move()
 {
 	//cout << "move" << endl;
+
+	//Hit head on ceiling and fall.
+	if (collideSide[2]) {
+		collideSide[2] = false;
+		yVelocity = 1;
+	}
+
 	y += yVelocity;
 	//x += xVelocity;
-	if (mFlags & MF_LEFT) {
+	if (mFlags & MF_LEFT && !collideSide[1]) {
 		x -= 5;
 		direction = 0;
 		//Alert("player facing left");
 		mFlags &= ~(MF_LEFT);
 	}
-	if (mFlags & MF_RIGHT) {
+	if (mFlags & MF_RIGHT && !collideSide[0]) {
 		direction = 1;
 		//Alert("player facing right");
 		//Alert("the player is facing right");

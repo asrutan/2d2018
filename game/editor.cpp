@@ -227,6 +227,11 @@ void Editor::EditLoop() {
 	else {
 		world->NormalizeBrush();
 	}
+
+	if (input->flags & MF_JUMP) {
+		world->DeleteBrush(mousex, mousey);
+		input->flags &= ~(MF_JUMP);
+	}
 }
 
 void Editor::Update()

@@ -1,14 +1,8 @@
 // animation.cpp
 // Bailey Dishman
-// 12/4/2018sdfsdfsdf
+// 12/4/2018
 
 #include "animation.h"
-#include "texture.h"
-
-//Walking animation
-const int WALK_ANIM_FRAMES = 4;
-SDL_Rect g_SpriteClips[WALK_ANIM_FRAMES];
-Texture g_SpriteSheetTexture;
 
 
 // Constructors
@@ -85,11 +79,10 @@ bool Animation::loadWalkAnim()
 void Animation::playWalkAnim()
 {
 
-	int frame = 0;
 	++frame;
 
 	// Cycle animation
-	if (frame / 4 >= WALK_ANIM_FRAMES)
+	if (frame >= 4)
 	{
 		frame = 0;
 	}

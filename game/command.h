@@ -78,12 +78,21 @@ public:
 	void Execute(Game * target);
 };
 
+class ChangeSceneCommand : public Command {
+public:
+	ChangeSceneCommand() { type = 1; }
+	ChangeSceneCommand(std::string name) { type = 1; }
+	void Execute(Game * target);
+	std::string scenename = "";
+};
+
 extern JumpCommand jump;
 extern UnpauseCommand unpause;
 extern QuitCommand quit;
 extern SaveMapCommand savemap;
 extern LoadMapCommand loadmap;
 extern SwitchModeCommand switchmode;
+extern ChangeSceneCommand changescene;
 
 #endif //COMMAND_EXISTS
 

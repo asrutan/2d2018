@@ -68,6 +68,11 @@ void Movement::move(Entity *entity)
 		if (entity->getDir(4)) // move down
 		{
 
+			if (entity->getYVelocity() < entity->getSpeed())
+			{
+				entity->setYVelocity(entity->getAcceleration());
+			}
+
 		}
 	}
 

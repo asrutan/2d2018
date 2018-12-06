@@ -17,7 +17,7 @@ class Gui
 	private:
 		Display *display = nullptr;
 		const char* m_message;
-		int buttonAmount = 0;
+		//int buttonAmount = 0;
 		Button* buttons[255];
 
 	public:
@@ -35,8 +35,10 @@ class Gui
 		void SetMessage(const char* message);
 		const char* GetMessage();
 		void CreateButton(const char* name, const int x, const int y, const int w, const int h, Command* command);
+		void DeleteJumpButton();
 		void DrawButton(Button* button);
 		void SendCommand(Command *command);
+		int buttonAmount = 0;
 
 }; //end Gui
 

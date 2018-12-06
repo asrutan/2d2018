@@ -22,7 +22,7 @@ Entity::Entity()
    // y = 300;
     height = 50;
     width = 50;
-	dir[0] = true;
+	dir[0] = false;
 	dir[1] = false;
 	dir[2] = false;
 	dir[3] = false;

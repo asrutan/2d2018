@@ -20,6 +20,7 @@ class Enemy : public Entity
 		//int dir;
 
     public:
+		bool shrinking = false;
         Enemy();
 		//Enemy(int direction);
 		Enemy(int t_mode, BaseScene *scene);

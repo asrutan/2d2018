@@ -24,21 +24,18 @@ class Entity{
 
 		int mFlags = 0;
 
-		int speed = 1;
 		int spriteX;
 		int spriteY;
 		int newX = 0;
 		int newY = 0;
 		int xVelocity = 0;
 		int yVelocity = 0;
-		bool dead = false;
 		bool dying = false;
 		bool dir[5];
 		int entityID; //TYPE OF ENTITY (Player, Enemy, etc.)
 		int uniqueID; //IDENTIFIER IN CURRENT SESSION
 		int listID; //CURRENT SPOT IN ENTITY LIST
 		int friction = 1;
-		int acceleration = 1;
 		unsigned int *time;
 
 		BaseScene *scene;
@@ -50,6 +47,11 @@ class Entity{
 		Queue queue;
 
     public:
+
+		int speed = 1;
+		int acceleration = 1;
+		bool dead = false;
+
         Entity();
 		//Entity(Game*);
         //~Entity();
@@ -73,7 +75,7 @@ class Entity{
 		bool collided[2];
 		bool onGround = false;
 		bool wallHit = false;
-		bool collideSide[4]; //1=right 2=left 3=top 4=bottom
+		bool collideSide[3]; //1=right 2=left 3=top 4=bottom
 		void setXY(int, int);
 		void setNewXY(int, int);
 		int getX();

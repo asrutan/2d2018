@@ -111,48 +111,64 @@ void Collision::checkBounds(Entity * entity1, World::vertical* vert)
 //Check collision between an entity and a brush.
 void Collision::checkBounds(Entity *entity1, Brush *brush)
 {
-	if (entity1->x + entity1->width > brush->x && entity1->x < brush->x) // right side collide
+	int entx = entity1->x;
+	int enty = entity1->y;
+	int entw = entity1->width;
+	int enth = entity1->height;
+	int bx = brush->x;
+	int by = brush->y;
+	int bw = brush->w;
+	int bh = brush->h;
+
+	//start false every frame.
+	//entity1->onGround = false;
+	if (enty + enth >= by && enty <= by) // bottom collide
 	{
-		if (entity1->y < brush->y + brush->h && entity1->y + entity1->height > brush->y)
+		if (entx + entw >= bx && entx <= bx + bw)
 		{
-			//entity1->collided[brush->type] = true; //behavior upon collision is determined by the type of entity it hits.
-			//brush->collided[entity1->getEntityID()] = true;
-			//cout << "right" << endl;
+			entity1->setYVelocity(0);
+			entity1->y = by - enth;
+			entity1->onGround = true; //behavior upon collision is determined by the type of entity it hits.
 		}
 	}
 
-	if (entity1->x < brush->x + brush->w && entity1->x + entity1->width > brush->x + brush->w) // left side collide
+	//entity1->collideSide[0] = false;
+	//printf("Player - Left: %d, Right: %d\n", entx, entx + entw);
+	//printf("Box - Left: %d, Right: %d\n", bx, bx + bw);
+	if (entx + entw > bx && entx < bx) // right side collide
 	{
-		if (entity1->y < brush->y + brush->h && entity1->y + entity1->height > brush->y)
+		//cout << "Right Collide" << endl;
+		if (enty < by + bh && enty + enth > by + 10)
 		{
-			//entity1->collided[brush->type] = true; //behavior upon collision is determined by the type of entity it hits.
-			//brush->collided[entity1->getEntityID()] = true;
-			//cout << "left" << endl;
+			//entx = bx - entw;
+			entity1->collideSide[0] = true;
 		}
 	}
 
-	if (entity1->y < brush->y + brush->h && entity1->y + entity1->height > brush->y + brush->h) // top collide
+	//entity1->collideSide[1] = false;
+	if (entx + entw > bx + bw && entx < bx + bw) // left side collide
 	{
-		if (entity1->x + entity1->width > brush->x && entity1->x < brush->x + brush->w)
+		if (enty < by + bh && enty + enth > by + 10)
+		{
+			//cout << "Left Collide" << endl;
+			//entx = bx + bw;
+			entity1->collideSide[1] = true;
+		}
+	}
+
+	//entity1->collideSide[2] = false;
+	if (enty < by + bh && enty + enth > by + bh) // top collide
+	{
+		if (entx + entw > bx && entx < bx + bw)
 		{
 			//entity1->collided[brush->type] = true; //behavior upon collision is determined by the type of entity it hits.
 			//brush->collided[entity1->getEntityID()] = true;
 			//cout << "top" << endl;
+			entity1->collideSide[2] = true;
+			entity1->y = by + bh;
 		}
 	}
-
-	//start false every frame.
-	entity1->onGround = false;
-	if (entity1->y + entity1->height >= brush->y && entity1->y <= brush->y) // bottom collide
-	{
-		if (entity1->x + entity1->width >= brush->x && entity1->x <= brush->x + brush->w)
-		{
-			entity1->setYVelocity(0);
-			entity1->y = brush->y - entity1->height;
-			entity1->onGround = true; //behavior upon collision is determined by the type of entity it hits.
-			//cout << "bottom" << endl;
-		}
-	}
+	
 }
 
 //Check collision between an entity and a given point.

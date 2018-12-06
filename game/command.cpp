@@ -118,6 +118,21 @@ void SwitchModeCommand::Execute(Game * target)
 	target->SwitchScene();
 }
 
+/*
+==================ChangeSceneCommand::Execute()================
+If the mapname isn't empty, load the map into the scene. Set to
+empty name so it doesn't get carried over for the next call to
+this command.
+===============================================================
+*/
+void ChangeSceneCommand::Execute(Game* target)
+{
+	if (scenename != "") {
+		target->ChangeScene(scenename);
+		scenename = "";
+	}
+}
+
 //Globals so they can be referenced anywhere.
 JumpCommand jump;
 UnpauseCommand unpause;
@@ -125,3 +140,4 @@ QuitCommand quit;
 SaveMapCommand savemap;
 LoadMapCommand loadmap;
 SwitchModeCommand switchmode;
+ChangeSceneCommand changescene;

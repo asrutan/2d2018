@@ -14,9 +14,13 @@
 #include "menu.h"
 #include "sound.h"
 
+#include "bailey_scene.h"
+
 class Game
 {
+
     private:
+
 		BaseScene *scene;
 		Editor *editor;
 		Sound m_sound;
@@ -38,7 +42,8 @@ class Game
 		const int EDIT = 1;
 		int m_mode = GAME;
 
-		std::string nextmap = "testmap";
+		std::string nextmap = "demomap";
+		std::string nextscene = "demo"; // SWITCH BACK TO DEMO ONCE TESTS ARE DONE
 
     public:
         Game();
@@ -56,6 +61,7 @@ class Game
 		void LoadEditor();
 		void SwitchScene();
 		void SetNextMap(std::string mapname);
+		void ChangeScene(std::string scenename);
 		std::string GetNextMap();
 
 		void ConsoleCommand(Command *command);

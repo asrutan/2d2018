@@ -49,7 +49,12 @@ Display::Display()
 	/*
 	===================
 	*/
-
+	//SCORE
+	scoreRect.x = 0;
+	scoreRect.y = 0;
+	scoreRect.w = 25;
+	scoreRect.h = 25;
+	//
 }//end constructor
 
 Display::~Display()
@@ -296,7 +301,8 @@ bool Display::LoadFont()
 	{ //Render text 
 		//{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		SDL_Color textColor = { 0, 0, 0 };
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < 37; i++) {
+			if (i > 26) textColor = { 0, 255, 0 };
 			string sym(1, letters[i]);
 			const char *theval = sym.c_str();
 			surface = TTF_RenderText_Solid(font,
@@ -324,6 +330,36 @@ void Display::PrintText()
 	SDL_RenderFillRect(renderer, &consoleRect);
 	for (int i = 0; i < messageLog[0].messageLength; i++) {
 		SDL_RenderCopy(renderer, letterTextures[messageLog[0].letterIndex[i]], NULL, &messageLog[0].rects[i]);
+	}
+}
+
+void Display::DrawScore(int score)
+{
+	std:string text = std::to_string(score);
+	int pointer = 0;
+	int i = 0;
+	for (i = 0; i < text.length(); i++) {
+		for (int j = 0; j < 37; j++) {
+			if (text[i] == letters[j]) {
+				scoreLog[0].rects[i] = letterRect[j];
+				//messageLog[0].rects[i].x = pointer;
+				//messageLog[0].rects[i].y = 0;
+				scoreLog[0].letterIndex[i] = j;
+				j = 38; //exit for by going over limit
+			}
+		}
+	}
+	scoreLog[0].messageLength = i;
+
+	for (int i = 0; i < scoreLog[0].messageLength; i++) {
+		scoreLog[0].rects[i].h = 50;
+		scoreLog[0].rects[i].w = 25;
+		scoreLog[0].rects[i].y = 50;
+		scoreLog[0].rects[i].x = (i + 1) * 25;
+	}
+
+	for (int i = 0; i < scoreLog[0].messageLength; i++) {
+		SDL_RenderCopy(renderer, letterTextures[scoreLog[0].letterIndex[i]], NULL, &scoreLog[0].rects[i]);
 	}
 }
 
@@ -573,14 +609,14 @@ void Display::DrawConsole()
 	const int spacing = 20;
 	int messageLength = 0;
 	while (text[i] != 0) {
-		for (int j = 0; j < 26; j++) {
+		for (int j = 0; j < 37; j++) {
 			if (text[i] == letters[j]) {
 				messageLog[0].rects[i] = letterRect[j];
 				messageLog[0].rects[i].x = pointer;
 				//messageLog[0].rects[i].y = 0;
 				messageLog[0].letterIndex[i] = j;
 				pointer += letterRect[j].w;
-				j = 27; //exit for by going over limit
+				j = 38; //exit for by going over limit
 			}
 		}
 		i++;

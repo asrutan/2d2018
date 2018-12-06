@@ -57,7 +57,6 @@ int Game::Init() {
 	//This adds a button in the top right of the screen.
 	//When we click it, the player will jump.
 	m_gui.SetDisplay(display);
-	m_gui.CreateButton("button", 500, 10, 60, 60, &jump);
 	//GUI
 
 	//Pause menu
@@ -173,6 +172,7 @@ void Game::RunScene()
 	*/
 	if (scene->End() == 0) {
 		Alert("game over");
+		delete scene;
 		display->GameOver();
 		printf("Game over. Thanks for playing!\n");
 		//system("pause");
@@ -183,7 +183,8 @@ void Game::RunScene()
 	If the scene ends and returns a 1, load a new scene.
 	*/
 	else if (scene->End() == 1){
-		delete this->scene;
+		nextscene = "demo";
+		delete scene;
 		scene = nullptr;
 		LoadScene();
 		RunScene();
@@ -193,7 +194,7 @@ void Game::RunScene()
 	(can only evaluate true if current scene is a scene.)
 	*/
 	else if (scene->End() == 2) {
-		delete this->scene;
+		delete scene;
 		scene = nullptr;
 		LoadEditor();
 		RunScene();
@@ -203,7 +204,14 @@ void Game::RunScene()
 	(can only evaluate true if current scene is an editor.)
 	*/
 	else if (scene->End() == 3) {
-		delete this->scene;
+		delete scene;
+		scene = nullptr;
+		LoadScene();
+		RunScene();
+	}
+
+	else if (scene->End() == 4) {
+		delete scene;
 		scene = nullptr;
 		LoadScene();
 		RunScene();
@@ -218,7 +226,14 @@ Pass the pointer to our gui.
 */
 void Game::LoadScene()
 {
-	scene = new Scene(this);
+	if (nextscene == "demo") {
+		scene = new Scene(this);
+	}
+	else if(nextscene == "bailey"){
+		scene = new BaileyScene(this);
+		cout << "Load Bailey Scene" << endl;
+		//scene = new Scene(this);
+	}
 	m_gui.SetScene(scene);
 }
 
@@ -266,6 +281,24 @@ void Game::SetNextMap(std::string mapname)
 	nextmap = mapname;
 }
 
+void Game::ChangeScene(std::string scenename)
+{
+	if (scenename == "demo") {
+		nextscene = scenename;
+		scene->endcondition = 1;
+		scene->SetDone(true);
+	}
+	else if(scenename == "bailey") {
+		nextscene = scenename;
+		scene->endcondition = 4;
+		scene->SetDone(true);
+		nextmap = "baileymap";
+	}
+	else {
+		cout << "Invalid scene name" << endl;
+	}
+}
+
 /*
 ============================GetNextMap()=======================
 Return the name of the next map, used for the scene when it is
@@ -286,5 +319,15 @@ current scene so that it may add it to the commmand bus.
 */
 void Game::ConsoleCommand(Command *command)
 {
-	scene->HandleCommand(command);
+	if (command->type == 1){
+		m_menu.HandleCommand(command);
+		Command *command = m_menu.mcbus.DoCommand();
+		if (command != NULL) {
+			command->Execute(this);
+		}
+		m_menu.Update();
+	}
+	else {
+		scene->HandleCommand(command);
+	}
 }
